@@ -1,8 +1,27 @@
-import "../css/LogIn.css"
+import { useState } from "react";
+import "../css/LogIn.css";
 
 function Register() {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    // const navigate = useNavigate();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        // const response = await fetch(`http://localhost:8080/users`, {
+        //     method: "POST",
+        //     headers: { "Content-Type": "application/json" },
+        //     body: JSON.stringify({
+        //         username: username,
+        //         password: password,
+        //     })
+        // });
+        // const data = await response.json();
+        // if (data) {
+        //     console.log(data);
+        //     navigate(`users/${username}`)
+        // }
+    };
     return (
-        <body>
             <div className="login-root">
                 <div className="box-root flex-flex flex-direction--column" style={{ minHeight: "100vh", flexGrow: 1 }}>
                     <div className="loginbackground box-background--white padding-top--64">
@@ -48,8 +67,10 @@ function Register() {
                                     <span className="padding-bottom--15">Sign in to your account</span>
                                     <form id="stripe-login">
                                         <div className="field padding-bottom--24">
-                                            <label htmlFor="email">Email</label>
-                                            <input type="email" name="email" />
+                                            <label htmlFor="email">User-Name</label>
+                                            <input type="text" name="username" value={username}
+                                            onChange={(e) => {setUsername(e.target.value) 
+                                            console.log(username)}} />
                                         </div>
                                         <div className="field padding-bottom--24">
                                             <div className="grid--50-50">
@@ -58,7 +79,9 @@ function Register() {
                                                     <a href="#">Forgot your password?</a>
                                                 </div>
                                             </div>
-                                            <input type="password" name="password" />
+                                            <input type="password" name="password" value={password}
+                                            onChange={(e) => {setPassword(e.target.value)
+                                                console.log(password)}}/>
                                         </div>
                                         <div className="field field-checkbox padding-bottom--24 flex-flex align-center">
                                             <label htmlFor="checkbox">
@@ -66,7 +89,7 @@ function Register() {
                                             </label>
                                         </div>
                                         <div className="field padding-bottom--24">
-                                            <input type="submit" name="submit" value="Continue" />
+                                        <button onClick={handleSubmit}>Continue</button> 
                                         </div>
                                     </form>
                                 </div>
@@ -82,7 +105,6 @@ function Register() {
                     </div>
                 </div>
             </div>
-        </body>
     );
 }
 
