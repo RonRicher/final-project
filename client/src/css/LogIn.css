@@ -15,15 +15,16 @@ h1 {
 a {
   color: #5469d4;
   text-decoration: unset;
+  cursor: pointer;
 }
 
 .login-root {
-  opacity: 0.3;
   background: #fff;
-  display: flex;
+  display: relative;
   width: 100%;
   min-height: 100vh;
   overflow: hidden;
+  opacity: 1;
 }
 
 .loginbackground {
@@ -117,6 +118,7 @@ a {
 
 .padding-bottom--15 {
   padding-bottom: 15px;
+  margin-top: -40px;
 }
 
 
@@ -228,6 +230,29 @@ a.ssolink {
   color: #697386;
   font-weight: 600;
   margin: 0 10px;
+}
+
+#register {
+  position: absolute;
+  top: 5%;
+  right: 38%;
+  opacity: 1;
+}
+
+#exit {
+  width: 50px;
+  background-color: white;
+  box-shadow: none;
+  color: #212d63;
+  border: none;
+  font-size: 16px;
+  height: 50px;
+}
+
+#exit:hover {
+  cursor: pointer;
+  background-color: #e6e8f3;
+  border-radius: 50%;
 }
 
 .animationRightLeft {

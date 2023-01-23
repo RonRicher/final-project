@@ -2,11 +2,13 @@ import logo from './logo.svg';
 import './App.css';
 import LogIn from './components/LogIn';
 import Register from './components/Register';
+import { Route, Routes } from 'react-router-dom';
+
 function App() {
   return (
-    <div>
- <LogIn />
-    </div>
+    <Routes>
+  <Route path="/" element={<LogIn />}></Route>
+    </Routes>
   );
 }
 
