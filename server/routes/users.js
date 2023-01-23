@@ -9,11 +9,14 @@ var con = mysql.createConnection({
   database: "final_project"
 });
 
+con.connect(function(err) {
+  if (err) throw err;
+});
 /* GET users listing. */
+
+
 router.post('/', function(req, res) {
 //  console.log(req.body);
-//  con.connect(function(err) {
-//   if (err) throw err;
 //   console.log("Connected!");
 //   var sql = `INSERT INTO user_details VALUES (1,'${req.body.username}', '${req.body.password}')`;
 //   con.query(sql, function (err, result) {
@@ -26,17 +29,13 @@ res.send(true);
 
 
 router.post('/logIn', function(req, res) {
-  console.log(req.body);
-  con.connect(function(err) {
-   if (err) throw err;
-   console.log("Connected!");
    var sql = `select user_name from user_details where user_name = '${req.body.username}' and password = '${req.body.password}'`;
    con.query(sql, function (err, result) {
      if (err) throw err;
     res.send(result);
    });
  });
- });
+
 
 
 

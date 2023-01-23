@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Cookies from 'js-cookie';
 import Register from "./Register";
 
 import "../css/LogIn.css";
@@ -8,6 +9,16 @@ function LogIn() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [flag, setFlag] = useState(false);
+    const [checkbox, setCheckbox] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (Cookies.get('userName')) {
+            navigate('/home')
+        }
+    })
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const response = await fetch(`http://localhost:8080/users/logIn`, {
@@ -20,7 +31,10 @@ function LogIn() {
         });
         const data = await response.json();
         if (data) {
-            console.log(data[0]);
+            console.log(data);
+           if(checkbox){
+            Cookies.set("userName", username, { expires: 7 });
+           } 
         } else {
             console.log(false);
         }
@@ -94,7 +108,11 @@ function LogIn() {
                                     </div>
                                     <div className="field field-checkbox padding-bottom--24 flex-flex align-center">
                                         <label htmlFor="checkbox">
-                                            <input type="checkbox" name="checkbox" /> Stay signed in for a week
+                                            <input type="checkbox" name="checkbox" onClick={(e) => {
+                                               setCheckbox(e.target.checked);
+                                            }
+                                                // do whatever you want with isChecked value
+                                            } /> Stay signed in for a week
                                         </label>
                                     </div>
                                     <div className="field padding-bottom--24">
