@@ -1,11 +1,13 @@
 import {useNavigate} from "react-router-dom"
 import { useState } from "react";
+import Register from "./Register";
 
 import "../css/LogIn.css" 
 
 function LogIn() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [flag, setFlag] = useState(false);
     const handleSubmit = async (e) => {
         e.preventDefault();
         const response = await fetch(`http://localhost:8080/users/logIn`, {
@@ -25,7 +27,7 @@ function LogIn() {
     };
     return (
         <div className="login-root">
-            <div className="box-root flex-flex flex-direction--column" style={{ minHeight: "100vh", flexGrow: 1 }}>
+            <div className="box-root flex-flex flex-direction--column" style={flag?{minHeight: "100vh", flexGrow: 1 ,opacity:0.3}:{minHeight: "100vh", flexGrow: 1 ,opacity:1}}>
                 <div className="loginbackground box-background--white padding-top--64">
                     <div className="loginbackground-gridContainer">
                         <div className="box-root flex-flex" style={{ gridArea: "top / start / 8 / end" }}>
@@ -98,7 +100,7 @@ function LogIn() {
                             </div>
                         </div>
                         <div className="footer-link padding-top--24">
-                            <span>Don't have an account? <a href="">Sign up</a></span>
+                            <span>Don't have an account? <a onClick={() => setFlag(true)}>Sign up</a></span>
                             <div className="listing padding-top--24 padding-bottom--24 flex-flex center-center">
                                 <span><a href="#">Contact</a></span>
                                 <span><a href="#">Privacy & terms</a></span>
@@ -107,6 +109,7 @@ function LogIn() {
                     </div>
                 </div>
             </div>
+            <div id="register" style={flag?{display:"block"}:{display:"none"}}> <Register setFlag={setFlag} /></div>
         </div>
     );
 }

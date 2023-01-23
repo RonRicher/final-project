@@ -11,18 +11,19 @@ var con = mysql.createConnection({
 
 /* GET users listing. */
 router.post('/', function(req, res) {
- console.log(req.body);
- con.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
-  var sql = `INSERT INTO user_details VALUES (1,'${req.body.username}', '${req.body.password}')`;
-  con.query(sql, function (err, result) {
-    if (err) throw err;
-  });
+//  console.log(req.body);
+//  con.connect(function(err) {
+//   if (err) throw err;
+//   console.log("Connected!");
+//   var sql = `INSERT INTO user_details VALUES (1,'${req.body.username}', '${req.body.password}')`;
+//   con.query(sql, function (err, result) {
+//     if (err) throw err;
+//   });
+res.send(true);
 });
 
  
-});
+
 
 router.post('/logIn', function(req, res) {
   console.log(req.body);
