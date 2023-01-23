@@ -7,19 +7,19 @@ function Register() {
     // const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // const response = await fetch(`http://localhost:8080/users`, {
-        //     method: "POST",
-        //     headers: { "Content-Type": "application/json" },
-        //     body: JSON.stringify({
-        //         username: username,
-        //         password: password,
-        //     })
-        // });
-        // const data = await response.json();
-        // if (data) {
-        //     console.log(data);
-        //     navigate(`users/${username}`)
-        // }
+        const response = await fetch(`http://localhost:8080/users`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username: username,
+                password: password,
+            })
+        });
+        const data = await response.json();
+        if (data) {
+            console.log(data);
+            // navigate(`users/${username}`)
+        }
     };
     return (
         <div className="login-root">
