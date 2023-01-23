@@ -6,22 +6,22 @@ import "../css/LogIn.css"
 function LogIn() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    // const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // const response = await fetch(`http://localhost:8080/users`, {
-        //     method: "POST",
-        //     headers: { "Content-Type": "application/json" },
-        //     body: JSON.stringify({
-        //         username: username,
-        //         password: password,
-        //     })
-        // });
-        // const data = await response.json();
-        // if (data) {
-        //     console.log(data);
-        //     navigate(`users/${username}`)
-        // }
+        const response = await fetch(`http://localhost:8080/users/logIn`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username: username,
+                password: password,
+            })
+        });
+        const data = await response.json();
+        if (data) {
+            console.log(data[0]);
+        }else{
+            console.log(false);
+        }
     };
     return (
         <div className="login-root">
