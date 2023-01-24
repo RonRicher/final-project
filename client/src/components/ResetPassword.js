@@ -2,6 +2,7 @@ import { useState } from "react";
 
 function ResetPassword() {
     const [email, setEmail] = useState("");
+    const [parText, setParText] = useState("");
     const handleSubmit = async (e) => {
         e.preventDefault();
         const response = await fetch(`http://localhost:8080/users/password`, {
@@ -11,10 +12,15 @@ function ResetPassword() {
                 email: email
             })
         });
-        setEmail("");
+        const data = await response.json();
+        if (data) {
+            setParText('We sent you an email with a link to reset your password');
+        } else {
+            setParText('We do not have this email in our system');
+        }
     }
 
-    return ( 
+    return (
         <div className="login-root">
             <div className="box-root padding-top--24 flex-flex flex-direction--column" style={{ flexGrow: 1, zIndex: 9 }}>
                 <div className="formbg-outer">
@@ -31,6 +37,7 @@ function ResetPassword() {
                                         }} />
                                 </div>
                                 <div className="field padding-bottom--24">
+                                    <p style={{margin:'5%',color:'red'}}>{parText}</p>
                                     <button onClick={handleSubmit}>Send</button>
                                 </div>
                             </form>
@@ -39,7 +46,7 @@ function ResetPassword() {
                 </div>
             </div>
         </div>
-     );
+    );
 }
 
 export default ResetPassword;

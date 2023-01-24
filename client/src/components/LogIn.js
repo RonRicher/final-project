@@ -10,6 +10,7 @@ function LogIn() {
     const [password, setPassword] = useState("");
     const [flag, setFlag] = useState(false);
     const [checkbox, setCheckbox] = useState(false);
+    const [wrong, setWrong] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -36,6 +37,8 @@ function LogIn() {
             Cookies.set("userName", username, { expires: 7 });
            } 
            navigate('/home');
+        }else{
+            setWrong(true);
         }
     };
     return (
@@ -115,6 +118,7 @@ function LogIn() {
                                         </label>
                                     </div>
                                     <div className="field padding-bottom--24">
+                                    <p style={{margin:'5%',color:'red'}}>{wrong?'One or more of the details you entered are incorrect' : null}</p>
                                         <button onClick={handleSubmit}>Continue</button>
                                     </div>
                                 </form>
