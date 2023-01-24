@@ -8,8 +8,27 @@ function Register(props) {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const navigate = useNavigate();
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/;
+    const usernameRegex = /^[a-zA-Z0-9._-]{3,15}$/;
+    const phoneRegex = /^(?:\+\d{1,3}|0\d{1,3}|\d{1,4})[\s.-]?\d{3}[\s.-]?\d{4}$/;
+    
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!usernameRegex.test(username)) {
+           alert("Please enter a valid username");
+            return;
+        }else if (!passwordRegex.test(password)) {
+            alert("Please enter a valid password");
+            return;
+        }else if(!emailRegex.test(email)) {
+            alert("Please enter a valid email address");
+            return;
+        }else if(!phoneRegex.test(phone)) {
+            alert("Please enter a valid phone number");
+            return;
+        }
         const response = await fetch(`http://localhost:8080/users`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -22,7 +41,11 @@ function Register(props) {
         });
         const data = await response.json();
         if (data) {
-            navigate('/')
+            props.setFlag(false);
+            setEmail('');
+            setPassword('');
+            setUsername('');
+            setPhone('');
         }
     };
     return (
