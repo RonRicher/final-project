@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
+var nodemailer = require('nodemailer');
 
 
 const con = mysql.createConnection({
@@ -40,7 +41,7 @@ router.post('/', function (req, res) {
     if (result.length !== 0) {
       console.log("Username or email or phone-number already exists");
       return;
-    }else{
+    } else {
       sql = `INSERT INTO user_details(user_name,password,phone,email) VALUES ('${req.body.username}','${req.body.password}','${req.body.phone}','${req.body.email}')`;
       con.query(sql, function (err, result) {
         if (err) throw err;
@@ -62,6 +63,39 @@ router.post('/logIn', function (req, res) {
       res.send(true);
     } else {
       res.send(false);
+    }
+  });
+});
+
+router.post('/password', function (req, res) {
+  let sql = `select user_name from user_details where email = '${req.body.email}'`;
+  con.query(sql, function (err, result) {
+    if (err) throw err;
+    if (result.length > 0) {
+      let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'elyasaf11@gmail.com',
+          pass: 'yfkpuiockfqgykvr'
+        }
+      });
+
+      let mailOptions = {
+        from: 'elyasaf11@gmail.com',
+        to: `${req.body.email}`,
+        subject: 'Sending Email using Node.js',
+        text: 'click on the link to reset your password https://www.w3schools.com/sql/sql_update.asp'
+      };
+
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+    } else {
+      console.log(false);
     }
   });
 });
