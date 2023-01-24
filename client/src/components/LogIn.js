@@ -35,8 +35,7 @@ function LogIn() {
            if(checkbox){
             Cookies.set("userName", username, { expires: 7 });
            } 
-        } else {
-            console.log(false);
+           navigate('/home');
         }
     };
     return (

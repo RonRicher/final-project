@@ -14,7 +14,6 @@ con.connect(function (err) {
   if (err) throw err;
 });
 
-
 router.post('/', function (req, res) {
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/;
@@ -34,11 +33,22 @@ router.post('/', function (req, res) {
     console.log("Please enter a valid phone number");
     return;
   }
-  //   let sql = `INSERT INTO user_details VALUES (1,'${req.body.username}', '${req.body.password}')`;
-  //   con.query(sql, function (err, result) {
-  //     if (err) throw err;
-  //   });
-  res.send(true);
+
+  let sql = `select user_name from user_details where user_name = '${req.body.username}' OR email = '${req.body.email}' OR phone = '${req.body.phone}'`;
+  con.query(sql, function (err, result) {
+    if (err) throw err;
+    if (result.length !== 0) {
+      console.log("Username or email or phone-number already exists");
+      return;
+    }else{
+      sql = `INSERT INTO user_details(user_name,password,phone,email) VALUES ('${req.body.username}','${req.body.password}','${req.body.phone}','${req.body.email}')`;
+      con.query(sql, function (err, result) {
+        if (err) throw err;
+        console.log(result);
+      });
+      res.send(true);
+    }
+  })
 });
 
 
@@ -48,7 +58,11 @@ router.post('/logIn', function (req, res) {
   let sql = `select user_name from user_details where user_name = '${req.body.username}' and password = '${req.body.password}'`;
   con.query(sql, function (err, result) {
     if (err) throw err;
-    res.send(result);
+    if (result.length > 0) {
+      res.send(true);
+    } else {
+      res.send(false);
+    }
   });
 });
 
