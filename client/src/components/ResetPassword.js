@@ -11,6 +11,7 @@ function ResetPassword() {
                 email: email
             })
         });
+        setEmail("");
     }
 
     return ( 

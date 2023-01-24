@@ -84,7 +84,7 @@ router.post('/password', function (req, res) {
         from: 'elyasaf11@gmail.com',
         to: `${req.body.email}`,
         subject: 'Sending Email using Node.js',
-        text: 'click on the link to reset your password https://www.w3schools.com/sql/sql_update.asp'
+        text: 'click on the link to reset your password http://localhost:3000/changePassword'
       };
 
       transporter.sendMail(mailOptions, function (error, info) {
