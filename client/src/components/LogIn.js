@@ -80,7 +80,7 @@ function LogIn() {
                 </div>
                 <div className="box-root padding-top--24 flex-flex flex-direction--column" style={{ flexGrow: 1, zIndex: 9 }}>
                     <div className="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
-                        <h1><a href="http://blog.stackfindover.com/" rel="dofollow">Login</a></h1>
+                        <h1>Login</h1>
                     </div>
                     <div className="formbg-outer">
                         <div className="formbg">
