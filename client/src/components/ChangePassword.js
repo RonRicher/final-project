@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 function ChangePassword() {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
-    const [flag, setFlag] = useState(false);
+    const [parText, setParText] = useState("");
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setParText("Loading...");
         const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/;
         if(passwordRegex.test(password)){
             const response = await fetch(`http://localhost:8080/users/changePassword`, {
@@ -23,8 +24,10 @@ function ChangePassword() {
                 console.log(data);
                navigate('/');
             }else{
-                setFlag(true);
+                setParText('We do not have this email in our system'); 
             }
+        }else{
+            setParText('The password must contain at least 1 letter and 1 number');
         }
     }
 
@@ -52,7 +55,7 @@ function ChangePassword() {
                                         }} />
                                 </div>
                                 <div className="field padding-bottom--24">
-                                    <p style={{margin:'5%',color:'red'}}>{flag?'We do not have this email in our system' : null}</p>
+                                    <p style={{margin:'5%',color:'red'}}>{parText}</p>
                                     <button onClick={handleSubmit}>Change Password</button>
                                 </div>
                             </form>
