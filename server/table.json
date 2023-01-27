@@ -1,0 +1,17 @@
+{
+    "table_name": "users",
+    "fields": [
+      {
+      "name":"name",
+      "primary_key": true,
+      "type": "VARCHAR(50)",
+      "auto_increment": false
+      },
+      {
+        "name":"email",
+        "primary_key": false,
+        "type": "VARCHAR(50)",
+        "auto_increment": false
+        }
+    ]
+  }

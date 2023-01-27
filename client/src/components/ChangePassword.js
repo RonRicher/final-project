@@ -20,9 +20,11 @@ function ChangePassword() {
                 })
             });
             const data = await response.json();
+            console.log(data);
             if (data) {
                 console.log(data);
-               navigate('/');
+                setParText('Password changed successfully, now you can login');
+               setTimeout(() => navigate('/'), 5000)  ;
             }else{
                 setParText('We do not have this email in our system'); 
             }
