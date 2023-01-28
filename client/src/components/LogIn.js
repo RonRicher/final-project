@@ -10,6 +10,7 @@ function LogIn() {
     const [password, setPassword] = useState("");
     const [flag, setFlag] = useState(false);
     const [checkbox, setCheckbox] = useState(false);
+    const [wrong, setWrong] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -36,6 +37,8 @@ function LogIn() {
             Cookies.set("userName", username, { expires: 7 });
            } 
            navigate('/home');
+        }else{
+            setWrong(true);
         }
     };
     return (
@@ -77,7 +80,7 @@ function LogIn() {
                 </div>
                 <div className="box-root padding-top--24 flex-flex flex-direction--column" style={{ flexGrow: 1, zIndex: 9 }}>
                     <div className="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
-                        <h1><a href="http://blog.stackfindover.com/" rel="dofollow">Login</a></h1>
+                        <h1>Login</h1>
                     </div>
                     <div className="formbg-outer">
                         <div className="formbg">
@@ -115,6 +118,7 @@ function LogIn() {
                                         </label>
                                     </div>
                                     <div className="field padding-bottom--24">
+                                    <p style={{margin:'5%',color:'red'}}>{wrong?'One or more of the details you entered are incorrect' : null}</p>
                                         <button onClick={handleSubmit}>Continue</button>
                                     </div>
                                 </form>

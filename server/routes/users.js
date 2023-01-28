@@ -1,19 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const mysql = require('mysql');
 var nodemailer = require('nodemailer');
+const con = require('../connection.js');
+const createSQLQuery = require('../createSqlTable.js');
 
 
-const con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "z10mz10m",
-  database: "final_project"
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'elyasaf11@gmail.com',
+    pass: 'yfkpuiockfqgykvr'
+  }
 });
 
-con.connect(function (err) {
-  if (err) throw err;
-});
+
+
 
 router.post('/', function (req, res) {
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
@@ -35,14 +36,14 @@ router.post('/', function (req, res) {
     return;
   }
 
-  let sql = `select user_name from user_details where user_name = '${req.body.username}' OR email = '${req.body.email}' OR phone = '${req.body.phone}'`;
+  let sql = `select user_id from user_details where user_name = '${req.body.username}' OR email = '${req.body.email}' OR phone = '${req.body.phone}'`;
   con.query(sql, function (err, result) {
     if (err) throw err;
     if (result.length !== 0) {
       console.log("Username or email or phone-number already exists");
       return;
     } else {
-      sql = `INSERT INTO user_details(user_name,password,phone,email) VALUES ('${req.body.username}','${req.body.password}','${req.body.phone}','${req.body.email}')`;
+      insertIntoTable('user_details',['user_name','password','phone','email'],[req.body.username,req.body.password,req.body.phone,req.body.email]);
       con.query(sql, function (err, result) {
         if (err) throw err;
         console.log(result);
@@ -54,17 +55,30 @@ router.post('/', function (req, res) {
 
 
 
-
 router.post('/logIn', function (req, res) {
-  let sql = `select user_name from user_details where user_name = '${req.body.username}' and password = '${req.body.password}'`;
-  con.query(sql, function (err, result) {
-    if (err) throw err;
-    if (result.length > 0) {
-      res.send(true);
-    } else {
-      res.send(false);
-    }
-  });
+  const data = createSQLQuery({
+    distinct: false,
+    columns: ['user_name'],
+    tableName: "users_details",
+    where: [`user_name = '${req.body.username}`,`password = '${req.body.password}'`],
+    orderBy:[],
+    join:[]
+  })
+  if(data){
+    res.send(true);
+  }else{
+    res.send(false);
+  }
+});
+
+router.post('/changePassword', function (req, res) {
+ const data = updateTable('user_details',['password'],[req.body.password],[`email='${req.body.email}'`]);
+ console.log(data);
+if(data){
+  res.send(true);
+}else{
+  res.send(false);
+}
 });
 
 router.post('/password', function (req, res) {
@@ -72,13 +86,6 @@ router.post('/password', function (req, res) {
   con.query(sql, function (err, result) {
     if (err) throw err;
     if (result.length > 0) {
-      let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: 'elyasaf11@gmail.com',
-          pass: 'yfkpuiockfqgykvr'
-        }
-      });
 
       let mailOptions = {
         from: 'elyasaf11@gmail.com',
@@ -91,16 +98,14 @@ router.post('/password', function (req, res) {
         if (error) {
           console.log(error);
         } else {
-          console.log('Email sent: ' + info.response);
+          res.send(true);
         }
       });
     } else {
-      console.log(false);
+      res.send(false);
     }
   });
 });
-
-
 
 
 module.exports = router;
