@@ -19,7 +19,7 @@ function NavBar() {
         <header id="navBar">
             <div>
                 <NavLink to="/Home">Home</NavLink>
-                {true ? <NavLink to="/Login">LogIn</NavLink> :
+                {true ? <NavLink to="/">LogIn</NavLink> :
                     <NavLink onClick={logOut} id="logOutButton" to="/">
                         Logout
                     </NavLink>}
