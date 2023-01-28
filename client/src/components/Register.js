@@ -35,7 +35,7 @@ function Register(props) {
            setParText("Please enter a valid phone number");
             return;
         }
-        const response = await fetch(`http://localhost:8080/users`, {
+        const response = await fetch(`http://localhost:8080/users/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
