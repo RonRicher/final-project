@@ -62,7 +62,7 @@ const sqlActions = {
             resultCheck(result, err);
         });
     },
-    sqlSelect: (values) => {
+    sqlSelect: async (values, res) => {
         let sqlQuery = `SELECT ${values.distinct ? 'DISTINCT' : ''} ${values.columns.join(', ')} FROM ${values.tableName}`;
         if (values.join.length > 0) {
             sqlQuery += ` JOIN ${values.join.join(' JOIN ')}`;
@@ -80,10 +80,21 @@ const sqlActions = {
             sqlQuery += ` ORDER BY ${values.orderBy.join(', ')}`;
         }
 
-        console.log(sqlQuery);
-        con.query(sqlQuery, (err, result) => {
-            resultCheck(result, err);
+        console.log('sqlquery: ', sqlQuery);
+        let dataCheck;
+        const queryPromise = new Promise((resolve, reject) => {
+            const dbQuery = con.query(sqlQuery, (err, result) => {
+                dataCheck = resultCheck(result, err);
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(dataCheck);
+                }
+            });
         });
+        const result = await queryPromise;
+        console.log('result: ', result);
+        return result;
     },
     updateTable: async (tableName, fieldNames, values, conditions) => {
         let sqlQuery = `UPDATE ${tableName} SET `;
@@ -105,11 +116,15 @@ const sqlActions = {
         con.query(sqlQuery, (err, result) => {
             resultCheck(result, err);
         });
-    }
-}
+    },
 
-const resultCheck = (result,err) => {
-    if(err) return err;
+};
+
+const resultCheck = (result, err) => {
+    if (err) return err;
+    console.log('inner result', result);
     return result;
-}
+};
+
+
 module.exports = sqlActions;
