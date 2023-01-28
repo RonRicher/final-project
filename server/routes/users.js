@@ -43,14 +43,14 @@ router.post('/', function (req, res) {
       console.log("Username or email or phone-number already exists");
       return;
     } else {
-      insertIntoTable('user_details',['user_name','password','phone','email'],[req.body.username,req.body.password,req.body.phone,req.body.email]);
+      insertIntoTable('user_details', ['user_name', 'password', 'phone', 'email'], [req.body.username, req.body.password, req.body.phone, req.body.email]);
       con.query(sql, function (err, result) {
         if (err) throw err;
         console.log(result);
       });
       res.send(true);
     }
-  })
+  });
 });
 
 
@@ -59,26 +59,29 @@ router.post('/logIn', function (req, res) {
   const data = createSQLQuery({
     distinct: false,
     columns: ['user_name'],
-    tableName: "users_details",
-    where: [`user_name = '${req.body.username}`,`password = '${req.body.password}'`],
-    orderBy:[],
-    join:[]
-  })
-  if(data){
+    tableName: "user_details",
+    where: [`user_name =  '${req.body.username}' AND password = '${req.body.password}'`],
+    orderBy: [],
+    join: []
+
+  });
+  if (data) {
+    console.log('true');
     res.send(true);
-  }else{
+  } else {
+    console.log('false');
     res.send(false);
   }
 });
 
 router.post('/changePassword', function (req, res) {
- const data = updateTable('user_details',['password'],[req.body.password],[`email='${req.body.email}'`]);
- console.log(data);
-if(data){
-  res.send(true);
-}else{
-  res.send(false);
-}
+  const data = updateTable('user_details', ['password'], [req.body.password], [`email='${req.body.email}'`]);
+  console.log(data);
+  if (data) {
+    res.send(true);
+  } else {
+    res.send(false);
+  }
 });
 
 router.post('/password', function (req, res) {

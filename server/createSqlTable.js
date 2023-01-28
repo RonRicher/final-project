@@ -91,7 +91,8 @@ const con = require('./connection.js');
 
 
 function createSQLQuery(values) {
-    let sqlQuery = `SELECT ${values.distinct ? 'DISTINCT' : ''} ${values.columns.join(', ')} FROM ${values.tableName}`;
+    console.log(values.columns);
+    let sqlQuery = `SELECT${values.distinct ? 'DISTINCT' : ''} ${values.columns.join(', ')} FROM ${values.tableName}`;
     if (values.join.length > 0) {
         sqlQuery += ` JOIN ${values.join.join(' JOIN ')}`;
     }
@@ -109,14 +110,14 @@ function createSQLQuery(values) {
     }
 
     console.log(sqlQuery);
-    return con.query(sqlQuery, (err, result) => {
+    con.query(sqlQuery, (err, result) => {
         console.log(result);
         if (err) return err;
-       if (result.length > 0) {
-        return true;
-       }else{
-        return false;
-       }
+        if (result.length > 0) {
+            return true;
+        } else {
+            return false;
+        }
     });
 }
 
