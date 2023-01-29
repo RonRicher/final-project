@@ -14,7 +14,7 @@ function Hotels() {
     return ( 
         <div>
             {hotels?.map(hotel =>{
-            <p>{hotel.name}</p>
+            <p>Name:{hotel.name} location:{hotel.location}</p>
             })}
         </div>
      );
