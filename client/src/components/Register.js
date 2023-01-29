@@ -7,9 +7,10 @@ function Register(props) {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [parText, setParText] = useState("");
     const [exit, setExit] = useState(false);
-    const navigate = useNavigate();
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/;
     const usernameRegex = /^[a-zA-Z0-9._-]{3,15}$/;
@@ -39,10 +40,12 @@ function Register(props) {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                username: username,
+                userName: username,
                 password: password,
                 phone: phone,
-                email: email
+                email: email,
+                firstName: firstName,
+                lastName: lastName
             })
         });
         const data = await response.json();
@@ -74,6 +77,22 @@ function Register(props) {
                                     <input type="text" name="username" value={username}
                                         onChange={(e) => {
                                             setUsername(e.target.value);
+                                        }} />
+                                </div>
+                                <div className="field padding-bottom--24">
+                                    <div className="grid--50-50">
+                                        <label htmlFor="first">first name</label>
+                                    </div>
+                                    <input type="text" name="first" value={firstName}
+                                        onChange={(e) => {
+                                           setFirstName(e.target.value);
+                                        }} />
+                                </div>
+                                <div className="field padding-bottom--24">
+                                    <label htmlFor="email">last name</label>
+                                    <input type="text" name="email" value={lastName}
+                                        onChange={(e) => {
+                                            setLastName(e.target.value);
                                         }} />
                                 </div>
                                 <div className="field padding-bottom--24">
