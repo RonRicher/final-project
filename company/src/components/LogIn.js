@@ -36,7 +36,7 @@ function LogIn() {
             console.log('response: ', response);
             console.log(data);
             if (checkbox) {
-                Cookies.set("userName", username, { expires: 7 });
+                Cookies.set("companyName", companyName, { expires: 7 });
             }
             navigate('/home');
         } else {
@@ -91,10 +91,10 @@ function LogIn() {
                                 <form id="stripe-login">
                                     <div className="field padding-bottom--24">
                                         <label htmlFor="username">User-Name</label>
-                                        <input type="text" name="username" value={username}
+                                        <input type="text" name="username" value={companyName}
                                             onChange={(e) => {
-                                                setUsername(e.target.value);
-                                                console.log(username);
+                                                setCompanyName(e.target.value);
+                                                console.log(companyName);
                                             }} />
                                     </div>
                                     <div className="field padding-bottom--24">
