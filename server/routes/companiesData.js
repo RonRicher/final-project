@@ -19,6 +19,7 @@ router.get('/hotels', async function (req, res) {
     let arr = [];
     data.forEach(hotel => {
         arr.push({
+            id: hotel.hotel_id,
             name: hotel.hotel_name,
             location: hotel.location,
             roomsLeft: hotel.rooms_left,
@@ -41,14 +42,13 @@ router.get('/flights', async function (req, res) {
         join: []
     });
     let arr = [];
-    flight_id, airline, start_location, destination, flight_date, departure, arriving, price
-
     data.forEach(flight => {
         arr.push({
+            id: flight.flight_id,
             airline: flight.airline,
             startLocation: flight.start_location,
             destination: flight.destination,
-            flightDate: flight_date,
+            flightDate: flight.flight_date,
             departure: flight.departure,
             arriving: flight.arriving,
             price: flight.price
