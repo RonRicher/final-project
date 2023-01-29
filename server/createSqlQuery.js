@@ -16,6 +16,8 @@ const sqlActions = {
                 let fieldType = field.type;
                 let primaryKey = field.primary_key;
                 let autoIncrement = field.auto_increment;
+                let unique = field.unique;
+                let notNull = field.notNull;
                 sqlQuery += `${fieldName} ${fieldType}`;
                 if (primaryKey) {
                     sqlQuery += " PRIMARY KEY";
@@ -76,19 +78,40 @@ const sqlActions = {
         console.log('sqlquery: ', sqlQuery);
         return dataProvider(sqlQuery);
     },
-    updateTable: async (tableName, fieldNames, values, conditions) => {
-        let sqlQuery = `UPDATE ${tableName} SET `;
+    // updateTable: async (tableName, fieldNames, values, conditions) => {
+    //     let sqlQuery = `UPDATE ${tableName} SET `;
 
+    //     for (let i = 0; i < fieldNames.length; i++) {
+    //         sqlQuery += `${fieldNames[i]} = '${values[i]}',`;
+    //     }
+
+    //     sqlQuery = sqlQuery.slice(0, -1);
+    //     sqlQuery += " WHERE ";
+
+    //     conditions.forEach(condition => {
+    //         sqlQuery += `${condition} AND `;
+    //     });
+
+    //     sqlQuery = sqlQuery.slice(0, -4);
+
+    //     return dataProvider(sqlQuery);
+    // },
+    updateTable: async (tableName, joinTable, joinCondition, fieldNames, values, conditions) => {
+        let sqlQuery = `UPDATE ${tableName} `;
+
+        sqlQuery += ` JOIN ${joinTable} ON ${joinCondition}`;
         for (let i = 0; i < fieldNames.length; i++) {
+            if (i === 0) { sqlQuery += ` SET `; }
             sqlQuery += `${fieldNames[i]} = '${values[i]}',`;
         }
-
         sqlQuery = sqlQuery.slice(0, -1);
-        sqlQuery += " WHERE ";
+        for (let i = 0; i < conditions.length; i++) {
+            if (i === 0) {
+                sqlQuery += ' WHERE';
+            }
+            sqlQuery += ` ${conditions[i]} AND `;
 
-        conditions.forEach(condition => {
-            sqlQuery += `${condition} AND `;
-        });
+        };
 
         sqlQuery = sqlQuery.slice(0, -4);
 
@@ -118,7 +141,7 @@ const dataProvider = async (sqlQuery) => {
     const result = await queryPromise;
     console.log('result: ', result);
     return result;
-}
+};
 
 
 module.exports = sqlActions;

@@ -3,6 +3,8 @@ const router = express.Router();
 var nodemailer = require('nodemailer');
 const con = require('../connection.js');
 const createSQLQuery = require('../createSqlQuery.js');
+const { v4: uuidv4 } = require('uuid');
+
 
 
 let transporter = nodemailer.createTransport({
@@ -13,8 +15,8 @@ let transporter = nodemailer.createTransport({
   }
 });
 
-
 router.post('/register', async function (req, res) {
+
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/;
   const usernameRegex = /^[a-zA-Z0-9._-]{3,15}$/;
@@ -33,7 +35,7 @@ router.post('/register', async function (req, res) {
     console.log("Please enter a valid phone number");
     return;
   }
-
+  const userId = uuidv4();
   const data = await createSQLQuery.sqlSelect({
     distinct: false,
     columns: ['user_id'],
@@ -42,17 +44,28 @@ router.post('/register', async function (req, res) {
     orderBy: [],
     join: []
   });
-  if (data.length > 0){
+  if (data.length > 0) {
     console.log("Username or email or phone-number already exists");
     return;
   } else {
-   const data1 = await createSQLQuery.insertIntoTable('user_details', ['user_name', 'password', 'phone', 'email'], [req.body.username, req.body.password, req.body.phone, req.body.email]);
-   console.log(data1);
-   if(data1.affectedRows > 0){
-    res.send(true)
-   }else{
-    res.send(false);
-   }
+    const access = await createSQLQuery.insertIntoTable('user_access', ['user_id', 'password', 'permission'], [userId, req.body.password, 'client']);
+    console.log(access);
+    if (access.affectedRows > 0) {
+      const detailsInsert = await createSQLQuery.insertIntoTable('user_details', ['user_id', 'user_name', 'first_name', 'last_name', 'email', 'phone'], [userId, req.body.userName, req.body.firstName, req.body.lastName, , req.body.email, req.body.phone]);
+      if (access.affectedRows > 0) {
+        res.send(true);
+
+      } else {
+        res.send(false);
+
+        console.log(`user_details for ${userName} injected`);
+      }
+
+    }
+    else {
+      res.send(false);
+      console.log(`user_access for ${userName} injected`);
+    }
   }
 });
 
@@ -64,24 +77,24 @@ router.post('/logIn', async function (req, res) {
     tableName: "user_details",
     where: `user_name = '${req.body.username}' and password = '${req.body.password}'`,
     orderBy: [],
-    join: []
+    join: ['user_access on user_access.user_id = user_details.user_id']
   });
   console.log('data: ', data);
-  if(data.length > 0) {
+  if (data.length > 0) {
     console.log("Login successful");
     res.send(true);
-  }else{
+  } else {
     console.log("Login unsuccessful");
     res.send(false);
   }
 });
 
 router.post('/changePassword', async function (req, res) {
-  const data = await createSQLQuery.updateTable('user_details', ['password'], [req.body.password], [`email='${req.body.email}'`]);
+  const data = await createSQLQuery.updateTable('user_access', `user_details`, `user_access.user_id = user_details.user_id`, ['password'], [req.body.password], [`email='${req.body.email}'`]);
   console.log('data:' + data);
-  if(data.affectedRows > 0){
+  if (data.affectedRows > 0) {
     res.send(true);
-  }else{
+  } else {
     res.send(false);
   }
 });

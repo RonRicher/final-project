@@ -1,17 +1,85 @@
 {
-    "table_name": "users",
-    "fields": [
-      {
-      "name":"name",
+  "table_name": "deal_package",
+  "fields": [
+    {
+      "name": "deal_id",
       "primary_key": true,
-      "type": "VARCHAR(50)",
-      "auto_increment": false
-      },
-      {
-        "name":"email",
-        "primary_key": false,
-        "type": "VARCHAR(50)",
-        "auto_increment": false
-        }
-    ]
-  }
+      "type": "int",
+      "auto_increment": true,
+      "uniqe": true,
+      "notNull": true
+    },
+    {
+      "name": "company_id",
+      "primary_key": false,
+      "type": "int",
+      "auto_increment": false,
+      "uniqe": false,
+      "notNull": true
+    },
+    {
+      "name": "hotel_id",
+      "primary_key": false,
+      "type": "int",
+      "auto_increment": false,
+      "uniqe": false,
+      "notNull": true
+    },
+    {
+      "name": "location",
+      "primary_key": false,
+      "type": "VARCHAR(30)",
+      "auto_increment": false,
+      "uniqe": false,
+      "notNull": true
+    },
+    {
+      "name": "start_date",
+      "primary_key": false,
+      "type": "VARCHAR(20)",
+      "auto_increment": false,
+      "uniqe": false,
+      "notNull": true
+    },
+    {
+      "name": "end_date",
+      "primary_key": false,
+      "type": "VARCHAR(20)",
+      "auto_increment": false,
+      "uniqe": false,
+      "notNull": true
+    },
+    {
+      "name": "outbound_flight_id",
+      "primary_key": false,
+      "type": "int",
+      "auto_increment": false,
+      "uniqe": false,
+      "notNull": true
+    },
+    {
+      "name": "inbound_flight_id",
+      "primary_key": false,
+      "type": "int",
+      "auto_increment": false,
+      "uniqe": false,
+      "notNull": true
+    },
+    {
+      "name": "price",
+      "primary_key": false,
+      "type": "VARCHAR(20)",
+      "auto_increment": false,
+      "uniqe": false,
+      "notNull": true
+    },
+    {
+      "name": "car",
+      "primary_key": false,
+      "type": "BOOL",
+      "auto_increment": false,
+      "uniqe": false,
+      "notNull": true
+    }
+  ]
+}
