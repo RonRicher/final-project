@@ -10,8 +10,8 @@ function ChangePassword() {
         e.preventDefault();
         setParText("Loading...");
         const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/;
-        if(passwordRegex.test(password)){
-            const response = await fetch(`http://localhost:8080/users/changePassword`, {
+        if (passwordRegex.test(password)) {
+            const response = await fetch(`http://localhost:8080/companies/changePassword`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -24,16 +24,16 @@ function ChangePassword() {
             if (data) {
                 console.log(data);
                 setParText('Password changed successfully, now you can login');
-               setTimeout(() => navigate('/'), 5000)  ;
-            }else{
-                setParText('We do not have this email in our system'); 
+                setTimeout(() => navigate('/'), 5000);
+            } else {
+                setParText('We do not have this email in our system');
             }
-        }else{
+        } else {
             setParText('The password must contain at least 1 letter and 1 number');
         }
-    }
+    };
 
-    return ( 
+    return (
         <div className="login-root">
             <div className="box-root padding-top--24 flex-flex flex-direction--column" style={{ flexGrow: 1, zIndex: 9 }}>
                 <div className="formbg-outer">
@@ -41,7 +41,7 @@ function ChangePassword() {
                         <div className="formbg-inner padding-horizontal--48">
                             <span className="padding-bottom--15">Enter your new password</span>
                             <form id="stripe-login">
-                            <div className="field padding-bottom--24">
+                                <div className="field padding-bottom--24">
                                     <label htmlFor="email">Email</label>
                                     <input type="email" name="email" value={email}
                                         onChange={(e) => {
@@ -57,7 +57,7 @@ function ChangePassword() {
                                         }} />
                                 </div>
                                 <div className="field padding-bottom--24">
-                                    <p style={{margin:'5%',color:'red'}}>{parText}</p>
+                                    <p style={{ margin: '5%', color: 'red' }}>{parText}</p>
                                     <button onClick={handleSubmit}>Change Password</button>
                                 </div>
                             </form>
@@ -66,7 +66,7 @@ function ChangePassword() {
                 </div>
             </div>
         </div>
-     );
+    );
 }
 
 export default ChangePassword;

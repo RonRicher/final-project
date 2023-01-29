@@ -7,7 +7,7 @@ const createSQLQuery = require('../createSqlQuery.js');
 
 
 
-router.post('/createDeal', async function (req, res) {
+router.post('/', async function (req, res) {
     const { companyId, hotelId, location, startDate,
         endDate, outboundFlightId, inboundFlightId,
         price, car, description } = req.body;
