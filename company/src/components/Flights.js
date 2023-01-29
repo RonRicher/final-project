@@ -14,7 +14,7 @@ function Flights() {
     return (
         <div>
             {flights.map(flight => {
-                return <p>{flight.name}</p>;
+                return <p>Airline:{flight.airline} Flight-Date:{flight.flightDate} Start-Location:{flight.startLocation} Destination:{flight.destination} Departure-Time:{flight.departure} Arriving-Time:{flight.arriving} Price:{flight.price}</p>;
             })}
         </div>
     );
