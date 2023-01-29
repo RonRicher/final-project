@@ -6,6 +6,7 @@ var cors = require('cors');
 
 var usersRouter = require('./routes/users');
 var companiesRouter = require('./routes/company');
+var companiesDataRouter = require('./routes/companiesData');
 var app = express();
 var nodemailer = require('nodemailer');
 
@@ -19,4 +20,5 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/users', usersRouter);
 app.use('/companies', companiesRouter);
+app.use('/companies/data', companiesDataRouter);
 module.exports = app;

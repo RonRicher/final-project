@@ -77,7 +77,7 @@ router.post('/register', async function (req, res) {
 router.post('/logIn', async function (req, res) {
     const data = await createSQLQuery.sqlSelect({
         distinct: false,
-        columns: ['company_name'],
+        columns: ['user_access.permission'],
         tableName: "company_details",
         where: `company_name = '${req.body.companyName}' and password = '${req.body.password}'`,
         orderBy: [],
@@ -85,8 +85,13 @@ router.post('/logIn', async function (req, res) {
     });
     console.log('data: ', data);
     if (data.length > 0) {
-        console.log("Login successful");
-        res.send(true);
+        if (data[0].permission === 'pending') {
+            console.log('you dont have permission yet');
+        } else {
+            console.log("Login successful");
+            res.send(true);
+        }
+
     } else {
         console.log("Login unsuccessful");
         res.send(false);
