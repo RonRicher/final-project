@@ -1,23 +1,23 @@
-import {useEffect} from 'react';
+import { useEffect, useState } from 'react';
 
-function Hotels() {
+function Flights() {
     const [flights, setFlights] = useState([]);
     useEffect(() => {
-       
-    },[])
-    async function getHotels() {
+        getFlights();
+    }, []);
+    async function getFlights() {
         const response = await fetch(`http://localhost:8080/companies/data/flights`);
         const data = await response.json();
         setFlights(data);
     }
 
-    return ( 
+    return (
         <div>
-            {flights.map(flight =>{
-            <p>{flight.name}</p>
+            {flights.map(flight => {
+                return <p>{flight.name}</p>;
             })}
         </div>
-     );
+    );
 }
 
-export default Hotels;
+export default Flights;

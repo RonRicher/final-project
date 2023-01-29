@@ -17,6 +17,7 @@ router.get('/hotels', async function (req, res) {
         join: []
     });
     console.log(data);
+    res.send(JSON.stringify(data));
 
 });
 module.exports = router;
