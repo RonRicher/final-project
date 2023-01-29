@@ -6,7 +6,7 @@ import Register from "./Register";
 import "../css/LogIn.css";
 
 function LogIn() {
-    const [username, setUsername] = useState("");
+    const [companyName, setCompanyName] = useState("");
     const [password, setPassword] = useState("");
     const [flag, setFlag] = useState(false);
     const [checkbox, setCheckbox] = useState(false);
@@ -26,7 +26,7 @@ function LogIn() {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                username: username,
+                companyName: companyName,
                 password: password
             })
         });
