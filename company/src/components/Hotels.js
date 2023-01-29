@@ -16,7 +16,7 @@ function Hotels() {
     return (
         <div>
             {hotels?.map(hotel => {
-                return <p>{hotel.hotel_name}</p>;
+                return <p> Name:{hotel.name} Location:{hotel.location} Rooms-left:{hotel.roomsLeft} Price:{hotel.price}</p>;
             })}
         </div>
     );
