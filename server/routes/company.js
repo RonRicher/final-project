@@ -19,11 +19,11 @@ router.post('/register', async function (req, res) {
 
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/;
-    const usernameRegex = /^[a-zA-Z0-9._-]{3,15}$/;
+    const companyNameRegex = /^[a-zA-Z0-9._-]{3,15}$/;
     const phoneRegex = /^(?:\+\d{1,3}|0\d{1,3}|\d{1,4})[\s.-]?\d{3}[\s.-]?\d{4}$/;
 
-    if (!usernameRegex.test(req.body.username)) {
-        console.log("Please enter a valid username");
+    if (!companyNameRegex.test(req.body.companyName)) {
+        console.log("Please enter a valid companyName");
         return;
     } else if (!passwordRegex.test(req.body.password)) {
         console.log("Please enter a valid password");
@@ -39,8 +39,8 @@ router.post('/register', async function (req, res) {
     const data = await createSQLQuery.sqlSelect({
         distinct: false,
         columns: ['user_id'],
-        tableName: "user_details",
-        where: `user_name = '${req.body.username}' OR email = '${req.body.email}' OR phone = '${req.body.phone}'`,
+        tableName: "company_details",
+        where: `company_name = '${req.body.companyName}' OR email = '${req.body.email}' OR phone = '${req.body.phone}'`,
         orderBy: [],
         join: []
     });
@@ -48,23 +48,27 @@ router.post('/register', async function (req, res) {
         console.log("Username or email or phone-number already exists");
         return;
     } else {
-        const access = await createSQLQuery.insertIntoTable('user_access', ['user_id', 'password', 'permission'], [userId, req.body.password, 'client']);
+        const access = await createSQLQuery.insertIntoTable('user_access', ['user_id', 'password', 'permission'], [userId, req.body.password, 'pending']);
         console.log(access);
         if (access.affectedRows > 0) {
-            const detailsInsert = await createSQLQuery.insertIntoTable('user_details', ['user_id', 'user_name', 'first_name', 'last_name', 'email', 'phone'], [userId, req.body.userName, req.body.firstName, req.body.lastName, , req.body.email, req.body.phone]);
+            const detailsInsert = await createSQLQuery.insertIntoTable('company_details', ['user_id', 'company_name', 'location', 'email', 'phone'], [userId, req.body.companyName, req.body.location, req.body.email, req.body.phone]);
             if (access.affectedRows > 0) {
-                res.send(true);
-
+                const requestTable = await createSQLQuery.insertIntoTable('company_request', ['company_name, company_email, company_phone, deleted'], [req.body.companyName, req.body.email, req.body.phone, '0']);
+                if (requestTable.affectedRows > 0) {
+                    res.send(true);
+                }
+                else {
+                    res.send(false);
+                    console.log(`company_request for ${companyName} injected`);
+                }
             } else {
                 res.send(false);
-
-                console.log(`user_details for ${userName} injected`);
+                console.log(`company_details for ${companyName} injected`);
             }
-
         }
         else {
             res.send(false);
-            console.log(`user_access for ${userName} injected`);
+            console.log(`user_access for ${companyName} injected`);
         }
     }
 });
@@ -73,11 +77,11 @@ router.post('/register', async function (req, res) {
 router.post('/logIn', async function (req, res) {
     const data = await createSQLQuery.sqlSelect({
         distinct: false,
-        columns: ['user_name'],
-        tableName: "user_details",
-        where: `user_name = '${req.body.username}' and password = '${req.body.password}'`,
+        columns: ['company_name'],
+        tableName: "company_details",
+        where: `company_name = '${req.body.companyName}' and password = '${req.body.password}'`,
         orderBy: [],
-        join: []
+        join: ['user_access on user_access.user_id = company_details.user_id']
     });
     console.log('data: ', data);
     if (data.length > 0) {
@@ -90,7 +94,7 @@ router.post('/logIn', async function (req, res) {
 });
 
 router.post('/changePassword', async function (req, res) {
-    const data = await createSQLQuery.updateTable('user_access', ['password'], [req.body.password], [`email='${req.body.email}'`]);
+    const data = await createSQLQuery.updateTable('user_access', `company_details`, `user_access.user_id = company_details.user_id`, ['password'], [req.body.password], [`email='${req.body.email}'`]);
     console.log('data:' + data);
     if (data.affectedRows > 0) {
         res.send(true);
@@ -101,7 +105,7 @@ router.post('/changePassword', async function (req, res) {
 
 
 router.post('/password', function (req, res) {
-    let sql = `select user_name from user_details where email = '${req.body.email}'`;
+    let sql = `select company_name from company_details where email = '${req.body.email}'`;
     con.query(sql, function (err, result) {
         if (err) throw err;
         if (result.length > 0) {

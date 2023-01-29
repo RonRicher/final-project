@@ -51,20 +51,20 @@ router.post('/register', async function (req, res) {
     const access = await createSQLQuery.insertIntoTable('user_access', ['user_id', 'password', 'permission'], [userId, req.body.password, 'client']);
     console.log(access);
     if (access.affectedRows > 0) {
-      const detailsInsert = await createSQLQuery.insertIntoTable('user_details', ['user_id', 'user_name', 'first_name', 'last_name', 'email', 'phone'], [userId, req.body.userName, req.body.firstName, req.body.lastName, , req.body.email, req.body.phone]);
+      const detailsInsert = await createSQLQuery.insertIntoTable('user_details', ['user_id', 'user_name', 'first_name', 'last_name', 'email', 'phone'], [userId, req.body.username, req.body.firstName, req.body.lastName, , req.body.email, req.body.phone]);
       if (access.affectedRows > 0) {
         res.send(true);
 
       } else {
         res.send(false);
 
-        console.log(`user_details for ${userName} injected`);
+        console.log(`user_details for ${username} injected`);
       }
 
     }
     else {
       res.send(false);
-      console.log(`user_access for ${userName} injected`);
+      console.log(`user_access for ${username} injected`);
     }
   }
 });
