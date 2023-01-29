@@ -34,11 +34,7 @@ const sqlActions = {
 
             sqlQuery = sqlQuery.slice(0, -1);
             sqlQuery += ")";
-            console.log(sqlQuery);
-            con.query(sqlQuery, (err, result) => {
-                data = result;
-                console.log(data);
-            });
+            return dataProvider(sqlQuery);
         });
     },
     insertIntoTable: (tableName, fieldNames, values) => {
@@ -57,14 +53,9 @@ const sqlActions = {
 
         sqlQuery = sqlQuery.slice(0, -1);
         sqlQuery += ")";
-
-        console.log(sqlQuery);
-        con.query(sqlQuery, (err, result) => {
-            data = result;
-            console.log(data);
-        });
+        return dataProvider(sqlQuery);
     },
-    sqlSelect: (values) => {
+    sqlSelect: async (values, res) => {
         let sqlQuery = `SELECT ${values.distinct ? 'DISTINCT' : ''} ${values.columns.join(', ')} FROM ${values.tableName}`;
         if (values.join.length > 0) {
             sqlQuery += ` JOIN ${values.join.join(' JOIN ')}`;
@@ -82,13 +73,10 @@ const sqlActions = {
             sqlQuery += ` ORDER BY ${values.orderBy.join(', ')}`;
         }
 
-        console.log(sqlQuery);
-        con.query(sqlQuery, (err, result) => {
-            data = result;
-            console.log(data);
-        });
+        console.log('sqlquery: ', sqlQuery);
+        return dataProvider(sqlQuery);
     },
-    updateTable:  (tableName, fieldNames, values, conditions) => {
+    updateTable: async (tableName, fieldNames, values, conditions) => {
         let sqlQuery = `UPDATE ${tableName} SET `;
 
         for (let i = 0; i < fieldNames.length; i++) {
@@ -104,12 +92,33 @@ const sqlActions = {
 
         sqlQuery = sqlQuery.slice(0, -4);
 
-        let data;
-        con.query(sqlQuery, (err, result) => {
-            data = result;
-            console.log(data);
+        return dataProvider(sqlQuery);
+    },
+
+};
+
+const resultCheck = (result, err) => {
+    if (err) return err;
+    console.log('inner result', result);
+    return result;
+};
+
+const dataProvider = async (sqlQuery) => {
+    let dataCheck;
+    const queryPromise = new Promise((resolve, reject) => {
+        const dbQuery = con.query(sqlQuery, (err, result) => {
+            dataCheck = resultCheck(result, err);
+            if (err) {
+                reject(err);
+            } else {
+                resolve(dataCheck);
+            }
         });
-    } 
+    });
+    const result = await queryPromise;
+    console.log('result: ', result);
+    return result;
 }
+
 
 module.exports = sqlActions;

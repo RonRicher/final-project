@@ -15,9 +15,9 @@ function LogIn() {
 
     useEffect(() => {
         if (Cookies.get('userName')) {
-            navigate('/home')
+            navigate('/home');
         }
-    })
+    });
 
 
     const handleSubmit = async (e) => {
@@ -31,13 +31,15 @@ function LogIn() {
             })
         });
         const data = await response.json();
+        console.log(data);
         if (data) {
+            console.log('response: ', response);
             console.log(data);
-           if(checkbox){
-            Cookies.set("userName", username, { expires: 7 });
-           } 
-           navigate('/home');
-        }else{
+            if (checkbox) {
+                Cookies.set("userName", username, { expires: 7 });
+            }
+            navigate('/home');
+        } else {
             setWrong(true);
         }
     };
@@ -111,14 +113,14 @@ function LogIn() {
                                     <div className="field field-checkbox padding-bottom--24 flex-flex align-center">
                                         <label htmlFor="checkbox">
                                             <input type="checkbox" name="checkbox" onClick={(e) => {
-                                               setCheckbox(e.target.checked);
+                                                setCheckbox(e.target.checked);
                                             }
                                                 // do whatever you want with isChecked value
                                             } /> Stay signed in for a week
                                         </label>
                                     </div>
                                     <div className="field padding-bottom--24">
-                                    <p style={{margin:'5%',color:'red'}}>{wrong?'One or more of the details you entered are incorrect' : null}</p>
+                                        <p style={{ margin: '5%', color: 'red' }}>{wrong ? 'One or more of the details you entered are incorrect' : null}</p>
                                         <button onClick={handleSubmit}>Continue</button>
                                     </div>
                                 </form>

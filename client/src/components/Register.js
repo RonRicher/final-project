@@ -14,25 +14,25 @@ function Register(props) {
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/;
     const usernameRegex = /^[a-zA-Z0-9._-]{3,15}$/;
     const phoneRegex = /^(?:\+\d{1,3}|0\d{1,3}|\d{1,4})[\s.-]?\d{3}[\s.-]?\d{4}$/;
-    
 
-    useEffect(()=>{
+
+    useEffect(() => {
         setParText("");
-    },[exit]);
-    
+    }, [exit]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!usernameRegex.test(username)) {
-          setParText("Please enter a valid username");
+            setParText("Please enter a valid username");
             return;
-        }else if (!passwordRegex.test(password)) {
-           setParText("Please enter a valid password");
+        } else if (!passwordRegex.test(password)) {
+            setParText("Please enter a valid password");
             return;
-        }else if(!emailRegex.test(email)) {
-           setParText("Please enter a valid email address");
+        } else if (!emailRegex.test(email)) {
+            setParText("Please enter a valid email address");
             return;
-        }else if(!phoneRegex.test(phone)) {
-           setParText("Please enter a valid phone number");
+        } else if (!phoneRegex.test(phone)) {
+            setParText("Please enter a valid phone number");
             return;
         }
         const response = await fetch(`http://localhost:8080/users/register`, {
@@ -47,12 +47,14 @@ function Register(props) {
         });
         const data = await response.json();
         if (data) {
-            props.setFlag(false);
-            setEmail('');
-            setPassword('');
-            setUsername('');
-            setPhone('');
-            setParText("");
+            setParText('You have successfully registered');
+            setTimeout(() => {
+                props.setFlag(false);
+                setEmail('');
+                setPassword('');
+                setUsername('');
+                setPhone('');
+            }, 2000)
         }
     };
     return (
@@ -101,7 +103,7 @@ function Register(props) {
                                         }} />
                                 </div>
                                 <div className="field padding-bottom--24">
-                                <p style={{margin:'5%',color:'red'}}>{parText}</p>
+                                    <p style={{ margin: '5%', color: 'red' }}>{parText}</p>
                                     <button onClick={handleSubmit}>Register</button>
                                 </div>
                             </form>

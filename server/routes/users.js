@@ -14,9 +14,7 @@ let transporter = nodemailer.createTransport({
 });
 
 
-
-
-router.post('/register', function (req, res) {
+router.post('/register', async function (req, res) {
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/;
   const usernameRegex = /^[a-zA-Z0-9._-]{3,15}$/;
@@ -36,49 +34,56 @@ router.post('/register', function (req, res) {
     return;
   }
 
-  const data = createSQLQuery.sqlSelect({
+  const data = await createSQLQuery.sqlSelect({
     distinct: false,
     columns: ['user_id'],
     tableName: "user_details",
     where: `user_name = '${req.body.username}' OR email = '${req.body.email}' OR phone = '${req.body.phone}'`,
-    orderBy:[],
-    join:[]
-  })
-    if (data) {
-      console.log("Username or email or phone-number already exists");
-      return;
-    } else {
-      createSQLQuery.insertIntoTable('user_details',['user_name','password','phone','email'],[req.body.username,req.body.password,req.body.phone,req.body.email]);
-      res.send(true);
-    }
+    orderBy: [],
+    join: []
+  });
+  if (data.length > 0){
+    console.log("Username or email or phone-number already exists");
+    return;
+  } else {
+   const data1 = await createSQLQuery.insertIntoTable('user_details', ['user_name', 'password', 'phone', 'email'], [req.body.username, req.body.password, req.body.phone, req.body.email]);
+   console.log(data1);
+   if(data1.affectedRows > 0){
+    res.send(true)
+   }else{
+    res.send(false);
+   }
+  }
 });
 
 
 router.post('/logIn', async function (req, res) {
-  const data = createSQLQuery.sqlSelect({
+  const data = await createSQLQuery.sqlSelect({
     distinct: false,
     columns: ['user_name'],
     tableName: "user_details",
     where: `user_name = '${req.body.username}' and password = '${req.body.password}'`,
-    orderBy:[],
-    join:[]
-  })
-  console.log(data);
-  // if(data){
-  //   res.send(true);
-  // }else{
-  //   res.send(false);
-  // }
+    orderBy: [],
+    join: []
+  });
+  console.log('data: ', data);
+  if(data.length > 0) {
+    console.log("Login successful");
+    res.send(true);
+  }else{
+    console.log("Login unsuccessful");
+    res.send(false);
+  }
 });
 
-router.post('/changePassword', function (req, res) {
- const data = createSQLQuery.updateTable('user_details',['password'],[req.body.password],[`email='${req.body.email}'`]);
- console.log(data);
-// if(data){
-//   res.send(true);
-// }else{
-//   res.send(false);
-// }
+router.post('/changePassword', async function (req, res) {
+  const data = await createSQLQuery.updateTable('user_details', ['password'], [req.body.password], [`email='${req.body.email}'`]);
+  console.log('data:' + data);
+  if(data.affectedRows > 0){
+    res.send(true);
+  }else{
+    res.send(false);
+  }
 });
 
 
@@ -87,7 +92,6 @@ router.post('/password', function (req, res) {
   con.query(sql, function (err, result) {
     if (err) throw err;
     if (result.length > 0) {
-
       let mailOptions = {
         from: 'elyasaf11@gmail.com',
         to: `${req.body.email}`,
