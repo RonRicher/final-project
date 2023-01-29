@@ -23,7 +23,7 @@ function Register(props) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!usernameRegex.test(companyName)) {
-            setParText("Please enter a valid username");
+            setParText("Please enter a valid company name");
             return;
         } else if (!passwordRegex.test(password)) {
             setParText("Please enter a valid password");

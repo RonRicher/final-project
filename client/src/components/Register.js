@@ -40,7 +40,7 @@ function Register(props) {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                userName: username,
+                username: username,
                 password: password,
                 phone: phone,
                 email: email,
