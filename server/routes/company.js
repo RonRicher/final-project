@@ -4,7 +4,8 @@ var nodemailer = require('nodemailer');
 const con = require('../connection.js');
 const createSQLQuery = require('../createSqlQuery.js');
 const { v4: uuidv4 } = require('uuid');
-
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 
 let transporter = nodemailer.createTransport({
@@ -36,62 +37,72 @@ router.post('/register', async function (req, res) {
         return;
     }
     const userId = uuidv4();
-    const data = await createSQLQuery.sqlSelect({
-        distinct: false,
-        columns: ['user_id'],
-        tableName: "company_details",
-        where: `company_name = '${req.body.companyName}' OR email = '${req.body.email}' OR phone = '${req.body.phone}'`,
-        orderBy: [],
-        join: []
-    });
-    if (data.length > 0) {
-        console.log("Username or email or phone-number already exists");
-        return;
-    } else {
-        const access = await createSQLQuery.insertIntoTable('user_access', ['user_id', 'password', 'permission'], [userId, req.body.password, 'pending']);
-        console.log(access);
-        if (access.affectedRows > 0) {
-            const detailsInsert = await createSQLQuery.insertIntoTable('company_details', ['user_id', 'company_name', 'location', 'email', 'phone'], [userId, req.body.companyName, req.body.location, req.body.email, req.body.phone]);
+    bcrypt.hash(req.body.password, saltRounds, async function (err, hash) {
+        const data = await createSQLQuery.sqlSelect({
+            distinct: false,
+            columns: ['user_id'],
+            tableName: "company_details",
+            where: `company_name = '${req.body.companyName}' OR email = '${req.body.email}' OR phone = '${req.body.phone}'`,
+            orderBy: [],
+            join: []
+        });
+        if (data.length > 0) {
+            console.log("Username or email or phone-number already exists");
+            return;
+        } else {
+            const access = await createSQLQuery.insertIntoTable('user_access', ['user_id', 'password', 'permission'], [userId, hash, 'pending']);
+            console.log(access);
             if (access.affectedRows > 0) {
-                const requestTable = await createSQLQuery.insertIntoTable('company_request', ['company_name, company_email, company_phone, deleted'], [req.body.companyName, req.body.email, req.body.phone, '0']);
-                if (requestTable.affectedRows > 0) {
-                    res.send(true);
-                }
-                else {
+                const detailsInsert = await createSQLQuery.insertIntoTable('company_details', ['user_id', 'company_name', 'location', 'email', 'phone'], [userId, req.body.companyName, req.body.location, req.body.email, req.body.phone]);
+                if (access.affectedRows > 0) {
+                    const requestTable = await createSQLQuery.insertIntoTable('company_request', ['company_name, company_email, company_phone, deleted'], [req.body.companyName, req.body.email, req.body.phone, '0']);
+                    if (requestTable.affectedRows > 0) {
+                        res.send(true);
+                    }
+                    else {
+                        res.send(false);
+                        console.log(`company_request for ${companyName} injected`);
+                    }
+                } else {
                     res.send(false);
-                    console.log(`company_request for ${companyName} injected`);
+                    console.log(`company_details for ${companyName} injected`);
                 }
-            } else {
+            }
+            else {
                 res.send(false);
-                console.log(`company_details for ${companyName} injected`);
+                console.log(`user_access for ${companyName} injected`);
             }
         }
-        else {
-            res.send(false);
-            console.log(`user_access for ${companyName} injected`);
-        }
-    }
+    });
 });
 
 
 router.post('/logIn', async function (req, res) {
     const data = await createSQLQuery.sqlSelect({
         distinct: false,
-        columns: ['user_access.permission'],
+        columns: ['user_access.permission', 'user_access.password'],
         tableName: "company_details",
-        where: `company_name = '${req.body.companyName}' and password = '${req.body.password}'`,
+        where: `company_name = '${req.body.companyName}'`,
         orderBy: [],
         join: ['user_access on user_access.user_id = company_details.user_id']
     });
     console.log('data: ', data);
     if (data.length > 0) {
-        if (data[0].permission === 'pending') {
-            console.log('you dont have permission yet');
-        } else {
-            console.log("Login successful");
-            res.send(true);
-        }
-
+        console.log('data');
+        bcrypt.compare(req.body.password, data[0].password, function (err, result) {
+            if (result) {
+                if (data[0].permission === 'pending') {
+                    console.log('you dont have permission yet');
+                } else {
+                    console.log("Login successful");
+                    res.send(true);
+                }
+            }
+            else {
+                console.log('data false');
+                res.send(false);
+            }
+        });
     } else {
         console.log("Login unsuccessful");
         res.send(false);
@@ -99,13 +110,15 @@ router.post('/logIn', async function (req, res) {
 });
 
 router.post('/changePassword', async function (req, res) {
-    const data = await createSQLQuery.updateTable('user_access', `company_details`, `user_access.user_id = company_details.user_id`, ['password'], [req.body.password], [`email='${req.body.email}'`]);
-    console.log('data:' + data);
-    if (data.affectedRows > 0) {
-        res.send(true);
-    } else {
-        res.send(false);
-    }
+    bcrypt.hash(req.body.password, saltRounds, async function (err, hash) {
+        const data = await createSQLQuery.updateTable('user_access', `company_details`, `user_access.user_id = company_details.user_id`, ['password'], [hash], [`email='${req.body.email}'`]);
+
+        if (data.affectedRows > 0) {
+            res.send(true);
+        } else {
+            res.send(false);
+        }
+    });
 });
 
 

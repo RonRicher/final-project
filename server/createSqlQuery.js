@@ -78,24 +78,7 @@ const sqlActions = {
         console.log('sqlquery: ', sqlQuery);
         return dataProvider(sqlQuery);
     },
-    // updateTable: async (tableName, fieldNames, values, conditions) => {
-    //     let sqlQuery = `UPDATE ${tableName} SET `;
 
-    //     for (let i = 0; i < fieldNames.length; i++) {
-    //         sqlQuery += `${fieldNames[i]} = '${values[i]}',`;
-    //     }
-
-    //     sqlQuery = sqlQuery.slice(0, -1);
-    //     sqlQuery += " WHERE ";
-
-    //     conditions.forEach(condition => {
-    //         sqlQuery += `${condition} AND `;
-    //     });
-
-    //     sqlQuery = sqlQuery.slice(0, -4);
-
-    //     return dataProvider(sqlQuery);
-    // },
     updateTable: async (tableName, joinTable, joinCondition, fieldNames, values, conditions) => {
         let sqlQuery = `UPDATE ${tableName} `;
 

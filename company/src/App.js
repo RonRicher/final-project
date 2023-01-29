@@ -10,6 +10,7 @@ import ChangePassword from './components/ChangePassword';
 import Hotels from './components/Hotels';
 import Flights from './components/Flights';
 import CreateDeal from './components/createDeal';
+import Admin from './components/Admin';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
       <Route path="/hotels" element={<Hotels />}></Route>
       <Route path="/flights" element={<Flights />}></Route>
       <Route path="/deal" element={<CreateDeal />}></Route>
+      <Route path="/admin" element={<Admin />}></Route>
     </Routes>
   );
 }
