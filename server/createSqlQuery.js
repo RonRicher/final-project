@@ -36,7 +36,8 @@ const sqlActions = {
             sqlQuery += ")";
             console.log(sqlQuery);
             con.query(sqlQuery, (err, result) => {
-                resultCheck(result, err);
+                data = result;
+                console.log(data);
             });
         });
     },
@@ -59,7 +60,8 @@ const sqlActions = {
 
         console.log(sqlQuery);
         con.query(sqlQuery, (err, result) => {
-            resultCheck(result, err);
+            data = result;
+            console.log(data);
         });
     },
     sqlSelect: (values) => {
@@ -82,10 +84,11 @@ const sqlActions = {
 
         console.log(sqlQuery);
         con.query(sqlQuery, (err, result) => {
-            resultCheck(result, err);
+            data = result;
+            console.log(data);
         });
     },
-    updateTable: async (tableName, fieldNames, values, conditions) => {
+    updateTable:  (tableName, fieldNames, values, conditions) => {
         let sqlQuery = `UPDATE ${tableName} SET `;
 
         for (let i = 0; i < fieldNames.length; i++) {
@@ -101,15 +104,12 @@ const sqlActions = {
 
         sqlQuery = sqlQuery.slice(0, -4);
 
-
+        let data;
         con.query(sqlQuery, (err, result) => {
-            resultCheck(result, err);
+            data = result;
+            console.log(data);
         });
-    }
+    } 
 }
 
-const resultCheck = (result,err) => {
-    if(err) return err;
-    return result;
-}
 module.exports = sqlActions;

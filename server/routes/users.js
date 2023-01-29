@@ -72,7 +72,8 @@ router.post('/logIn', async function (req, res) {
 });
 
 router.post('/changePassword', function (req, res) {
- createSQLQuery.updateTable('user_details',['password'],[req.body.password],[`email='${req.body.email}'`]);
+ const data = createSQLQuery.updateTable('user_details',['password'],[req.body.password],[`email='${req.body.email}'`]);
+ console.log(data);
 // if(data){
 //   res.send(true);
 // }else{
