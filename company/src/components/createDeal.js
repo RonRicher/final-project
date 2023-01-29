@@ -1,12 +1,11 @@
 import { useState } from "react";
 
-
 function CreateDeal() {
     const [companyId, setCompanyId] = useState("");
     const [description, setDescription] = useState("");
     const [car, setCar] = useState(false);
     const [price, setPrice] = useState("");
-    const [location,setLocation] = useState("");
+    const [location, setLocation] = useState("");
     const [endDate, setEndDate] = useState("");
     const [startDate, setStartDate] = useState("");
     const [inbound, setInbound] = useState("");
@@ -40,7 +39,7 @@ function CreateDeal() {
                 outboundFlightId: outbound,
                 inboundFlightId: inbound,
                 price: price,
-                car: car?1:0,
+                car: car ? 1 : 0,
                 description: description
             })
         });
@@ -50,16 +49,12 @@ function CreateDeal() {
             setTimeout(() => {
             }, 2000);
         }
-        
     };
     return (
         <div className="login-root">
             <div className="box-root padding-top--24 flex-flex flex-direction--column" style={{ flexGrow: 1, zIndex: 9 }}>
                 <div className="formbg-outer">
                     <div className="formbg">
-                        <button id="exit" onClick={() => {
-                            setExit(true);
-                        }}>X</button>
                         <div className="formbg-inner padding-horizontal--48">
                             <span className="padding-bottom--15">Create New Deal</span>
                             <form id="stripe-login">
@@ -76,7 +71,7 @@ function CreateDeal() {
                                     </div>
                                     <input type="text" name="location" value={location}
                                         onChange={(e) => {
-                                          setLocation(e.target.value);
+                                            setLocation(e.target.value);
                                         }} />
                                 </div>
                                 <div className="field padding-bottom--24">
@@ -102,19 +97,12 @@ function CreateDeal() {
                                             setInbound(e.target.value);
                                         }} />
                                 </div>
-                                <div className="field padding-bottom--24">
-                                    <label htmlFor="startDate">start-date</label>
-                                    <input type="text" name="startDate" value={startDate}
-                                        onChange={(e) => {
-                                            setStartDate(e.target.value);
-                                        }} />
-                                </div>
-                                <div className="field padding-bottom--24">
-                                    <label htmlFor="endDate">end-date</label>
-                                    <input type="text" name="endDate" value={endDate}
-                                        onChange={(e) => {
-                                            setEndDate(e.target.value);
-                                        }} />
+                                <div>
+                                    <label>Start Date:</label>
+                                    <input type="date" onChange={(e) => setStartDate(e.target.value)} />
+
+                                    <label>End Date:</label>
+                                    <input type="date" onChange={(e) => setEndDate(e.target.value)} />
                                 </div>
                                 <div className="field padding-bottom--24">
                                     <label htmlFor="price">price</label>
