@@ -8,6 +8,7 @@ var usersRouter = require('./routes/users');
 var companiesRouter = require('./routes/company');
 var companiesDataRouter = require('./routes/companiesData');
 var companiesDealsRouter = require('./routes/companiesDeals');
+var usersDataRouter = require('./routes/usersData');
 var app = express();
 var nodemailer = require('nodemailer');
 
@@ -23,4 +24,5 @@ app.use('/users', usersRouter);
 app.use('/companies', companiesRouter);
 app.use('/companies/data', companiesDataRouter);
 app.use('/companies/deals', companiesDealsRouter);
+app.use('/users/data', usersDataRouter);
 module.exports = app;
