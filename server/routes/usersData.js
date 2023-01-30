@@ -39,13 +39,28 @@ router.get('/dealInfo', async function (req, res) {
     const { dealId } = req.query;
     const data = await createSQLQuery.sqlSelect({
         distinct: false,
-        columns: ['flight.airline', 'flight.start_location', 'flight.destination', 'flight.flight_date', 'flight.departure', 'flight.arriving'],
+        columns: ['flight.airline', 'flight.start_location',
+            'flight.destination', 'flight.flight_date',
+            'flight.departure', 'flight.arriving',
+            'deal_package.deal_id', 'deal_package.location',
+            'deal_package.start_date',
+            'deal_package.end_date', 'deal_package.price',
+            'deal_package.car',
+            'deal_package.description', 'hotel.hotel_name'],
         tableName: "deal_package",
         where: `deal_id = ${dealId}`,
         orderBy: [],
-        join: ['flight on deal_package.outbound_flight_id = flight.flight_id or deal_package.inbound_flight_id = flight.flight_id']
+        join: ['flight on deal_package.outbound_flight_id = flight.flight_id or deal_package.inbound_flight_id = flight.flight_id join hotel on deal_package.hotel_id = hotel.hotel_id']
     });
     console.log(data);
+    const dataInfo = [];
+    const dealInfo = {
+        location: data[0].location, startDate: data[0].start_date,
+        endDate: data[0].end_date, price: data[0].price,
+        car: data[0].car, description: data[0].description,
+        hotelName: data[0].hotel_name
+    };
+    dataInfo.push(dealInfo);
     let arr = [];
     data.forEach(flight => {
         arr.push({
@@ -56,10 +71,12 @@ router.get('/dealInfo', async function (req, res) {
             departure: flight.departure,
             arriving: flight.arriving,
 
+
         });
     });
-    console.log(arr);
-    res.send(JSON.stringify(arr));
+    dataInfo.push(arr);
+    console.log(dataInfo);
+    res.send(JSON.stringify(dataInfo));
 
 });
 
