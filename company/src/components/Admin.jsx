@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 function Admin() {
     const [requests, setRequests] = useState([]);
     const [flag, setFlag] = useState('');
+    const [parText, setParText] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         getRequest();
@@ -12,9 +15,17 @@ function Admin() {
 
 
     async function getRequest() {
-        const response = await fetch(`http://localhost:8080/companies/data/requests`);
+        const response = await fetch(`http://localhost:8080/companies/data/requests`, {
+            method: 'GET',
+            credentials: 'include'
+        });
         const data = await response.json();
-        setRequests(data);
+        if (data) {
+            setRequests(data);
+        } else {
+            setParText('you are not an admin');
+            setTimeout(() => navigate('/home'), 2000);
+        }
     }
 
     const acceptRequest = async (companyName) => {
@@ -27,7 +38,8 @@ function Admin() {
                 })
 
             });
-            setFlag(Math.random())
+        setFlag(Math.random());
+
     };
 
     const declineRequest = async (companyName) => {
@@ -40,10 +52,11 @@ function Admin() {
                 })
 
             });
-            setFlag(Math.random())
+        setFlag(Math.random());
     };
     return (
         <>
+            <h1>{parText}</h1>
             {requests?.map(request => {
 
                 return <div key={Math.random()}>

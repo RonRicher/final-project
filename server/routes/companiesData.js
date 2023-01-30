@@ -3,7 +3,7 @@ const router = express.Router();
 var nodemailer = require('nodemailer');
 const con = require('../connection.js');
 const createSQLQuery = require('../createSqlQuery.js');
-
+const permission = require('../permission');
 
 
 
@@ -59,7 +59,11 @@ router.get('/flights', async function (req, res) {
 });
 
 
-router.get('/requests', async function (req, res) {
+router.get('/requests', permission, async function (req, res) {
+    if (res.locals.permission !== 'admin') {
+        res.send(false);
+        return;
+    }
     const data = await createSQLQuery.sqlSelect({
         distinct: false,
         columns: ['*'],
@@ -81,7 +85,11 @@ router.get('/requests', async function (req, res) {
 
 });
 
-router.put('/requests/accept', async function (req, res) {
+router.put('/requests/accept', permission, async function (req, res) {
+    if (res.locals.permission !== 'admin') {
+        res.send(false);
+        return;
+    }
     const data = await createSQLQuery.updateTable('user_access', `company_details`, `user_access.user_id = company_details.user_id`, ['permission'], ['company'], [`company_details.company_name='${req.body.companyName}'`]);
     console.log('data:' + data);
     if (data.affectedRows > 0) {
@@ -97,7 +105,11 @@ router.put('/requests/accept', async function (req, res) {
     }
 });
 
-router.delete('/requests/decline', async function (req, res) {
+router.delete('/requests/decline', permission, async function (req, res) {
+    if (res.locals.permission !== 'admin') {
+        res.send(false);
+        return;
+    }
     const data = await createSQLQuery.updateTable('company_request', `company_details`, `company_request.company_name = company_details.company_name`, ['deleted'], ['1'], [`company_details.company_name='${req.body.companyName}'`]);
     console.log('data:' + data);
     if (data.affectedRows > 0) {

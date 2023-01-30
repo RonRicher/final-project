@@ -3,11 +3,17 @@ const router = express.Router();
 var nodemailer = require('nodemailer');
 const con = require('../connection.js');
 const createSQLQuery = require('../createSqlQuery.js');
+const permission = require('../permission');
 
 
 
 
-router.post('/', async function (req, res) {
+
+router.post('/', permission, async function (req, res) {
+    if (res.locals.permission !== 'admin' && res.locals.permission !== 'company') {
+        res.send(false);
+        return;
+    }
     const { companyId, hotelId, location, startDate,
         endDate, outboundFlightId, inboundFlightId,
         price, car, description, reservations } = req.body;

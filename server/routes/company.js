@@ -80,7 +80,7 @@ router.post('/register', async function (req, res) {
 router.post('/logIn', async function (req, res) {
     const data = await createSQLQuery.sqlSelect({
         distinct: false,
-        columns: ['user_access.permission', 'user_access.password'],
+        columns: ['user_access.permission', 'user_access.user_id', 'user_access.password'],
         tableName: "company_details",
         where: `company_name = '${req.body.companyName}'`,
         orderBy: [],
