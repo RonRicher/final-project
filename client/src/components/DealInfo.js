@@ -19,7 +19,8 @@ function DealInfo() {
         navigate(`../../deals/${id}/payment`, {
             state: {
                 price: info[0]?.price,
-                description: info[0]?.description
+                description: info[0]?.description,
+                reservations: info[0]?.reservations
             }
         });
     };
@@ -32,6 +33,7 @@ function DealInfo() {
             <p>{info[0]?.car ? 'true' : 'false'}</p>
             <p>{info[0]?.description}</p>
             <p>{info[0]?.hotelName}</p>
+            <p>{info[0]?.reservations}</p>
             {info[1]?.map((info, index) => {
                 return <div>
                     {index === 1 ? <p>inbound flight</p> : <p>outbound flight</p>}

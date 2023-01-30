@@ -8,17 +8,27 @@ import ResetPassword from './components/ResetPassword';
 import ChangePassword from './components/ChangePassword';
 import DealInfo from './components/DealInfo';
 import Payment from './components/Payment';
+import UserProvider from './context/userContext';
+import Confirmation from './components/Confirmation';
+import SearchedDeals from './components/SearchedDeals';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<LogIn />}></Route>
-      <Route path="/Home" element={<Home />}></Route>
-      <Route path="/password" element={<ResetPassword />}></Route>
-      <Route path="/changePassword" element={<ChangePassword />}></Route>
-      <Route path="/deals/info/:id" element={<DealInfo />}></Route>
-      <Route path="/deals/:id/payment" element={<Payment />}></Route>
-    </Routes>
+    <UserProvider>
+      <Routes>
+        <Route path="/" element={<LogIn />}></Route>
+        <Route path="/Home" element={<Home />}></Route>
+        <Route path="/password" element={<ResetPassword />}></Route>
+        <Route path="/changePassword" element={<ChangePassword />}></Route>
+        <Route path="/deals/info/:id" element={<DealInfo />}></Route>
+        <Route path="/deals/:id/payment" element={<Payment />}></Route>
+        <Route path="/search/deals" element={<SearchedDeals />}></Route>
+
+        <Route path="/deals/:id/payment/confirmation" element={<Confirmation />}></Route>
+        <Route path="/*" element={<Home />}></Route>
+
+      </Routes>
+    </UserProvider>
   );
 }
 

@@ -111,8 +111,7 @@ router.post('/logIn', async function (req, res) {
 
 router.post('/changePassword', async function (req, res) {
     bcrypt.hash(req.body.password, saltRounds, async function (err, hash) {
-        const data = await createSQLQuery.updateTable('user_access', `company_details`, `user_access.user_id = company_details.user_id`, ['password'], [hash], [`email='${req.body.email}'`]);
-
+        const data = await createSQLQuery.updateTable('user_access', `company_details`, `user_access.user_id = company_details.user_id`, ['password'], [`'${hash}'`], [`email='${req.body.email}'`]);
         if (data.affectedRows > 0) {
             res.send(true);
         } else {
@@ -131,29 +130,29 @@ router.post('/password', async function (req, res) {
         where: `email = '${req.body.email}'`,
         orderBy: [],
         join: []
-    })
-    console.log('data: ', data);
-        if (data.length > 0) {
-            console.log(2222222)
-            let mailOptions = {
-                from: 'elyasaf11@gmail.com',
-                to: `${req.body.email}`,
-                subject: 'Change password',
-                text: 'click on the link to reset your password http://localhost:4000/changePassword'
-            };
-
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                } else {
-                    res.send(true);
-                }
-            });
-        } else {
-            console.log(3);
-            res.send(false);
-        }
     });
+    console.log('data: ', data);
+    if (data.length > 0) {
+        console.log(2222222);
+        let mailOptions = {
+            from: 'elyasaf11@gmail.com',
+            to: `${req.body.email}`,
+            subject: 'Change password',
+            text: 'click on the link to reset your password http://localhost:4000/changePassword'
+        };
+
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                res.send(true);
+            }
+        });
+    } else {
+        console.log(3);
+        res.send(false);
+    }
+});
 
 
 module.exports = router;

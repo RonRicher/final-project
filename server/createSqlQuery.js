@@ -85,7 +85,7 @@ const sqlActions = {
         sqlQuery += ` JOIN ${joinTable} ON ${joinCondition}`;
         for (let i = 0; i < fieldNames.length; i++) {
             if (i === 0) { sqlQuery += ` SET `; }
-            sqlQuery += `${fieldNames[i]} = '${values[i]}',`;
+            sqlQuery += `${fieldNames[i]} = ${values[i]},`;
         }
         sqlQuery = sqlQuery.slice(0, -1);
         for (let i = 0; i < conditions.length; i++) {

@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { useLocation } from 'react-router-dom';
-
+import { useLocation, useParams, useNavigate } from 'react-router-dom';
+import { useUser } from '../context/userContext';
 function Payment() {
+    const navigate = useNavigate();
     const location = useLocation();
     const stateData = location.state ? location.state : null;
     const [firstName, setFirstName] = useState("");
@@ -14,9 +15,12 @@ function Payment() {
     const [expDate, setExpDate] = useState("");
     const [cvv, setCvv] = useState("");
     const [price, setPrice] = useState(stateData.price);
+    const { userId } = useUser();
+    const { id } = useParams();
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
+        const mathRandom = Math.floor(Math.random() * 100000000);
         const response = await fetch(`http://localhost:8080/users/data/payment`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -25,9 +29,18 @@ function Payment() {
                 email: email,
                 firstName: firstName,
                 lastName: lastName,
-                quantity:quantity
+                quantity: quantity,
+                clientId: userId * 1,
+                dealId: id,
+                price: price,
+                prevReservations: stateData.reservations,
+                random: mathRandom
             })
         });
+        const data = await response.json();
+        if (data) {
+            navigate(`/deals/${id}/payment/confirmation`, { state: { mathRandom, quantity, price, firstName, lastName, email, phone } });
+        }
     };
     return (
         <div className="login-root">
@@ -35,7 +48,7 @@ function Payment() {
                 <div className="formbg-outer">
                     <div className="formbg">
                         <div className="formbg-inner padding-horizontal--48">
-                            <span className="padding-bottom--15">Create your account</span>
+                            <span className="padding-bottom--15">Payment</span>
                             <form id="stripe-login">
                                 <div className="field padding-bottom--24">
                                     <div className="grid--50-50">
@@ -72,7 +85,7 @@ function Payment() {
                                 <div className="field padding-bottom--24">
                                     <label htmlFor="quantity">quantity</label>
                                     <input type="number" name="quantity" value={quantity}
-                                        min='1' max='10'
+                                        min='1' max={stateData.reservations}
                                         onChange={(e) => {
                                             setQuantity(e.target.value);
                                             setPrice(e.target.value * stateData.price);

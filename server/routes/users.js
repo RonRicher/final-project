@@ -82,7 +82,7 @@ router.post('/logIn', async function (req, res) {
 
   const data = await createSQLQuery.sqlSelect({
     distinct: false,
-    columns: ['user_access.password'],
+    columns: ['user_access.password , user_details.client_id'],
     tableName: "user_details",
     where: `user_name = '${req.body.username}'`,
     orderBy: [],
@@ -92,7 +92,7 @@ router.post('/logIn', async function (req, res) {
   if (data.length > 0) {
     bcrypt.compare(req.body.password, data[0].password, function (err, result) {
       if (result) {
-        res.send(true);
+        res.send(JSON.stringify(data[0].client_id));
         console.log("Login successful");
       }
       else {
@@ -108,7 +108,7 @@ router.post('/logIn', async function (req, res) {
 
 router.post('/changePassword', async function (req, res) {
   bcrypt.hash(req.body.password, saltRounds, async function (err, hash) {
-    const data = await createSQLQuery.updateTable('user_access', `user_details`, `user_access.user_id = user_details.user_id`, ['password'], [hash], [`email='${req.body.email}'`]);
+    const data = await createSQLQuery.updateTable('user_access', `user_details`, `user_access.user_id = user_details.user_id`, ['password'], [`'${hash}'`], [`email='${req.body.email}'`]);
     console.log('data:' + data);
     if (data.affectedRows > 0) {
       res.send(true);
@@ -127,26 +127,26 @@ router.post('/password', async function (req, res) {
     where: `email = '${req.body.email}'`,
     orderBy: [],
     join: []
-})
-    if (data.length > 0) {
-      let mailOptions = {
-        from: 'elyasaf11@gmail.com',
-        to: `${req.body.email}`,
-        subject: 'Change password',
-        text: 'click on the link to reset your password http://localhost:3000/changePassword'
-      };
-
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          console.log(error);
-        } else {
-          res.send(true);
-        }
-      });
-    } else {
-      res.send(false);
-    }
   });
+  if (data.length > 0) {
+    let mailOptions = {
+      from: 'elyasaf11@gmail.com',
+      to: `${req.body.email}`,
+      subject: 'Change password',
+      text: 'click on the link to reset your password http://localhost:3000/changePassword'
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        res.send(true);
+      }
+    });
+  } else {
+    res.send(false);
+  }
+});
 
 
 module.exports = router;

@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import Register from "./Register";
 
 import "../css/LogIn.css";
+import { useUser } from "../context/userContext";
 
 function LogIn() {
     const [username, setUsername] = useState("");
@@ -11,6 +12,7 @@ function LogIn() {
     const [flag, setFlag] = useState(false);
     const [checkbox, setCheckbox] = useState(false);
     const [wrong, setWrong] = useState(false);
+    const { setUserId } = useUser();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -31,13 +33,12 @@ function LogIn() {
             })
         });
         const data = await response.json();
-        console.log(data);
         if (data) {
             console.log('response: ', response);
-            console.log(data);
             if (checkbox) {
                 Cookies.set("userName", username, { expires: 7 });
             }
+            setUserId(data);
             navigate('/home');
         } else {
             setWrong(true);

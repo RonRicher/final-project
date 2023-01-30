@@ -1,6 +1,7 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import NavBar from "./NavBar";
 import Deal from "./Deal";
+import Search from "./Search";
 
 function Home() {
     const [deals, setDeals] = useState();
@@ -18,10 +19,11 @@ function Home() {
         <>
             <NavBar />
             <h1>Home</h1>
+            <Search />
             {deals?.map((deal) => {
-                return <Deal location={deal.location} startDate={deal.startDate}
+                return <Deal key={Math.random()} location={deal.location} startDate={deal.startDate}
                     endDate={deal.endDate} price={deal.price} car={deal.car}
-                    description={deal.description} hotelName={deal.hotelName} id={deal.id}/>
+                    description={deal.description} hotelName={deal.hotelName} id={deal.id} />;
             })}
         </>
     );
