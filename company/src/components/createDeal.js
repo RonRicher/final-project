@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { useState } from "react";
 
 function CreateDeal() {
@@ -12,19 +13,38 @@ function CreateDeal() {
     const [outbound, setOutbound] = useState("");
     const [hotelId, setHotelId] = useState("");
     const [quantity, setQuantity] = useState(20);
-
-
+    const [locationSelect, setLocationSelect] = useState([]);
+    const [locationSearch, setLocationSearch] = useState("");
+    const aa = useRef();
     const [parText, setParText] = useState("");
-    const [exit, setExit] = useState(false);
-    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/;
-    const usernameRegex = /^[a-zA-Z0-9._-]{3,15}$/;
-    const phoneRegex = /^(?:\+\d{1,3}|0\d{1,3}|\d{1,4})[\s.-]?\d{3}[\s.-]?\d{4}$/;
+    const [firstFlights, setFirstFlights] = useState("");
+    const [hotels, setHotels] = useState("");
 
 
     // useEffect(() => {
     //     setParText("");
     // }, [exit]);
+
+    const getLocations = async (value) => {
+        const response = await fetch(`http://localhost:8080/companies/data/search/location?search=${value}`);
+        const data = await response.json();
+        console.log(data);
+        setLocationSelect(data);
+        setLocation('');
+    };
+
+    const browse = async (e) => {
+        e.preventDefault();
+        const response = await fetch(`http://localhost:8080/companies/data/search/hotels?location=${location}`);
+        const data = await response.json();
+        // setFirstFlights(data[0]);
+        setHotels(data);
+        console.log(data);
+        const flightResponse = await fetch(`http://localhost:8080/companies/data/search/flights?location=${location}`);
+        const data1 = await flightResponse.json();
+        setFirstFlights(data1);
+        console.log(data1);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -53,6 +73,8 @@ function CreateDeal() {
         }
     };
     return (
+
+
         <div className="login-root">
             <div className="box-root padding-top--24 flex-flex flex-direction--column" style={{ flexGrow: 1, zIndex: 9 }}>
                 <div className="formbg-outer">
@@ -60,6 +82,25 @@ function CreateDeal() {
                         <div className="formbg-inner padding-horizontal--48">
                             <span className="padding-bottom--15">Create New Deal</span>
                             <form id="stripe-login">
+                                <p>search</p>
+                                <input placeholder='location' type="search" value={locationSearch} onChange={(e) => {
+                                    setLocationSearch(e.target.value);
+                                    clearTimeout(aa.current);
+                                    aa.current = setTimeout(() => getLocations(e.target.value), 500);
+                                }
+                                } />
+                                <div className="field padding-bottom--24">
+                                    <select className="" value={location} onChange={(e) => {
+                                        console.log('dsadasd');
+
+                                        setLocation(e.target.value);
+                                    }}>
+                                        {['select location', ...locationSelect]?.map((item) => {
+                                            return <option key={Math.random()} value={item}>{item}</option>;
+                                        })}
+                                    </select>
+                                </div>
+                                <button onClick={browse}>Browse</button>
                                 <div className="field padding-bottom--24">
                                     <label htmlFor="companyId">Company-id</label>
                                     <input type="text" name="companyId" value={companyId}
@@ -67,38 +108,7 @@ function CreateDeal() {
                                             setCompanyId(e.target.value);
                                         }} />
                                 </div>
-                                <div className="field padding-bottom--24">
-                                    <div className="grid--50-50">
-                                        <label htmlFor="location">Location</label>
-                                    </div>
-                                    <input type="text" name="location" value={location}
-                                        onChange={(e) => {
-                                            setLocation(e.target.value);
-                                        }} />
-                                </div>
-                                <div className="field padding-bottom--24">
-                                    <div className="grid--50-50">
-                                        <label htmlFor="hotelId">hotel-id</label>
-                                    </div>
-                                    <input type="text" name="hotelId" value={hotelId}
-                                        onChange={(e) => {
-                                            setHotelId(e.target.value);
-                                        }} />
-                                </div>
-                                <div className="field padding-bottom--24">
-                                    <label htmlFor="outbound">outbound-flight</label>
-                                    <input type="text" name="outbound" value={outbound}
-                                        onChange={(e) => {
-                                            setOutbound(e.target.value);
-                                        }} />
-                                </div>
-                                <div className="field padding-bottom--24">
-                                    <label htmlFor="inbound">inbound-flight</label>
-                                    <input type="text" name="inbound" value={inbound}
-                                        onChange={(e) => {
-                                            setInbound(e.target.value);
-                                        }} />
-                                </div>
+
                                 <div>
                                     <label>Start Date:</label>
                                     <input type="date" onChange={(e) => setStartDate(e.target.value)} />

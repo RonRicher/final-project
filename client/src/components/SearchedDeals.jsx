@@ -14,6 +14,7 @@ function SearchedDeals() {
     useEffect(() => {
         getDeals(location, type, startDate, endDate);
     }, []);
+
     const getDeals = async (location, type, startDate, endDate) => {
         const response = await fetch(`http://localhost:8080/users/data/search?location=${location}&type=${type}&startDate=${startDate}&endDate=${endDate}`);
         const data = await response.json();

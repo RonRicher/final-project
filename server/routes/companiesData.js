@@ -123,4 +123,57 @@ router.delete('/requests/decline', permission, async function (req, res) {
         res.send(false);
     }
 });
+
+
+router.get('/search/location', async function (req, res) {
+    const { search } = req.query;
+    const data = await createSQLQuery.sqlSelect({
+        distinct: true,
+        columns: ['location'],
+        tableName: "deal_package",
+        where: `location LIKE '${search}%'`,
+        orderBy: [],
+        join: []
+    });
+    const arr = [];
+    data.forEach((location) => arr.push(location.location));
+    res.send(arr);
+});
+
+router.get('/search/hotels', async function (req, res) {
+    const { location } = req.query;
+    const data = await createSQLQuery.sqlSelect({
+        distinct: false,
+        columns: ['hotel_id', 'hotel_name'],
+        tableName: "hotel",
+        where: `location = '${location}'`,
+        orderBy: [],
+        join: []
+    });
+    const arr = [];
+    data.forEach((hotel) => arr.push({
+        hotelId: hotel.hotel_id,
+        hotelName: hotel.hotel_name
+    }));
+    res.send(arr);
+});
+
+router.get('/search/flights', async function (req, res) {
+    const { location } = req.query;
+    const data = await createSQLQuery.sqlSelect({
+        distinct: false,
+        columns: ['flight_id', 'airline', 'flight_date'],
+        tableName: "flight",
+        where: `destination = '${location}' and start_location='Tel Aviv'`,
+        orderBy: [],
+        join: []
+    });
+    const arr = [];
+    data.forEach((flight) => arr.push({
+        flightId: flight.flight_id,
+        airline: flight.airline,
+        date: flight.flight_date
+    }));
+    res.send(arr);
+});
 module.exports = router;
