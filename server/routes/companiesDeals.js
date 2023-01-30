@@ -10,14 +10,14 @@ const createSQLQuery = require('../createSqlQuery.js');
 router.post('/', async function (req, res) {
     const { companyId, hotelId, location, startDate,
         endDate, outboundFlightId, inboundFlightId,
-        price, car, description } = req.body;
+        price, car, description,reservations } = req.body;
     const values = [companyId, hotelId, location, startDate,
         endDate, outboundFlightId, inboundFlightId,
-        price, car, description];
+        price, car, description,reservations];
     const fields = [
         'company_id', 'hotel_id', 'location', 'start_date',
         'end_date', 'outbound_flight_id', 'inbound_flight_id',
-        'price', 'car', 'description'
+        'price', 'car', 'description','reservations'
     ];
     const data = await createSQLQuery.insertIntoTable(
         'deal_package', fields, values

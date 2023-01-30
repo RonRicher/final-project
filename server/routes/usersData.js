@@ -80,6 +80,10 @@ router.get('/dealInfo', async function (req, res) {
 
 });
 
+router.post('/payment', function(req, res){
+    const data = createSQLQuery.insertIntoTable('')
+})
+
 
 
 module.exports = router;

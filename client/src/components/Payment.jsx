@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useLocation } from 'react-router-dom';
 
 function Payment() {
-
     const location = useLocation();
     const stateData = location.state ? location.state : null;
     const [firstName, setFirstName] = useState("");
@@ -16,12 +15,19 @@ function Payment() {
     const [cvv, setCvv] = useState("");
     const [price, setPrice] = useState(stateData.price);
 
-
-
-
-
-    const handleSubmit = () => {
-
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        const response = await fetch(`http://localhost:8080/users/data/payment`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                phone: phone,
+                email: email,
+                firstName: firstName,
+                lastName: lastName,
+                quantity:quantity
+            })
+        });
     };
     return (
         <div className="login-root">

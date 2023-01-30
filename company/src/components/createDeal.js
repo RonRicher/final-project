@@ -11,6 +11,7 @@ function CreateDeal() {
     const [inbound, setInbound] = useState("");
     const [outbound, setOutbound] = useState("");
     const [hotelId, setHotelId] = useState("");
+    const [quantity, setQuantity] = useState(20);
 
 
     const [parText, setParText] = useState("");
@@ -40,7 +41,8 @@ function CreateDeal() {
                 inboundFlightId: inbound,
                 price: price,
                 car: car ? 1 : 0,
-                description: description
+                description: description,
+                reservations: quantity
             })
         });
         const data = await response.json();
@@ -124,6 +126,15 @@ function CreateDeal() {
                                         onChange={(e) => {
                                             setDescription(e.target.value);
                                         }} />
+                                </div>
+                                <div className="field padding-bottom--24">
+                                    <label htmlFor="quantity">Reservations</label>
+                                    <input type="number" name="quantity" value={quantity}
+                                        min='20' max='50'
+                                        onChange={(e) => {
+                                            setQuantity(e.target.value);
+                                        }} />
+
                                 </div>
                                 <div className="field padding-bottom--24">
                                     <p style={{ margin: '5%', color: 'red' }}>{parText}</p>
