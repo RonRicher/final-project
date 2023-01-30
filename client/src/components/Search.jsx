@@ -7,6 +7,9 @@ function Search() {
     const [locationSelect, setLocationSelect] = useState([]);
     const [locationSearch, setLocationSearch] = useState("");
     const [location, setLocation] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+
     const [type, setType] = useState("");
     const aa = useRef();
     const navigate = useNavigate();
@@ -21,7 +24,7 @@ function Search() {
     };
 
     const getSearchDeals = async (location, type) => {
-        navigate('/search/deals', { state: { location, type } });
+        navigate('/search/deals', { state: { location, type, startDate, endDate } });
     };
 
     return (
@@ -53,6 +56,13 @@ function Search() {
                 <option value='urban'>urban</option>
                 <option value='families'>families</option>
             </select>
+
+            <label>Start Date:</label>
+            <input type="date" onChange={(e) => setStartDate(e.target.value)} />
+
+            <label>End Date:</label>
+            <input type="date" onChange={(e) => setEndDate(e.target.value)} />
+
             <button onClick={() => getSearchDeals(location, type)}></button>
 
         </div>

@@ -105,7 +105,6 @@ const sqlActions = {
 
 const resultCheck = (result, err) => {
     if (err) return err;
-    console.log('inner result', result);
     return result;
 };
 
@@ -122,7 +121,6 @@ const dataProvider = async (sqlQuery) => {
         });
     });
     const result = await queryPromise;
-    console.log('result: ', result);
     return result;
 };
 

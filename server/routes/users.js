@@ -6,6 +6,7 @@ const createSQLQuery = require('../createSqlQuery.js');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const cookie = require('cookie');
 
 
 
@@ -82,7 +83,7 @@ router.post('/logIn', async function (req, res) {
 
   const data = await createSQLQuery.sqlSelect({
     distinct: false,
-    columns: ['user_access.password , user_details.client_id'],
+    columns: ['user_access.password, user_access.user_id , user_details.client_id'],
     tableName: "user_details",
     where: `user_name = '${req.body.username}'`,
     orderBy: [],
@@ -92,8 +93,15 @@ router.post('/logIn', async function (req, res) {
   if (data.length > 0) {
     bcrypt.compare(req.body.password, data[0].password, function (err, result) {
       if (result) {
+        console.log('userId:', data[0].user_id);
+        res.cookie('userId', data[0].user_id, {
+          httpOnly: true,
+          expires: new Date(Date.now() + 60 * 60 * 24 * 7 * 1000)
+        });
+
         res.send(JSON.stringify(data[0].client_id));
         console.log("Login successful");
+
       }
       else {
         res.send(false);

@@ -94,6 +94,10 @@ router.post('/logIn', async function (req, res) {
                 if (data[0].permission === 'pending' || data[0].permission === 'declined') {
                     console.log('you dont have permission yet');
                 } else {
+                    res.cookie('userId', data[0].user_id, {
+                        httpOnly: true,
+                        expires: new Date(Date.now() + 60 * 60 * 24 * 7 * 1000)
+                    });
                     console.log("Login successful");
                     res.send(true);
                 }

@@ -24,6 +24,7 @@ function LogIn() {
         e.preventDefault();
         const response = await fetch(`http://localhost:8080/companies/logIn`, {
             method: "POST",
+            credentials: 'include',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 companyName: companyName,

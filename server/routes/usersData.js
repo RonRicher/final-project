@@ -116,7 +116,7 @@ router.post('/payment', async function (req, res) {
 });
 
 router.get('/search', async function (req, res) {
-    const { location, type } = req.query;
+    const { location, type, startDate, endDate } = req.query;
     console.log(req.query);
     const data = await createSQLQuery.sqlSelect({
         distinct: false,
@@ -124,7 +124,9 @@ router.get('/search', async function (req, res) {
             'deal_package.end_date', 'deal_package.price', 'deal_package.car',
             'deal_package.description', 'hotel.hotel_name'],
         tableName: "deal_package",
-        where: `deal_package.location LIKE '%${location}%' AND description LIKE '%${type}%'`,
+        where: `deal_package.location LIKE '%${location}%' 
+        AND description LIKE '%${type}%' ${startDate ? ` And start_date >= '${startDate}'` : ''}
+         ${endDate ? ` And end_date <= '${endDate}'` : ''}`,
         orderBy: [],
         join: ['hotel on deal_package.hotel_id = hotel.hotel_id']
     });

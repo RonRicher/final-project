@@ -6,16 +6,16 @@ import Deal from './Deal';
 
 function SearchedDeals() {
     const siteLocation = useLocation();
-    const { location, type } = siteLocation.state;
+    const { location, type, startDate, endDate } = siteLocation.state;
     const [deals, setDeals] = useState([]);
 
 
 
     useEffect(() => {
-        getDeals(location, type);
+        getDeals(location, type, startDate, endDate);
     }, []);
-    const getDeals = async (location, type) => {
-        const response = await fetch(`http://localhost:8080/users/data/search?location=${location}&type=${type}`);
+    const getDeals = async (location, type, startDate, endDate) => {
+        const response = await fetch(`http://localhost:8080/users/data/search?location=${location}&type=${type}&startDate=${startDate}&endDate=${endDate}`);
         const data = await response.json();
         setDeals(data);
     };
