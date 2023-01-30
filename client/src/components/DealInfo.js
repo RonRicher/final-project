@@ -16,15 +16,14 @@ function DealInfo() {
     }
     return (
         <div>
-            <h4></h4>
-           <p>{info[0].location}</p>
-           <p>{info[0].startDate}</p>
-           <p>{info[0].endDate}</p>
-           <p>{info[0].price}</p>
-           <p>{info[0].car?'true':'false'}</p>
-           <p>{info[0].description}</p>
-           <p>{info[0].hotelName}</p>
-            {info[1].map((info,index) => {
+           <p>{info[0]?.location}</p>
+           <p>{info[0]?.startDate}</p>
+           <p>{info[0]?.endDate}</p>
+           <p>{info[0]?.price}</p>
+           <p>{info[0]?.car?'true':'false'}</p>
+           <p>{info[0]?.description}</p>
+           <p>{info[0]?.hotelName}</p>
+            {info[1]?.map((info,index) => {
             return <div>
                 {index===1?<p>inbound flight</p>:<p>outbound flight</p>}
                 <p>Airline:{info.airline}</p>
