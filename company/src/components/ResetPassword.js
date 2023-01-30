@@ -5,7 +5,7 @@ function ResetPassword() {
     const [parText, setParText] = useState("");
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch(`http://localhost:8080/users/password`, {
+        const response = await fetch(`http://localhost:8080/companies/password`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

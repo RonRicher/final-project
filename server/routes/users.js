@@ -119,15 +119,20 @@ router.post('/changePassword', async function (req, res) {
 });
 
 
-router.post('/password', function (req, res) {
-  let sql = `select user_name from user_details where email = '${req.body.email}'`;
-  con.query(sql, function (err, result) {
-    if (err) throw err;
-    if (result.length > 0) {
+router.post('/password', async function (req, res) {
+  const data = await createSQLQuery.sqlSelect({
+    distinct: false,
+    columns: ['company_details.company_name'],
+    tableName: "company_details",
+    where: `email = '${req.body.email}'`,
+    orderBy: [],
+    join: []
+})
+    if (data.length > 0) {
       let mailOptions = {
         from: 'elyasaf11@gmail.com',
         to: `${req.body.email}`,
-        subject: 'Sending Email using Node.js',
+        subject: 'Change password',
         text: 'click on the link to reset your password http://localhost:3000/changePassword'
       };
 
@@ -142,7 +147,6 @@ router.post('/password', function (req, res) {
       res.send(false);
     }
   });
-});
 
 
 module.exports = router;

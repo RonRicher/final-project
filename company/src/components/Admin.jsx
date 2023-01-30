@@ -3,13 +3,12 @@ import { useEffect } from "react";
 
 
 function Admin() {
-
-
     const [requests, setRequests] = useState([]);
+    const [flag, setFlag] = useState('');
 
     useEffect(() => {
         getRequest();
-    }, []);
+    }, [flag]);
 
 
     async function getRequest() {
@@ -28,6 +27,7 @@ function Admin() {
                 })
 
             });
+            setFlag(Math.random())
     };
 
     const declineRequest = async (companyName) => {
@@ -40,12 +40,13 @@ function Admin() {
                 })
 
             });
+            setFlag(Math.random())
     };
     return (
         <>
             {requests?.map(request => {
 
-                return <div>
+                return <div key={Math.random()}>
                     <p>  companyName:{request.companyName}
                         companyEmail:{request.companyEmail}
                         companyPhone:{request.companyPhone} </p>

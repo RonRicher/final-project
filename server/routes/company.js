@@ -91,7 +91,7 @@ router.post('/logIn', async function (req, res) {
         console.log('data');
         bcrypt.compare(req.body.password, data[0].password, function (err, result) {
             if (result) {
-                if (data[0].permission === 'pending') {
+                if (data[0].permission === 'pending' || data[0].permission === 'declined') {
                     console.log('you dont have permission yet');
                 } else {
                     console.log("Login successful");
@@ -122,16 +122,24 @@ router.post('/changePassword', async function (req, res) {
 });
 
 
-router.post('/password', function (req, res) {
-    let sql = `select company_name from company_details where email = '${req.body.email}'`;
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        if (result.length > 0) {
+router.post('/password', async function (req, res) {
+    console.log(1);
+    const data = await createSQLQuery.sqlSelect({
+        distinct: false,
+        columns: ['company_details.company_name'],
+        tableName: "company_details",
+        where: `email = '${req.body.email}'`,
+        orderBy: [],
+        join: []
+    })
+    console.log('data: ', data);
+        if (data.length > 0) {
+            console.log(2222222)
             let mailOptions = {
                 from: 'elyasaf11@gmail.com',
                 to: `${req.body.email}`,
-                subject: 'Sending Email using Node.js',
-                text: 'click on the link to reset your password http://localhost:3000/changePassword'
+                subject: 'Change password',
+                text: 'click on the link to reset your password http://localhost:4000/changePassword'
             };
 
             transporter.sendMail(mailOptions, function (error, info) {
@@ -142,10 +150,10 @@ router.post('/password', function (req, res) {
                 }
             });
         } else {
+            console.log(3);
             res.send(false);
         }
     });
-});
 
 
 module.exports = router;
