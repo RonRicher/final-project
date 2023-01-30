@@ -158,13 +158,32 @@ router.get('/search/hotels', async function (req, res) {
     res.send(arr);
 });
 
-router.get('/search/flights', async function (req, res) {
+router.get('/search/flights/outbound', async function (req, res) {
     const { location } = req.query;
     const data = await createSQLQuery.sqlSelect({
         distinct: false,
         columns: ['flight_id', 'airline', 'flight_date'],
         tableName: "flight",
         where: `destination = '${location}' and start_location='Tel Aviv'`,
+        orderBy: [],
+        join: []
+    });
+    const arr = [];
+    data.forEach((flight) => arr.push({
+        flightId: flight.flight_id,
+        airline: flight.airline,
+        date: flight.flight_date
+    }));
+    res.send(arr);
+});
+
+router.get('/search/flights/inbound', async function (req, res) {
+    const { location,flightId} = req.query;
+    const data = await createSQLQuery.sqlSelect({
+        distinct: false,
+        columns: ['flight_id', 'airline', 'flight_date'],
+        tableName: "flight",
+        where: `start_location = '${location}' and destination='Tel Aviv' and flight_date > (SELECT flight_date FROM flight WHERE flight_id = ${flightId})`,
         orderBy: [],
         join: []
     });
