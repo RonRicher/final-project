@@ -36,7 +36,7 @@ function LogIn() {
         const data = await response.json();
         if (data) {
             console.log('response: ', response);
-
+            localStorage.setItem('userId', JSON.stringify(data));
             setUserId(data);
 
             navigate('/home');

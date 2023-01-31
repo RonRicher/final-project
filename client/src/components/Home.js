@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import NavBar from "./NavBar";
 import Deal from "./Deal";
 import Search from "./Search";
+import {useUser} from "../context/userContext"
 
 function Home() {
     const [deals, setDeals] = useState();
+    const {userId}= useUser();
+    console.log(userId);
     useEffect(() => {
         getDeals();
     }, []);
