@@ -3,6 +3,7 @@ const router = express.Router();
 const con = require('../connection.js');
 const createSQLQuery = require('../createSqlQuery.js');
 var nodemailer = require('nodemailer');
+const permission = require('../permission.js');
 
 
 let transporter = nodemailer.createTransport({
@@ -90,7 +91,11 @@ router.get('/dealInfo', async function (req, res) {
 
 });
 
-router.post('/payment', async function (req, res) {
+router.post('/payment',permission, async function (req, res) {
+    if (res.locals.permission !== 'admin' && res.locals.permission !== 'client') {
+        res.send(false);
+        return;
+    }
     const { dealId, clientId, quantity, price, firstName, lastName,
         phone, email, prevReservations, random } = req.body;
     const data = await createSQLQuery.insertIntoTable('client_deal', ['deal_id', 'client_id', 'quantity', 'price', 'res_number'], [dealId, clientId, quantity, price, random]);

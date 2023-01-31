@@ -13,6 +13,7 @@ function ChangePassword() {
         if (passwordRegex.test(password)) {
             const response = await fetch(`http://localhost:8080/companies/changePassword`, {
                 method: "POST",
+                credentials: 'include',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     password: password,

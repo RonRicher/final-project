@@ -14,11 +14,35 @@ router.post('/', permission, async function (req, res) {
         res.send(false);
         return;
     }
-    const { companyId, hotelId, location, startDate,
-        endDate, outboundFlightId, inboundFlightId,
+    const companyId = await createSQLQuery.sqlSelect({
+        distinct: false,
+        columns: ['company_id'],
+        tableName: "company_details",
+        where: `user_id = '${req.cookies.userId}'`,
+        orderBy: [],
+        join: []
+    })
+    console.log(companyId);
+    const flights = await createSQLQuery.sqlSelect({
+        distinct: false,
+        columns: ['flight_date'],
+        tableName: "flight",
+        where: `flight_id = '${req.body.outbound}' or flight_id = '${req.body.inbound}'`,
+        orderBy: [],
+        join: []
+    })
+    function convertToSQLDate(dateStr) {
+        const date = new Date(dateStr);
+        return date.toISOString().split("T")[0];
+    }
+    const start_date = convertToSQLDate(flights[0].flight_date);
+    const end_date = convertToSQLDate(flights[1].flight_date);
+    console.log(start_date, end_date);
+    console.log(flights);
+    const { hotelId, location, outbound, inbound,
         price, car, description, reservations } = req.body;
-    const values = [companyId, hotelId, location, startDate,
-        endDate, outboundFlightId, inboundFlightId,
+    const values = [companyId[0].company_id, hotelId, location, start_date,
+        end_date, outbound, inbound,
         price, car, description, reservations];
     const fields = [
         'company_id', 'hotel_id', 'location', 'start_date',
