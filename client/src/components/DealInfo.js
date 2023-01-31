@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import NavBar from "./NavBar";
 
 function DealInfo() {
     const [info, setInfo] = useState([]);
@@ -26,27 +27,34 @@ function DealInfo() {
     };
     return (
         <div>
-            <p>{info[0]?.location}</p>
-            <p>{info[0]?.startDate}</p>
-            <p>{info[0]?.endDate}</p>
-            <p>{info[0]?.price}</p>
-            <p>{info[0]?.car ? 'true' : 'false'}</p>
-            <p>{info[0]?.description}</p>
-            <p>{info[0]?.hotelName}</p>
-            <p>{info[0]?.reservations}</p>
-            {info[1]?.map((info, index) => {
-                return <div>
-                    {index === 1 ? <p>inbound flight</p> : <p>outbound flight</p>}
-                    <p>Airline:{info.airline}</p>
-                    <p>Origin:{info.startLocation}</p>
-                    <p>Destination:{info.destination}</p>
-                    <p>Date:{info.date}</p>
-                    <p>Departure:{info.departure}</p>
-                    <p>Arriving-Time{info.arriving}</p>
-                </div>;
+            <NavBar />
+            <div className="dealInfo">
+                <div>
+                    <img className="imageByLocation" src={`http://localhost:8080/users/data/image/?location=${info[0]?.location}`} alt={`${info[0]?.location}`} />
+                </div><div>
+                    <h2>Book Your next Trip to {info[0]?.location}!</h2>
+                    <p>{info[0]?.startDate} - {info[0]?.endDate} </p>
 
-            })}
-            <p onClick={goToPayment}>payment</p>
+                    <p>{info[0]?.price}</p>
+                    {info[0]?.car ? <p style={{ fontWeight: "bold" }}>car included!</p> : <p></p>}
+
+                    <p>enjoy the beautiful {info[0]?.hotelName} hotel</p>
+                    <p>{info[0]?.description}</p>
+                    {info[1]?.map((info, index) => {
+                        return <div key={Math.random()}>
+                            {index === 1 ? <p>inbound flight</p> : <p>outbound flight</p>}
+                            <p>Airline:{info.airline}</p>
+                            <p>Origin:{info.startLocation}</p>
+                            <p>Destination:{info.destination}</p>
+                            <p>Date:{info.date}</p>
+                            <p>Departure:{info.departure}</p>
+                            <p>Arriving-Time{info.arriving}</p>
+                        </div>;
+
+                    })}
+                    <p onClick={goToPayment}>payment</p>
+                </div>
+            </div>
         </div>
     );
 }

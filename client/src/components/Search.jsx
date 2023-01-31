@@ -26,7 +26,7 @@ function Search() {
 
     const getSearchDeals = async (location, type) => {
         console.log(location);
-        // navigate('/search/deals', { state: { location, type, startDate, endDate } });
+        navigate('/search/deals', { state: { location, type, startDate, endDate } });
     };
 
     return (
@@ -37,23 +37,25 @@ function Search() {
                 <p className="sub-title">Search deals by location or type of trip..</p>
             </div>
             <div className="searchComp">
-                <div>
+
+                <div className="select-location">
                     <input className="search-box" placeholder='Where are you going?' type="search" value={locationSearch} onChange={(e) => {
                         setLocationSearch(e.target.value);
                         clearTimeout(aa.current);
+                        setLocationFlag(true);
                         aa.current = setTimeout(() => getLocations(e.target.value), 500);
                     }
                     } />
                     <ul className="select">
                         {locationSelect?.map((item) => {
-                            return locationFlag ? <li key={Math.random()} onClick={() => {
+                            return locationFlag ? <li className="option" key={Math.random()} onClick={() => {
                                 setLocation(item);
+                                setLocationSearch(item);
                                 setLocationFlag(false);
 
-                            }}>{item}</li> : null;
+                            }}>&#x1F4CD;&nbsp;&nbsp;&nbsp;&nbsp;{item}</li> : null;
                         })}
                     </ul>
-
                 </div>
                 <div className="dates">
 
@@ -62,18 +64,20 @@ function Search() {
 
                     <input className="date" type="date" onChange={(e) => setEndDate(e.target.value)} />
                 </div>
-                <select value={type} onChange={(e) => {
-                    setType(e.target.value);
-                }}>
-                    <option value="type">type</option>
-                    <option value='romantic'>romantic</option>
-                    <option value='nature'>nature</option>
-                    <option value='urban'>urban</option>
-                    <option value='families'>families</option>
-                </select>
-                <button onClick={() => getSearchDeals(location, type)}>Search</button>
+                <div className="types">
+                    <select id="type" value={type} onChange={(e) => {
+                        setType(e.target.value);
+                    }}>
+                        <option id="wow" className="typeList" value='romantic'>romantic</option>
+                        <option className="typeList" value='nature'>nature</option>
+                        <option className="typeList" value='urban'>urban</option>
+                        <option className="typeList" value='families'>families</option>
+                        <option className="typeList" value="type">type</option>
+                    </select>
+                </div>
+                <button id='clickDeals' onClick={() => getSearchDeals(location, type)}>Search</button>
             </div>
-        </div>
+        </div >
 
     );
 }
