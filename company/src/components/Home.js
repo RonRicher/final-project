@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import NavBar from "./NavBar";
+import '../css/Home.css'
 
 function Home() {
     const [deals,setDeals] = useState([]);
@@ -16,17 +17,16 @@ function Home() {
         setDeals(data);
     }
     return (
-        <>
+        <div id="home-div">
             <NavBar />
-            <h1>Home</h1>
-            <h2>Your deals</h2>
+            <h1>Your deals</h1>
             {deals?.map((deal)=>{
                 return <div key={Math.random()}>
                     <p>deal id : {deal.dealId}</p>
                     <p>quantity: {deal.quantity}</p>
                 </div>
             })}
-        </>
+        </div>
     );
 }
 
