@@ -21,7 +21,8 @@ function DealInfo() {
             state: {
                 price: info[0]?.price,
                 description: info[0]?.description,
-                reservations: info[0]?.reservations
+                reservations: info[0]?.reservations,
+                location : info[0]?.location
             }
         });
     };

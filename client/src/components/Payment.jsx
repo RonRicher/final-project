@@ -34,12 +34,13 @@ function Payment() {
                 dealId: id,
                 price: price,
                 prevReservations: stateData.reservations,
-                random: mathRandom
+                random: mathRandom,
+                location: stateData.location
             })
         });
         const data = await response.json();
         if (data) {
-            navigate(`/deals/${id}/payment/confirmation`, { state: { mathRandom, quantity, price, firstName, lastName, email, phone } });
+            navigate(`/deals/${id}/payment/confirmation`, { state: { mathRandom, quantity, price, firstName, lastName, email, phone,resLocation:stateData.location} });
         }
     };
     return (
