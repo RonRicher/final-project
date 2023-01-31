@@ -13,13 +13,13 @@
 .select{
     position: absolute;
     width: 22rem;
-    top: -1.3rem;
     background-color: rgb(255, 255, 255);
 }
 
 .option{
     list-style: none;
-    padding: 0.3rem;
+    padding: 0.7rem;
+    font-size: 1.4rem;
 }
 
 .option:hover{
@@ -27,7 +27,21 @@
 }
 
 #change-location{
-    width: 115px;
-    font-size: 12px;
-    margin-left: 13rem;
+    width: 11.5rem;
+    font-size: 1.2rem;
+    margin-left: 25rem;
+    margin-bottom: 0.8rem;
+    padding: 0.2rem;
+}
+
+select {
+    width: 100%;
+    height: 4rem;
+    font-size: 1.5rem;
+    border-radius: 0;
+}
+
+option {
+    font-size: 1.5rem;
+    height: 5rem;
 }

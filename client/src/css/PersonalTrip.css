@@ -27,7 +27,14 @@
 }
 
 #change-location{
-    width: 115px;
-    font-size: 12px;
-    margin-left: 13rem;
+    width: 11.5rem;
+    font-size: 1.2rem;
+    margin-left: 25rem;
+    margin-bottom: 0.8rem;
+    padding: 0.2rem;
+}
+
+#price{
+    font-size: 1.8rem;
+    font-weight: bold;
 }

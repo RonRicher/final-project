@@ -1,0 +1,27 @@
+.admin-div{
+    border: 1px solid black;
+    width: 22rem;
+    margin: 1.5rem auto;
+    padding: 1rem;
+    border-radius: 3px;
+}
+
+.admin-btn{
+    width: 6.4rem;
+    background-color: rgb(222, 222, 222);
+    color: green;
+    font-size: 1.2rem;
+    padding: 0.2rem;
+    margin-left: 1rem;
+    height: 2.3rem;
+    margin-top: 0.2rem;
+}
+
+.admin-btn:hover{
+    background-color: rgb(202, 196, 196);
+}
+
+.accept{
+    font-size: 1.3rem;
+}
+
