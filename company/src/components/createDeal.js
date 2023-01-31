@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { useState } from "react";
+import '../css/CreateDeal.css'
 
 function CreateDeal() {
     const [companyId, setCompanyId] = useState("");
@@ -21,6 +22,7 @@ function CreateDeal() {
     const [parText, setParText] = useState("");
     const [firstFlights, setFirstFlights] = useState([]);
     const [hotels, setHotels] = useState([]);
+    const [locationFlag, setLocationFlag] = useState(true);
 
     const getLocations = async (value) => {
         const response = await fetch(`http://localhost:8080/companies/data/search/location?search=${value}`);
@@ -30,8 +32,7 @@ function CreateDeal() {
         setLocation('');
     };
 
-    const browse = async (e) => {
-        e.preventDefault();
+    const browse = async () => {
         const response = await fetch(`http://localhost:8080/companies/data/search/hotels?location=${location}`);
         const data = await response.json();
         // setFirstFlights(data[0]);
@@ -80,92 +81,101 @@ function CreateDeal() {
         }
     }
     return (
-
-
-        <div className="login-root">
-            <div className="box-root padding-top--24 flex-flex flex-direction--column" style={{ flexGrow: 1, zIndex: 9 }}>
-                <div className="formbg-outer">
-                    <div className="formbg">
-                        <div className="formbg-inner padding-horizontal--48">
-                            <span className="padding-bottom--15">Create New Deal</span>
-                            <form id="stripe-login">
-                                <p>search</p>
-                                <input placeholder='location' type="search" value={locationSearch} onChange={(e) => {
-                                    setLocationSearch(e.target.value);
-                                    clearTimeout(aa.current);
-                                    aa.current = setTimeout(() => getLocations(e.target.value), 500);
-                                }
-                                } />
-                                <div className="field padding-bottom--24">
-                                    <select className="" value={location} onChange={(e) => {
-                                        setLocation(e.target.value);
+        <div id="create-deal-div">
+            <div className="login-root">
+                <div className="box-root padding-top--24 flex-flex flex-direction--column" style={{ flexGrow: 1, zIndex: 9 }}>
+                    <div className="formbg-outer">
+                        <div className="formbg">
+                            <div className="formbg-inner padding-horizontal--48">
+                                <span className="padding-bottom--15">Create New Deal</span>
+                                <form id="stripe-login">
+                                   {locationFlag?  <div><p>Choose Location</p><div className="field padding-bottom--24">
+                                    <input placeholder='location' type="search" value={locationSearch} onChange={(e) => {
+                                        setLocationSearch(e.target.value);
+                                        clearTimeout(aa.current);
+                                        aa.current = setTimeout(() => getLocations(e.target.value), 200);
+                                    }
+                                    } />
+                                    </div>
+                                   <div className="field padding-bottom--24 select-location">
+                                       <ul className="select">
+                                            {locationSelect?.map((item) => {
+                                                return <li key={Math.random()} className='option' onClick={()=> {
+                                                    setLocation(item);
+                                                    setLocationFlag(false);
+                                                    browse();
+                                                 }}>{item}</li>;
+                                            })}
+                                        </ul>
+                                    </div></div>:null} 
+                                    {flag ? <div>
+                                        <div>
+                                        <select className="" value={hotelId} onChange={(e) => {
+                                        setHotelId(e.target.value);
                                     }}>
-                                        {['select location', ...locationSelect]?.map((item) => {
-                                            return <option key={Math.random()} value={item}>{item}</option>;
+                                        {['select hotel', ...hotels]?.map((item) => {
+                                            return <option key={Math.random()} value={item.hotelId}>{item.hotelName ? `${item.hotelName}` : `${item}`}</option>;
                                         })}
                                     </select>
-                                </div>
-                                <button onClick={browse}>Browse</button>
-                                {flag ? <div><select className="" value={hotelId} onChange={(e) => {
-                                    setHotelId(e.target.value);
-                                }}>
-                                    {['select hotel', ...hotels]?.map((item) => {
-                                        return <option key={Math.random()} value={item.hotelId}>{item.hotelName ? `${item.hotelName}` : `${item}`}</option>;
-                                    })}
-                                </select>
-                                    <select className="" value={outbound} onChange={(e) => {
-                                        console.log(e.target.value);
-                                        setOutbound(e.target.value);
-                                        getInboundFlights(e.target.value);
-                                    }}>
-                                        {['select outbound-flight', ...firstFlights]?.map((item) => {
-                                            return <option key={Math.random()} value={item.flightId}>{item.airline ? `${item.airline} , ${item.date}` : `${item}`}</option>;
-                                        })}
-                                    </select>
-                                    <select className="" value={inbound} onChange={(e) => {
-                                        console.log(e.target.value);
-                                        setInbound(e.target.value);
-                                    }}>
-                                        {['select inbound-flight', ...secondFlights]?.map((item) => {
-                                            return <option key={Math.random()} value={item.flightId}>{item.airline ? `${item.airline} , ${item.date}` : `${item}`}</option>;
-                                        })}
-                                    </select>
-                                    <div className="field padding-bottom--24">
-                                        <label htmlFor="price">price</label>
-                                        <input type="text" name="price" value={price}
-                                            onChange={(e) => {
-                                                setPrice(e.target.value);
-                                            }} />
                                     </div>
-                                    <div className="field padding-bottom--24">
-                                        <label htmlFor="car">car</label>
-                                        <input type="checkBox" name="car" value={car}
-                                            onChange={(e) => {
-                                                setCar(e.target.checked);
-                                            }} />
-                                    </div>
-                                    <div className="field padding-bottom--24">
-                                        <label htmlFor="description">description</label>
-                                        <input type="text" name="description" value={description}
-                                            onChange={(e) => {
-                                                setDescription(e.target.value);
-                                            }} />
-                                    </div>
-                                    <div className="field padding-bottom--24">
-                                        <label htmlFor="quantity">Reservations</label>
-                                        <input type="number" name="quantity" value={quantity}
-                                            min='20' max='50'
-                                            onChange={(e) => {
-                                                setQuantity(e.target.value);
-                                            }} />
+                                    <div>
+                                        <select className="" value={outbound} onChange={(e) => {
+                                            console.log(e.target.value);
+                                            setOutbound(e.target.value);
+                                            getInboundFlights(e.target.value);
+                                        }}>
+                                            {['select outbound-flight', ...firstFlights]?.map((item) => {
+                                                return <option key={Math.random()} value={item.flightId}>{item.airline ? `${item.airline} , ${item.date}` : `${item}`}</option>;
+                                            })}
+                                        </select>
+                                        </div>
+                                        <div>
+                                        <select className="" value={inbound} onChange={(e) => {
+                                            console.log(e.target.value);
+                                            setInbound(e.target.value);
+                                        }}>
+                                            {['select inbound-flight', ...secondFlights]?.map((item) => {
+                                                return <option key={Math.random()} value={item.flightId}>{item.airline ? `${item.airline} , ${item.date}` : `${item}`}</option>;
+                                            })}
+                                        </select>
+                                        </div>
+                                        <div className="field padding-bottom--24">
+                                            <label htmlFor="price">price</label>
+                                            <input type="text" name="price" value={price}
+                                                onChange={(e) => {
+                                                    setPrice(e.target.value);
+                                                }} />
+                                        </div>
+                                        <div className="field padding-bottom--24">
+                                            <label htmlFor="car">car</label>
+                                            <input type="checkBox" name="car" value={car}
+                                                onChange={(e) => {
+                                                    setCar(e.target.checked);
+                                                }} />
+                                        </div>
+                                        <div className="field padding-bottom--24">
+                                            <label htmlFor="description">description</label>
+                                            <input type="text" name="description" value={description}
+                                                onChange={(e) => {
+                                                    setDescription(e.target.value);
+                                                }} />
+                                        </div>
+                                        <div className="field padding-bottom--24">
+                                            <label htmlFor="quantity">Reservations</label>
+                                            <input type="number" name="quantity" value={quantity}
+                                                min='20' max='50'
+                                                onChange={(e) => {
+                                                    setQuantity(e.target.value);
+                                                }} />
 
-                                    </div>
-                                    <div className="field padding-bottom--24">
-                                        <p style={{ margin: '5%', color: 'red' }}>{parText}</p>
-                                        <button onClick={handleSubmit}>Deal</button>
-                                    </div>
-                                </div> : null}
-                            </form>
+                                        </div>
+                                        <div className="field padding-bottom--24">
+                                            <p style={{ margin: '5%', color: 'red' }}>{parText}</p>
+                                            <button onClick={handleSubmit}>Deal</button>
+                                        </div>
+                                    </div> : null}
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
