@@ -17,14 +17,14 @@ router.post('/', permission, async function (req, res) {
         where: `flight_id = '${req.body.outbound}' or flight_id = '${req.body.inbound}'`,
         orderBy: [],
         join: []
-    })
+    });
     function convertToSQLDate(dateStr) {
         const date = new Date(dateStr);
         return date.toISOString().split("T")[0];
     }
     const start_date = convertToSQLDate(flights[0].flight_date);
     const end_date = convertToSQLDate(flights[1].flight_date);
- 
+
     const { hotelId, location, outbound, inbound, quantity } = req.body;
     const values = [hotelId, location, start_date,
         end_date, outbound, inbound, quantity];
@@ -37,7 +37,7 @@ router.post('/', permission, async function (req, res) {
     );
     if (data.affectedRows > 0) {
         const updateRooms = await createSQLQuery.updateTable('hotel', `deal_package`, `hotel.hotel_id = deal_package.hotel_id`, ['rooms_left'], [`rooms_left - ${Number(quantity)}`], [`hotel.hotel_id = '${hotelId}'`]);
-        res.send(true)
+        res.send(true);
     }
     console.log(data);
 

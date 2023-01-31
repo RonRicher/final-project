@@ -24,7 +24,7 @@ router.get('/hotels', async function (req, res) {
     const { location } = req.query;
     const data = await createSQLQuery.sqlSelect({
         distinct: false,
-        columns: ['hotel_id', 'hotel_name','price'],
+        columns: ['hotel_id', 'hotel_name', 'price'],
         tableName: "hotel",
         where: `location = '${location}'`,
         orderBy: [],
@@ -41,14 +41,16 @@ router.get('/hotels', async function (req, res) {
 
 router.get('/flights/outbound', async function (req, res) {
     const { location } = req.query;
+    console.log('location: ', location);
     const data = await createSQLQuery.sqlSelect({
         distinct: false,
-        columns: ['flight_id', 'airline', 'flight_date','price'],
+        columns: ['flight_id', 'airline', 'flight_date', 'price'],
         tableName: "flight",
-        where: `destination = '${location}' and start_location='Tel Aviv'`,
+        where: `destination = '${location}' and start_location='Tel-Aviv'`,
         orderBy: [],
         join: []
     });
+    console.log('data: ', data);
     const arr = [];
     data.forEach((flight) => arr.push({
         flightId: flight.flight_id,
@@ -56,16 +58,17 @@ router.get('/flights/outbound', async function (req, res) {
         date: flight.flight_date,
         price: flight.price
     }));
+    console.log('arr: ', arr);
     res.send(arr);
 });
 
 router.get('/flights/inbound', async function (req, res) {
-    const { location,flightId} = req.query;
+    const { location, flightId } = req.query;
     const data = await createSQLQuery.sqlSelect({
         distinct: false,
-        columns: ['flight_id', 'airline', 'flight_date','price'],
+        columns: ['flight_id', 'airline', 'flight_date', 'price'],
         tableName: "flight",
-        where: `start_location = '${location}' and destination='Tel Aviv' and flight_date > (SELECT flight_date FROM flight WHERE flight_id = ${flightId})`,
+        where: `start_location = '${location}' and destination='Tel-Aviv' and flight_date > (SELECT flight_date FROM flight WHERE flight_id = ${flightId})`,
         orderBy: [],
         join: []
     });
