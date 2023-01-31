@@ -18,7 +18,7 @@ function Home() {
     return (
         <>
             <NavBar />
-            <h1>Home</h1>
+
             <Search />
             {deals?.map((deal) => {
                 return <Deal key={Math.random()} location={deal.location} startDate={deal.startDate}

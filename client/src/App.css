@@ -1,0 +1,41 @@
+html {
+    font-size: 10px;
+
+}
+
+
+.top-header {
+    background-color: #003580;
+    color: #fff;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    height: 10rem;
+    padding: 3rem 1.5rem;
+}
+
+.logo {
+    color: #fff;
+    font-size: 3rem;
+
+}
+
+.right-links {
+    display: flex;
+    justify-content: space-between;
+    width: 20%;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 0.5rem;
+}
+
+.companyRefFromClient {
+    color: #fff;
+
+}
+
+.NavLink {
+    color: #fff;
+}
+
+#logOutButton {}

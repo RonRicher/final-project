@@ -36,10 +36,9 @@ function LogIn() {
         const data = await response.json();
         if (data) {
             console.log('response: ', response);
-            if (checkbox) {
-                Cookies.set("userName", username, { expires: 7 });
-            }
+
             setUserId(data);
+
             navigate('/home');
         } else {
             setWrong(true);

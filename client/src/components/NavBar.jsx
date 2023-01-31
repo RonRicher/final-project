@@ -1,28 +1,37 @@
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-
+import { useUser } from "../context/userContext";
 
 function NavBar() {
 
-    const [userId, setUserId] = useState("");
-
-    useEffect(() => {
-        setUserId(Cookies.get("userId"));
-    });
+    const { userId } = useUser;
 
     function logOut() {
+
         Cookies.remove("userId");
+        console.log(Cookies.get());
     }
 
     return (
         <header id="navBar">
+            <div className="top-header">
+                <div>
+                    <h2 className="logo">
+                        <NavLink className='NavLink' to="/Home">Home</NavLink>
+                    </h2>
+                </div>
+                <div className="right-links">
+                    <a className="companyRefFromClient" href='http://localhost:4000'>List your company</a>
+                    {userId ? <NavLink className='NavLink' to="/">LogIn</NavLink> :
+                        <NavLink className='NavLink' onClick={logOut} id="logOutButton" to="/">
+                            Logout
+                        </NavLink>}
+                </div>
+            </div>
             <div>
-                <NavLink to="/Home">Home</NavLink>
-                {true ? <NavLink to="/">LogIn</NavLink> :
-                    <NavLink onClick={logOut} id="logOutButton" to="/">
-                        Logout
-                    </NavLink>}
+
+
             </div>
         </header>
     );

@@ -12,7 +12,7 @@ var usersDataRouter = require('./routes/usersData');
 var app = express();
 var nodemailer = require('nodemailer');
 
-app.use(cors({ origin: true, credentials: true }));
+app.use(cors({ origin: ['http://localhost:3000', 'http://localhost:4000'], credentials: true }));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

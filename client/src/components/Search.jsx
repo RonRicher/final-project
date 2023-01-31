@@ -30,8 +30,10 @@ function Search() {
     return (
 
         <div>
-            <p>search</p>
-            <input placeholder='location' type="search" value={locationSearch} onChange={(e) => {
+            <h1>Find your next Deal</h1>
+            <h6>Search deals by location or type of trip..</h6>
+
+            <input placeholder='Where are you going?' type="search" value={locationSearch} onChange={(e) => {
                 setLocationSearch(e.target.value);
                 clearTimeout(aa.current);
                 aa.current = setTimeout(() => getLocations(e.target.value), 500);
