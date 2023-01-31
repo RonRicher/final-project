@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -23,10 +24,17 @@ function Admin() {
         if (data) {
             setRequests(data);
         } else {
-            setParText('you are not an admin');
-            setTimeout(() => navigate('/home'), 2000);
+            if (document.cookie) {
+                setParText('you are not an admin');
+                setTimeout(() => navigate('/home'), 2000);
+            }
+            else {
+                setParText('you are not an admin');
+                setTimeout(() => navigate('/'), 2000);
+            }
         }
     }
+
 
     const acceptRequest = async (companyName) => {
         const response = await fetch(`http://localhost:8080/companies/data/requests/accept`,

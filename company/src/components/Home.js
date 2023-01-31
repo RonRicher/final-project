@@ -1,30 +1,35 @@
 import { useEffect, useState } from "react";
 import NavBar from "./NavBar";
-import '../css/Home.css'
+import '../css/Home.css';
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
-    const [deals,setDeals] = useState([]);
-    useEffect(()=>{
+    const navigate = useNavigate();
+    const [deals, setDeals] = useState([]);
+    useEffect(() => {
+
         getCompanyDeals();
-    },[])
-    const getCompanyDeals = async()=>{
-        const response = await fetch(`http://localhost:8080/companies/data`,{
+
+    }, []);
+    const getCompanyDeals = async () => {
+        const response = await fetch(`http://localhost:8080/companies/data`, {
             method: 'GET',
             credentials: 'include'
         });
         const data = await response.json();
         console.log(data);
         setDeals(data);
-    }
+    };
     return (
         <div id="home-div">
             <NavBar />
             <h1>Your deals</h1>
-            {deals?.map((deal)=>{
+            {deals?.map((deal) => {
                 return <div key={Math.random()}>
                     <p>deal id : {deal.dealId}</p>
                     <p>quantity: {deal.quantity}</p>
-                </div>
+                </div>;
             })}
         </div>
     );

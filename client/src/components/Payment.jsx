@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import { useUser } from '../context/userContext';
+import NavBar from "./NavBar";
+
+
+
+
 function Payment() {
     const navigate = useNavigate();
     const location = useLocation();
@@ -17,6 +22,7 @@ function Payment() {
     const [price, setPrice] = useState(stateData.price);
     const { userId } = useUser();
     const { id } = useParams();
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -40,11 +46,12 @@ function Payment() {
         });
         const data = await response.json();
         if (data) {
-            navigate(`/deals/${id}/payment/confirmation`, { state: { mathRandom, quantity, price, firstName, lastName, email, phone,resLocation:stateData.location} });
+            navigate(`/deals/${id}/payment/confirmation`, { state: { mathRandom, quantity, price, firstName, lastName, email, phone, resLocation: stateData.location } });
         }
     };
     return (
         <div className="login-root">
+            <NavBar />
             <div className="box-root padding-top--24 flex-flex flex-direction--column" style={{ flexGrow: 1, zIndex: 9 }}>
                 <div className="formbg-outer">
                     <div className="formbg">

@@ -15,21 +15,22 @@ function NavBar() {
             <div className="top-header">
                 <div>
                     <h2 className="logo">
-                        <NavLink className='NavLink' to="/Home">Home</NavLink>
+                        <NavLink className='NavLink' to="/Home">Tripify.com</NavLink>
                     </h2>
                 </div>
                 <div className="right-links">
-                        <NavLink className='NavLink' to="/deal">
-                           Create Deal
-                        </NavLink>
-                        <NavLink className='NavLink' to="/admin">
-                           admin
-                        </NavLink>
-                        <NavLink className='NavLink' onClick={logOut} id="logOutButton" to="/">
-                            Logout
-                        </NavLink> 
+                    <NavLink className='NavLink' to="/deal">
+                        Create Deal
+                    </NavLink>
+                    <NavLink className='NavLink' to="/admin">
+                        admin
+                    </NavLink>
+                    <NavLink className='NavLink' onClick={logOut} id="logOutButton" to="/">
+                        Logout
+                    </NavLink>
                 </div>
             </div>
+
             <div>
 
 

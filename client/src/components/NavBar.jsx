@@ -18,10 +18,11 @@ function NavBar() {
             <div className="top-header">
                 <div>
                     <h2 className="logo">
-                        <NavLink className='NavLink' to="/Home">Home</NavLink>
+                        <NavLink className='NavLink' to="/Home">Tripify.com</NavLink>
                     </h2>
                 </div>
                 <div className="right-links">
+                    <a className="companyRefFromClient" href="/personal/trip">plan your own trip</a>
                     <a className="companyRefFromClient" href='http://localhost:4000'>List your company</a>
                     {userId ? <NavLink className='NavLink' to="/">LogIn</NavLink> :
                         <NavLink className='NavLink' onClick={logOut} id="logOutButton" to="/">
@@ -29,6 +30,7 @@ function NavBar() {
                         </NavLink>}
                 </div>
             </div>
+
             <div>
 
 
