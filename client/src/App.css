@@ -39,3 +39,71 @@ html {
 }
 
 #logOutButton {}
+
+.header-search {
+    background-color: #003580;
+    height: 15rem;
+    padding: 1rem 1rem;
+}
+
+.main-title {
+    font-size: 5rem;
+    color: #fff;
+    font-weight: bold;
+}
+
+.sub-title {
+    font-size: 3rem;
+    color: #fff;
+    font-weight: 400;
+    margin-top: 2rem;
+}
+
+.search-box {
+    padding: 0rem 3.5rem 0rem 5rem;
+    width: 90%;
+    height: 5rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    background-image: url('//cf.bstatic.com/static/img/cross_product_index/accommodation/07ca5cacc9d77a7b50ca3c424ecd606114d9be75.svg');
+    background-repeat: no-repeat;
+    background-size: 2rem;
+    background-position: 16px center;
+    box-sizing: border-box;
+    border-color: navy;
+    outline: none;
+    width: 100%;
+    cursor: pointer;
+}
+
+.searchComp {
+    border: 4px solid navy;
+    width: 95%;
+    margin: 0 auto;
+}
+
+select {}
+
+select:hover {
+    background-color: whitesmoke;
+}
+
+option:hover {
+    background-color: whitesmoke;
+}
+
+option {
+    color: navy;
+    background-color: whitesmoke;
+}
+
+.dates {
+    width: 95%;
+    margin: 0 auto;
+    display: flex;
+    width: 95%;
+}
+
+.date {
+    width: 50%;
+}
