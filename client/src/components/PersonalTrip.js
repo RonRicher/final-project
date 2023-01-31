@@ -1,4 +1,5 @@
 import { useRef,useMemo,useState } from "react";
+import {useNavigate} from 'react-router-dom'
 import '../css/PersonalTrip.css'
 
 function PersonalTrip() {
@@ -17,7 +18,7 @@ function PersonalTrip() {
     const [firstFlights, setFirstFlights] = useState([]);
     const [hotels, setHotels] = useState([]);
     const [locationFlag, setLocationFlag] = useState(true);
-
+    const navigate = useNavigate();
     const getLocations = async (value) => {
         const response = await fetch(`http://localhost:8080/search/location?search=${value}`);
         const data = await response.json();
@@ -72,6 +73,9 @@ function PersonalTrip() {
             })
         })
         const data = await response.json();
+        if(data){
+            navigate('/personal/trip/payment',{state:{price:totalPrice * quantity,location,quantity,price:totalPrice}})
+        }
     }
     return (
         <div id="create-deal-div">
@@ -145,7 +149,7 @@ function PersonalTrip() {
                                         <div className="field padding-bottom--24">
                                             <p style={{ margin: '5%', color: 'red' }}>{parText}</p>
                                             <p>{totalPrice * quantity}$</p>
-                                            <button onClick={handleSubmit}>Deal</button>
+                                            <button onClick={handleSubmit}>Payment</button>
                                         </div>
                                     </div> : null}
                                 </form>

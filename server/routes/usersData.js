@@ -120,6 +120,33 @@ router.post('/payment',permission, async function (req, res) {
 
 });
 
+router.post('/trip/payment',permission, async function (req, res) {
+    if (res.locals.permission !== 'admin' && res.locals.permission !== 'client') {
+        res.send(false);
+        return;
+    }
+    const { clientId, price, firstName, lastName,
+        phone, email, quantity, random,location } = req.body;
+    const data = await createSQLQuery.insertIntoTable('client_trip', ['client_id', 'quantity', 'price', 'res_number'], [clientId, quantity, price, random]);
+    console.log('data.affectedRows:', data.affectedRows);
+    if (data.affectedRows > 0) {
+        let mailOptions = {
+            from: 'elyasaf11@gmail.com',
+            to: `${email}`,
+            subject: `Your reservation Number ${random} to ${location}`,
+            text: `Thanks for joining us to ${location}, for this trip you paid ${price}$ for ${quantity} people`
+        };
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                res.send(true);
+            }
+        });
+    }
+
+});
+
 router.get('/search', async function (req, res) {
     const { location, type, startDate, endDate } = req.query;
     console.log(req.query);

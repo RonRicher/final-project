@@ -8,9 +8,7 @@ export default function UserProvider({ children }) {
 
     useEffect(() => {
         const userId = localStorage.getItem('userId');
-        if (!userId) {
-            localStorage.clear();
-        }
+     setUserId(JSON.parse(localStorage.getItem('userId')))
     }, [userId]);
 
     return (

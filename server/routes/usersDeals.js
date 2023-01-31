@@ -37,6 +37,7 @@ router.post('/', permission, async function (req, res) {
     );
     if (data.affectedRows > 0) {
         const updateRooms = await createSQLQuery.updateTable('hotel', `deal_package`, `hotel.hotel_id = deal_package.hotel_id`, ['rooms_left'], [`rooms_left - ${Number(quantity)}`], [`hotel.hotel_id = '${hotelId}'`]);
+        res.send(true)
     }
     console.log(data);
 
