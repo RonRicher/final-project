@@ -32,6 +32,7 @@ function Admin() {
         const response = await fetch(`http://localhost:8080/companies/data/requests/accept`,
             {
                 method: "PUT",
+                credentials: 'include',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     companyName: companyName
@@ -46,6 +47,7 @@ function Admin() {
         const response = await fetch(`http://localhost:8080/companies/data/requests/decline`,
             {
                 method: "DELETE",
+                credentials: 'include',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     companyName: companyName

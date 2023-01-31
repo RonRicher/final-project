@@ -6,6 +6,36 @@ const createSQLQuery = require('../createSqlQuery.js');
 const permission = require('../permission');
 
 
+router.get('/',permission, async function (req, res) {
+    if (res.locals.permission !== 'admin' && res.locals.permission !== 'company') {
+        res.send(false);
+        return;
+    }
+    const companyId = await createSQLQuery.sqlSelect({
+        distinct: false,
+        columns: ['company_id'],
+        tableName: "company_details",
+        where: `user_id = '${req.cookies.userId}'`,
+        orderBy: [],
+        join: []
+    })
+    const data = await createSQLQuery.sqlSelect({
+        distinct: false,
+        columns: ['SUM(quantity) as quantity', 'client_deal.deal_id' ],
+        tableName: "client_deal ",
+        where: `company_id = ${companyId[0].company_id}`,
+        orderBy: [],
+        join: ['deal_package ON client_deal.deal_id = deal_package.deal_id'],
+        groupBy: 'client_deal.deal_id'
+    });
+    console.log(data);
+    const arr = [];
+    data.forEach((deal) => arr.push({
+       dealId: deal.deal_id,
+       quantity: deal.quantity
+    }));
+    res.send(arr);
+});
 
 router.get('/hotels', async function (req, res) {
     const data = await createSQLQuery.sqlSelect({
@@ -195,4 +225,5 @@ router.get('/search/flights/inbound', async function (req, res) {
     }));
     res.send(arr);
 });
+
 module.exports = router;

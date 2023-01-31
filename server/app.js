@@ -3,7 +3,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+var deleteFlight = require('./cron');
 
+deleteFlight();
 var usersRouter = require('./routes/users');
 var companiesRouter = require('./routes/company');
 var companiesDataRouter = require('./routes/companiesData');

@@ -4,7 +4,6 @@ const createSQLQuery = require('./createSqlQuery');
 
 
 const permission = async (req, res, next) => {
-
     console.log('cookie: ', req.cookies.userId);
     const data = await createSQLQuery.sqlSelect({
         distinct: false,
