@@ -1,18 +1,13 @@
-import { useRef } from "react";
-import { useState } from "react";
-import '../css/CreateDeal.css'
+import { useRef,useMemo,useState } from "react";
+import '../css/PersonalTrip.css'
 
-function CreateDeal() {
-    const [description, setDescription] = useState("");
-    const [car, setCar] = useState(false);
-    const [price, setPrice] = useState("");
+function PersonalTrip() {
+    const [price, setPrice] = useState(0);
     const [location, setLocation] = useState("");
-    const [endDate, setEndDate] = useState("");
-    const [startDate, setStartDate] = useState("");
     const [inbound, setInbound] = useState("");
     const [outbound, setOutbound] = useState("");
     const [hotelId, setHotelId] = useState("");
-    const [quantity, setQuantity] = useState(20);
+    const [quantity, setQuantity] = useState(1);
     const [locationSelect, setLocationSelect] = useState([]);
     const [secondFlights, setSecondFlights] = useState([]);
     const [flag, setFlag] = useState(false);
@@ -31,7 +26,7 @@ function CreateDeal() {
         setLocation('');
     };
 
-    const browse = async (item) => { 
+    const browse = async (item) => {
         console.log(location)
         const response = await fetch(`http://localhost:8080/search/hotels?location=${item}`);
         const data = await response.json();
@@ -50,13 +45,21 @@ function CreateDeal() {
         setSecondFlights(data);
     }
 
+    const totalPrice = useMemo(()=> {
+        console.log(firstFlights, outbound,firstFlights.find(flight=>flight.flightId === outbound * 1 ))
+       const hotelPrice = hotels.find(hotel=>hotel.hotelId === hotelId * 1)?.price * 1 || 0;
+       const outboundPrice = firstFlights.find(flight=>flight.flightId === outbound * 1 )?.price|| 0;
+       const inboundPrice = secondFlights.find(flight=>flight.flightId === inbound * 1)?.price || 0;
+       return hotelPrice + inboundPrice + outboundPrice; 
+    },[hotelId,inbound,outbound])
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log({
-            hotelId, outbound, location, inbound, description, quantity, car, price
+            hotelId, outbound, location, inbound, quantity
         })
-        const response = await fetch(`http://localhost:8080/companies/deals`, {
+        const response = await fetch(`http://localhost:8080/users/deals`, {
             method: "POST",
             credentials: 'include',
             headers: { "Content-Type": "application/json" },
@@ -65,19 +68,10 @@ function CreateDeal() {
                 location,
                 outbound,
                 inbound,
-                price,
-                car: car ? 1 : 0,
-                description,
-                reservations: quantity
+                quantity
             })
         })
         const data = await response.json();
-        if (data) {
-            setParText('You have successfully registered');
-            setTimeout(() => {
-            }, 2000);
-
-        }
     }
     return (
         <div id="create-deal-div">
@@ -102,7 +96,7 @@ function CreateDeal() {
                                                 return <li key={Math.random()} className='option' onClick={()=> {
                                                     setLocation(item);
                                                     setLocationFlag(false);
-                                                   browse(item);
+                                                    browse(item);
                                                  }}>&#x1F4CD;&nbsp;&nbsp;&nbsp;&nbsp;{item}</li>;
                                             })}
                                         </ul>
@@ -111,10 +105,11 @@ function CreateDeal() {
                                         <button onClick={()=> setFlag(false)} id='change-location'>change location</button>
                                         <div>
                                         <select className="" value={hotelId} onChange={(e) => {
+                                            console.log(e.target,e.target.value);
                                         setHotelId(e.target.value);
                                     }}>
                                         {['select hotel', ...hotels]?.map((item) => {
-                                            return <option key={Math.random()} value={item.hotelId}>{item.hotelName ? `${item.hotelName}` : `${item}`}</option>;
+                                            return <option key={Math.random()} data-price={`${item.price}`} value={item.hotelId}>{item.hotelName ? `${item.hotelName} , ${item.price}` : `${item}`}</option>;
                                         })}
                                     </select>
                                     </div>
@@ -125,7 +120,7 @@ function CreateDeal() {
                                             getInboundFlights(e.target.value);
                                         }}>
                                             {['select outbound-flight', ...firstFlights]?.map((item) => {
-                                                return <option key={Math.random()} value={item.flightId}>{item.airline ? `${item.airline} , ${item.date}` : `${item}`}</option>;
+                                                return <option key={Math.random()}  value={item.flightId}>{item.airline ? `${item.airline} , ${item.date}` : `${item}`}</option>;
                                             })}
                                         </select>
                                         </div>
@@ -140,37 +135,16 @@ function CreateDeal() {
                                         </select>
                                         </div>
                                         <div className="field padding-bottom--24">
-                                            <label htmlFor="price">price</label>
-                                            <input type="text" name="price" value={price}
-                                                onChange={(e) => {
-                                                    setPrice(e.target.value);
-                                                }} />
-                                        </div>
-                                        <div className="field padding-bottom--24">
-                                            <label htmlFor="car">car</label>
-                                            <input type="checkBox" name="car" value={car}
-                                                onChange={(e) => {
-                                                    setCar(e.target.checked);
-                                                }} />
-                                        </div>
-                                        <div className="field padding-bottom--24">
-                                            <label htmlFor="description">description</label>
-                                            <input type="text" name="description" value={description}
-                                                onChange={(e) => {
-                                                    setDescription(e.target.value);
-                                                }} />
-                                        </div>
-                                        <div className="field padding-bottom--24">
-                                            <label htmlFor="quantity">Reservations</label>
+                                            <label htmlFor="quantity">Quantity</label>
                                             <input type="number" name="quantity" value={quantity}
-                                                min='20' max='50'
+                                                min='1' max='10'
                                                 onChange={(e) => {
                                                     setQuantity(e.target.value);
                                                 }} />
-
                                         </div>
                                         <div className="field padding-bottom--24">
                                             <p style={{ margin: '5%', color: 'red' }}>{parText}</p>
+                                            <p>{totalPrice * quantity}$</p>
                                             <button onClick={handleSubmit}>Deal</button>
                                         </div>
                                     </div> : null}
@@ -184,4 +158,4 @@ function CreateDeal() {
     );
 }
 
-export default CreateDeal;
+export default PersonalTrip;

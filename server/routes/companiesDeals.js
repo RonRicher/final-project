@@ -5,10 +5,6 @@ const con = require('../connection.js');
 const createSQLQuery = require('../createSqlQuery.js');
 const permission = require('../permission');
 
-
-
-
-
 router.post('/', permission, async function (req, res) {
     if (res.locals.permission !== 'admin' && res.locals.permission !== 'company') {
         res.send(false);

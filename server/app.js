@@ -11,6 +11,8 @@ var companiesRouter = require('./routes/company');
 var companiesDataRouter = require('./routes/companiesData');
 var companiesDealsRouter = require('./routes/companiesDeals');
 var usersDataRouter = require('./routes/usersData');
+var usersDealsRouter = require('./routes/usersDeals');
+var searchRouter = require('./routes/search');
 var app = express();
 var nodemailer = require('nodemailer');
 
@@ -27,4 +29,6 @@ app.use('/companies', companiesRouter);
 app.use('/companies/data', companiesDataRouter);
 app.use('/companies/deals', companiesDealsRouter);
 app.use('/users/data', usersDataRouter);
+app.use('/users/deals', usersDealsRouter);
+app.use('/search' , searchRouter);
 module.exports = app;

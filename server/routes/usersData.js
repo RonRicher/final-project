@@ -97,7 +97,7 @@ router.post('/payment',permission, async function (req, res) {
         return;
     }
     const { dealId, clientId, quantity, price, firstName, lastName,
-        phone, email, prevReservations, random } = req.body;
+        phone, email, prevReservations, random,location } = req.body;
     const data = await createSQLQuery.insertIntoTable('client_deal', ['deal_id', 'client_id', 'quantity', 'price', 'res_number'], [dealId, clientId, quantity, price, random]);
     console.log('data.affectedRows:', data.affectedRows);
     if (data.affectedRows > 0) {
@@ -107,7 +107,7 @@ router.post('/payment',permission, async function (req, res) {
             from: 'elyasaf11@gmail.com',
             to: `${email}`,
             subject: `Your reservation to Paris`,
-            text: `Thanks for joining us to paris, for this trip you paid ${price} for ${quantity} people`
+            text: `Thanks for joining us to ${location}, for this trip you paid ${price} for ${quantity} people`
         };
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
