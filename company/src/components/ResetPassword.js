@@ -37,7 +37,7 @@ function ResetPassword() {
                                         }} />
                                 </div>
                                 <div className="field padding-bottom--24">
-                                    <p style={{ margin: '5%', color: 'red' }}>{parText}</p>
+                                    <p className='parText' style={{ margin: '5%', color: 'red' }}>{parText}</p>
                                     <button onClick={handleSubmit}>Send</button>
                                 </div>
                             </form>

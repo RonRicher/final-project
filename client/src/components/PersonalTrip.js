@@ -1,6 +1,6 @@
 import { useRef, useMemo, useState } from "react";
-import { useNavigate } from 'react-router-dom'
-import '../css/PersonalTrip.css'
+import { useNavigate } from 'react-router-dom';
+import '../css/PersonalTrip.css';
 
 function PersonalTrip() {
     const [location, setLocation] = useState("");
@@ -30,7 +30,7 @@ function PersonalTrip() {
     };
 
     const browse = async (item) => {
-        console.log(location)
+        console.log(location);
         const response = await fetch(`http://localhost:8080/search/hotels?location=${item}`);
         const data = await response.json();
         setHotels(data);
@@ -43,43 +43,43 @@ function PersonalTrip() {
 
     const getInboundFlights = async (flightId) => {
         console.log(typeof flightId);
-        if(!flightId || typeof Number(flightId) !== 'number'|| flightId === 'select outbound-flight'){
-            setParText('Please choose outbound flight')
+        if (!flightId || typeof Number(flightId) !== 'number' || flightId === 'select outbound-flight') {
+            setParText('Please choose outbound flight');
             return;
         }
-        console.log("fetched outbound")
+        console.log("fetched outbound");
         const flightResponse = await fetch(`http://localhost:8080/search/flights/inbound?location=${location}&flightId=${flightId}`);
         const data = await flightResponse.json();
         console.log(data);
         setSecondFlights(data);
-    }
+    };
 
     const totalPrice = useMemo(() => {
-        console.log(firstFlights, outbound, firstFlights.find(flight => flight.flightId === outbound * 1))
+        console.log(firstFlights, outbound, firstFlights.find(flight => flight.flightId === outbound * 1));
         const hotelPrice = hotels.find(hotel => hotel.hotelId === hotelId * 1)?.price * 1 || 0;
         const outboundPrice = firstFlights.find(flight => flight.flightId === outbound * 1)?.price || 0;
         const inboundPrice = secondFlights.find(flight => flight.flightId === inbound * 1)?.price || 0;
         return hotelPrice + inboundPrice + outboundPrice;
-    }, [hotelId, inbound, outbound])
+    }, [hotelId, inbound, outbound]);
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(outbound,inbound)
-        if(location === '' ){
-            setParText('Please choose location')
+        console.log(outbound, inbound);
+        if (location === '') {
+            setParText('Please choose location');
             return;
         }
-        if(hotelId === '' || hotelId === 'select hotel'){
-            setParText('Please choose hotel')
+        if (hotelId === '' || hotelId === 'select hotel') {
+            setParText('Please choose hotel');
             return;
         }
-        if(!outbound || typeof Number(outbound) !== 'number'){
-            setParText('Please choose outbound flight')
+        if (!outbound || typeof Number(outbound) !== 'number') {
+            setParText('Please choose outbound flight');
             return;
         }
-        if(!inbound || typeof Number(inbound) !== 'number'){
-            setParText('Please choose inbound flight')
+        if (!inbound || typeof Number(inbound) !== 'number') {
+            setParText('Please choose inbound flight');
             return;
         }
         const response = await fetch(`http://localhost:8080/users/deals`, {
@@ -93,12 +93,12 @@ function PersonalTrip() {
                 inbound,
                 quantity
             })
-        })
+        });
         const data = await response.json();
         if (data) {
-            navigate('/personal/trip/payment', { state: { price: totalPrice * quantity, location, quantity,outbound,inbound,hotelId}})
+            navigate('/personal/trip/payment', { state: { price: totalPrice * quantity, location, quantity, outbound, inbound, hotelId } });
         }
-    }
+    };
     return (
         <div id="create-deal-div">
             <div className="login-root">
@@ -131,20 +131,20 @@ function PersonalTrip() {
                                         <button onClick={() => {
                                             setFlag(false);
                                             setSecondFlightsFlag(false);
-                                            }} id='change-location'>change location</button>
+                                        }} id='change-location'>change location</button>
                                         <div>
                                             <select value={hotelId} onChange={(e) => {
                                                 console.log(e.target, e.target.value);
                                                 setHotelId(e.target.value);
                                             }}>
                                                 {['select hotel', ...hotels]?.map((item) => {
-                                                    return <option key={Math.random()}  value={item.hotelId}>{item.hotelName ? `${item.hotelName} , Rooms left: ${item.reservations}, ${item.price}$` : `${item}`}</option>;
+                                                    return <option key={Math.random()} value={item.hotelId}>{item.hotelName ? `${item.hotelName} , Rooms left: ${item.reservations}, ${item.price}$` : `${item}`}</option>;
                                                 })}
                                             </select>
                                         </div>
                                         <div>
                                             <select value={outbound} onChange={(e) => {
-                                                {e.target.value !== 'select outbound-flight'? setOutbound(e.target.value): setOutbound('')};
+                                                { e.target.value !== 'select outbound-flight' ? setOutbound(e.target.value) : setOutbound(''); };
                                                 getInboundFlights(e.target.value);
                                                 setSecondFlightsFlag(true);
                                             }}>
@@ -172,7 +172,7 @@ function PersonalTrip() {
                                                 }} />
                                         </div>
                                         <div className="field padding-bottom--24">
-                                            <p style={{ margin: '5%', color: 'red' }}>{parText}</p>
+                                            <p className='parText' style={{ margin: '5%', color: 'red' }}>{parText}</p>
                                             <p id="price">{totalPrice * quantity}$</p>
                                             <button onClick={handleSubmit}> move to payment</button>
                                         </div>

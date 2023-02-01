@@ -44,11 +44,22 @@ html {
   background-color: aliceblue;
 }
 
-#logOutButton{
-  margin: 5rem;
+.carCheck {
+  display: flex;
+  gap: 5rem;
 
 }
 
-#admin-btn{
-  margin: 5rem;
+#paymentForm label {
+  margin: 2rem 0;
+  font-size: 2rem;
+
+}
+
+#paymentForm #carInput {
+  width: 2rem;
+}
+
+.parText {
+  font-size: 2rem;
 }

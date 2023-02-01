@@ -46,7 +46,7 @@ function Search() {
                         aa.current = setTimeout(() => getLocations(e.target.value), 500);
                     }
                     } />
-                    <ul className="select">
+                    <ul className="ulSelect">
                         {locationSelect?.map((item) => {
                             return locationFlag ? <li className="option" key={Math.random()} onClick={() => {
                                 setLocation(item);
@@ -76,6 +76,8 @@ function Search() {
                         <option className="typeList" value="type">type</option>
                     </select>
                 </div>
+            </div>
+            <div className="clickDealsDiv">
                 <button id='clickDeals' onClick={() => getSearchDeals(location, type)}>Search</button>
             </div>
         </div >

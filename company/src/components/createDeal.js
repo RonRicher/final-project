@@ -1,7 +1,8 @@
 import { useRef } from "react";
 import { useState } from "react";
-import '../css/CreateDeal.css'
-import {useNavigate} from "react-router-dom"
+import '../css/CreateDeal.css';
+import { useNavigate } from "react-router-dom";
+import NavBar from "./NavBar";
 
 function CreateDeal() {
     const [description, setDescription] = useState("");
@@ -22,7 +23,7 @@ function CreateDeal() {
     const [hotels, setHotels] = useState([]);
     const [locationFlag, setLocationFlag] = useState(true);
     const [secondFlightsFlag, setSecondFlightsFlag] = useState(false);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const getLocations = async (value) => {
         const response = await fetch(`http://localhost:8080/search/location?search=${value}`);
@@ -33,7 +34,7 @@ function CreateDeal() {
     };
 
     const browse = async (item) => {
-        console.log(location)
+        console.log(location);
         const response = await fetch(`http://localhost:8080/search/hotels?location=${item}`);
         const data = await response.json();
         setHotels(data);
@@ -45,7 +46,7 @@ function CreateDeal() {
     };
 
     const getInboundFlights = async (flightId) => {
-        if(!flightId || typeof Number(flightId) !== 'number'|| flightId === 'select outbound-flight'){
+        if (!flightId || typeof Number(flightId) !== 'number' || flightId === 'select outbound-flight') {
             setParText('choose outbound-flight');
             return;
         }
@@ -53,33 +54,33 @@ function CreateDeal() {
         const data = await flightResponse.json();
         console.log(data);
         setSecondFlights(data);
-    }
+    };
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const pattern = /^.{30,100}$/;
-        if(location === '' ){
-            setParText('Please choose location')
+        if (location === '') {
+            setParText('Please choose location');
             return;
         }
-        if(hotelId === '' || hotelId === 'select hotel'){
-            setParText('Please choose hotel')
+        if (hotelId === '' || hotelId === 'select hotel') {
+            setParText('Please choose hotel');
             return;
         }
-        if(!outbound || typeof Number(outbound) !== 'number'){
-            setParText('Please choose outbound flight')
+        if (!outbound || typeof Number(outbound) !== 'number') {
+            setParText('Please choose outbound flight');
             return;
         }
-        if(!inbound || typeof Number(inbound) !== 'number'){
-            setParText('Please choose inbound flight')
+        if (!inbound || typeof Number(inbound) !== 'number') {
+            setParText('Please choose inbound flight');
             return;
         }
-        if(price <= 0){
+        if (price <= 0) {
             setParText('Please enter price');
             return;
         }
-        if(!pattern.test(description)){
+        if (!pattern.test(description)) {
             setParText('The description must be between 30 characters to 100 characters');
         }
         const response = await fetch(`http://localhost:8080/companies/deals`, {
@@ -96,126 +97,135 @@ function CreateDeal() {
                 description,
                 reservations: quantity
             })
-        })
+        });
         const data = await response.json();
         if (data) {
             setParText('You have successfully created a new deal');
             setTimeout(() => {
-                navigate('/')
-            }, 2000);
+                navigate('/home');
+            }, 1500);
 
         }
-    }
+    };
     return (
+
         <div id="create-deal-div">
+            <NavBar />
             <div className="login-root">
                 <div className="box-root padding-top--24 flex-flex flex-direction--column" style={{ flexGrow: 1, zIndex: 9 }}>
                     <div className="formbg-outer">
                         <div className="formbg">
                             <div className="formbg-inner padding-horizontal--48">
-                                <span className="padding-bottom--15">Create New Deal</span>
-                                <form id="stripe-login">
-                                    {!flag ? <div><p>Choose Location</p><div className="field padding-bottom--24">
-                                        <input placeholder='location' type="search" value={locationSearch} onChange={(e) => {
-                                            setLocationSearch(e.target.value);
-                                            clearTimeout(aa.current);
-                                            aa.current = setTimeout(() => getLocations(e.target.value), 200);
-                                        }
-                                        } />
-                                    </div>
-                                        <div className="field padding-bottom--24 select-location">
-                                            <ul className="select">
-                                                {locationSelect?.map((item) => {
-                                                    return <li key={Math.random()} className='option' onClick={() => {
-                                                        setLocation(item);
-                                                        setLocationFlag(false);
-                                                        browse(item);
-                                                    }}>&#x1F4CD;&nbsp;&nbsp;&nbsp;&nbsp;{item}</li>;
-                                                })}
-                                            </ul>
-                                        </div></div> : null}
-                                    {flag ? <div>
-                                        <button onClick={()=> {
-                                            setFlag(false);
-                                            setSecondFlightsFlag(false);
-                                            setInbound("");
-                                            setOutbound("");
-                                            setHotelId("");
-                                            setPrice("");
-                                            setDescription("");
-                                            setCar(false);
-                                            }} id='change-location'>change location</button>
-                                        <div>
-                                            <select value={hotelId} onChange={(e) => {
-                                                setHotelId(e.target.value);
-                                            }}>
-                                                {['select hotel', ...hotels]?.map((item) => {
-                                                    return <option key={Math.random()} value={item.hotelId}>{item.hotelName ? `${item.hotelName}, Rooms left: ${item.reservations}` : `${item}`}</option>;
-                                                })}
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <select value={outbound} onChange={(e) => {
-                                                setOutbound(e.target.value);
-                                                getInboundFlights(e.target.value);
-                                                setSecondFlightsFlag(true);
-                                            }}>
-                                                {['select outbound-flight', ...firstFlights]?.map((item) => {
-                                                    return <option key={Math.random()} value={item.flightId}>{item.airline ? `${item.airline} , ${item.date}` : `${item}`}</option>;
-                                                })}
-                                            </select>
-                                        </div>
-                                        {secondFlightsFlag ? <div>
-                                            <select value={inbound} onChange={(e) => {
-                                                setInbound(e.target.value);
-                                            }}>
-                                                {['select inbound-flight', ...secondFlights]?.map((item) => {
-                                                    return <option key={Math.random()} value={item.flightId}>{item.airline ? `${item.airline} , ${item.date}` : `${item}`}</option>;
-                                                })}
-                                            </select>
-                                        </div> : null}
-                                        <div className="field padding-bottom--24">
-                                            <label htmlFor="price">price</label>
-                                            <input type="text" name="price" value={price}
-                                                onChange={(e) => {
-                                                    setPrice(e.target.value);
-                                                }} />
-                                        </div>
-                                        <div className="field padding-bottom--24">
-                                            <label htmlFor="car">car</label>
-                                            <input type="checkBox" name="car" value={car}
-                                                onChange={(e) => {
-                                                    setCar(e.target.checked);
-                                                }} />
-                                        </div>
-                                        <div className="field padding-bottom--24">
-                                            <label htmlFor="description">description</label>
-                                            <input type="text" name="description" id="text-area" value={description}
-                                                onChange={(e) => {
-                                                    setDescription(e.target.value);
-                                                }} />
-                                        </div>
-                                        <div className="field padding-bottom--24">
-                                            <label htmlFor="quantity">Reservations</label>
-                                            <input type="number" name="quantity" value={quantity}
-                                                min='20' max='50'
-                                                onChange={(e) => {
-                                                    setQuantity(e.target.value);
-                                                }} />
+                                <div id="paymentForm">
 
+                                    <form id="stripe-login">
+                                        {!flag ? <div><div className="field padding-bottom--24">
+                                            <span className="padding-bottom--15">Create New Deal</span>
+                                            <input placeholder='location' type="search" value={locationSearch} onChange={(e) => {
+                                                setLocationSearch(e.target.value);
+                                                clearTimeout(aa.current);
+                                                aa.current = setTimeout(() => getLocations(e.target.value), 200);
+                                            }
+                                            } />
                                         </div>
-                                        <div className="field padding-bottom--24">
-                                            <p style={{ margin: '5%', color: 'red' }}>{parText}</p>
-                                            <button onClick={handleSubmit}>Deal</button>
-                                        </div>
-                                    </div> : null}
-                                </form>
+                                            <div className="field padding-bottom--24 select-location">
+                                                <ul className="select">
+                                                    {locationSelect?.map((item) => {
+                                                        return <li key={Math.random()} className='option' onClick={() => {
+                                                            setLocation(item);
+                                                            setLocationFlag(false);
+                                                            browse(item);
+                                                        }}>&#x1F4CD;&nbsp;&nbsp;&nbsp;&nbsp;{item}</li>;
+                                                    })}
+                                                </ul>
+                                            </div></div> : null}
+                                        {flag ? <div>
+                                            <div className="flexTitleButton">
+                                                <span className="">Create New Deal</span>
+                                                <p onClick={() => {
+                                                    setFlag(false);
+                                                    setSecondFlightsFlag(false);
+                                                    setInbound("");
+                                                    setOutbound("");
+                                                    setHotelId("");
+                                                    setPrice("");
+                                                    setDescription("");
+                                                    setCar(false);
+                                                }} id='change-location'>&larr;</p>
+                                            </div>
+                                            <div>
+                                                <select value={hotelId} onChange={(e) => {
+                                                    setHotelId(e.target.value);
+                                                }}>
+                                                    {['select hotel', ...hotels]?.map((item) => {
+                                                        return <option key={Math.random()} value={item.hotelId}>{item.hotelName ? `${item.hotelName}, Rooms left: ${item.reservations}` : `${item}`}</option>;
+                                                    })}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <select value={outbound} onChange={(e) => {
+                                                    setOutbound(e.target.value);
+                                                    getInboundFlights(e.target.value);
+                                                    setSecondFlightsFlag(true);
+                                                }}>
+                                                    {['select outbound-flight', ...firstFlights]?.map((item) => {
+                                                        return <option key={Math.random()} value={item.flightId}>{item.airline ? `${item.airline} , ${item.date}` : `${item}`}</option>;
+                                                    })}
+                                                </select>
+                                            </div>
+                                            {secondFlightsFlag ? <div>
+                                                <select value={inbound} onChange={(e) => {
+                                                    setInbound(e.target.value);
+                                                }}>
+                                                    {['select inbound-flight', ...secondFlights]?.map((item) => {
+                                                        return <option key={Math.random()} value={item.flightId}>{item.airline ? `${item.airline} , ${item.date}` : `${item}`}</option>;
+                                                    })}
+                                                </select>
+                                            </div> : null}
+                                            <div className="field padding-bottom--24">
+                                                <label htmlFor="price">Price</label>
+                                                <input type="text" name="price" value={price}
+                                                    onChange={(e) => {
+                                                        setPrice(e.target.value);
+                                                    }} />
+                                            </div>
+                                            <div className="carCheck padding-bottom--24">
+                                                <label htmlFor="car">Car</label>
+                                                <input type="checkBox" id='carInput' name="car" value={car}
+                                                    onChange={(e) => {
+                                                        setCar(e.target.checked);
+                                                    }} />
+                                            </div>
+                                            <div className="field padding-bottom--24">
+                                                <label htmlFor="description">Description</label>
+                                                <input type="text" name="description" id="text-area" value={description}
+                                                    onChange={(e) => {
+                                                        setDescription(e.target.value);
+                                                    }} />
+                                            </div>
+                                            <div className="field padding-bottom--24">
+                                                <label htmlFor="quantity">Reservations</label>
+                                                <input type="number" name="quantity" value={quantity}
+                                                    min='20' max='50'
+                                                    onChange={(e) => {
+                                                        setQuantity(e.target.value);
+                                                    }} />
+
+                                            </div>
+                                            <div className="field padding-bottom--24">
+                                                <p className="parText" style={{ margin: '5%', color: 'red' }}>{parText}</p>
+                                                <button onClick={handleSubmit}>Create Deal</button>
+                                            </div>
+                                        </div> : null}
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
     );
 }
 

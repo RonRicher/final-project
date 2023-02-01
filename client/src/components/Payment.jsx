@@ -175,7 +175,7 @@ function Payment() {
 
                                     <div className="field padding-bottom--24">
                                         <p id="payment-price">Price: {price}$</p>
-                                        <p style={{ margin: '5%', color: 'red' }}>{parText}</p>
+                                        <p className='parText' style={{ margin: '5%', color: 'red' }}>{parText}</p>
                                         <button onClick={handleSubmit}>pay</button>
                                     </div>
                                 </form>

@@ -69,7 +69,7 @@ function Register(props) {
                 <div className="formbg-outer">
                     <div className="formbg">
                         <button id="exit" onClick={() => {
-                            props.setFlag(false)
+                            props.setFlag(false);
                             setExit(true);
                         }}>X</button>
                         <div className="formbg-inner padding-horizontal--48">
@@ -125,7 +125,7 @@ function Register(props) {
                                         }} />
                                 </div>
                                 <div className="field padding-bottom--24">
-                                    <p style={{ margin: '5%', color: 'red' }}>{parText}</p>
+                                    <p className='parText' style={{ margin: '5%', color: 'red' }}>{parText}</p>
                                     <button onClick={handleSubmit}>Register</button>
                                 </div>
                             </form>

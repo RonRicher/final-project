@@ -1,4 +1,4 @@
-#create-deal-div{
+#create-deal-div {
     background-image: url('../images/airplane3.jpg');
     width: 100%;
     height: 100%;
@@ -6,33 +6,43 @@
     object-fit: cover;
 }
 
-.select-location{
+.select-location {
     position: relative;
 }
 
-.select{
-    top:-1.5rem;
+.select {
     position: absolute;
     width: 22rem;
     background-color: rgb(255, 255, 255);
 }
 
-.option{
+.option {
     list-style: none;
     padding: 0.7rem;
     font-size: 1.4rem;
 }
 
-.option:hover{
+.option:hover {
     background-color: rgb(246, 243, 238);
 }
 
-#change-location{
-    width: 11.5rem;
-    font-size: 1.2rem;
-    margin-left: 25rem;
-    margin-bottom: 0.8rem;
-    padding: 0.2rem;
+#change-location {
+
+    margin-bottom: 2rem;
+    background-color: rgba(0, 0, 128, 0.932);
+    color: aliceblue;
+    /* text-align: center; */
+    font-size: 4rem;
+    font-weight: bolder;
+    cursor: pointer;
+    border-radius: 50%;
+    box-sizing: none;
+    line-height: 0.6;
+    height: 4rem;
+}
+
+span {
+    line-height: 40px;
 }
 
 select {
@@ -47,3 +57,11 @@ option {
     height: 5rem;
 }
 
+.flexTitleButton {
+    display: flex;
+    justify-content: space-around;
+}
+
+.parText {
+    font-size: 2rem;
+}

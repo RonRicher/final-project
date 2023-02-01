@@ -30,7 +30,7 @@ function ChangePassword() {
                setTimeout(() => navigate('/'), 2000)  
     }
 
-    return ( 
+    return (
         <div className="login-root">
             <div className="box-root padding-top--24 flex-flex flex-direction--column" style={{ flexGrow: 1, zIndex: 9 }}>
                 <div className="formbg-outer">
@@ -38,7 +38,7 @@ function ChangePassword() {
                         <div className="formbg-inner padding-horizontal--48">
                             <span className="padding-bottom--15">Enter your new password</span>
                             <form id="stripe-login">
-                            <div className="field padding-bottom--24">
+                                <div className="field padding-bottom--24">
                                     <label htmlFor="email">Email</label>
                                     <input type="email" name="email" value={email}
                                         onChange={(e) => {
@@ -54,7 +54,7 @@ function ChangePassword() {
                                         }} />
                                 </div>
                                 <div className="field padding-bottom--24">
-                                    <p style={{margin:'5%',color:'red'}}>{parText}</p>
+                                    <p className='parText' style={{ margin: '5%', color: 'red' }}>{parText}</p>
                                     <button onClick={handleSubmit}>Change Password</button>
                                 </div>
                             </form>
@@ -63,7 +63,7 @@ function ChangePassword() {
                 </div>
             </div>
         </div>
-     );
+    );
 }
 
 export default ChangePassword;
