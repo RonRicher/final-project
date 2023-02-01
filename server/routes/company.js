@@ -19,7 +19,6 @@ let transporter = nodemailer.createTransport({
 });
 
 router.post('/register', async function (req, res) {
-
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/;
     const companyNameRegex = /^[a-zA-Z0-9._-]{3,15}$/;

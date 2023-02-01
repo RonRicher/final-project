@@ -82,7 +82,9 @@ const sqlActions = {
     updateTable: async (tableName, joinTable, joinCondition, fieldNames, values, conditions) => {
         let sqlQuery = `UPDATE ${tableName} `;
 
-        sqlQuery += ` JOIN ${joinTable} ON ${joinCondition}`;
+        if(joinTable){
+            sqlQuery += ` JOIN ${joinTable} ON ${joinCondition}`;
+        }
         for (let i = 0; i < fieldNames.length; i++) {
             if (i === 0) { sqlQuery += ` SET `; }
             sqlQuery += `${fieldNames[i]} = ${values[i]},`;
@@ -97,6 +99,7 @@ const sqlActions = {
         };
 
         sqlQuery = sqlQuery.slice(0, -4);
+        console.log(sqlQuery);
 
         return dataProvider(sqlQuery);
     },

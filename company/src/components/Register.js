@@ -12,7 +12,7 @@ function Register(props) {
     const [exit, setExit] = useState(false);
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/;
-    const usernameRegex = /^[a-zA-Z0-9._-]{3,15}$/;
+    const companyNameRegex = /^[a-zA-Z0-9._-]{3,15}$/;
     const phoneRegex = /^(?:\+\d{1,3}|0\d{1,3}|\d{1,4})[\s.-]?\d{3}[\s.-]?\d{4}$/;
 
 
@@ -22,10 +22,15 @@ function Register(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!usernameRegex.test(companyName)) {
+        if (!companyNameRegex.test(companyName)) {
             setParText("Please enter a valid company name");
             return;
-        } else if (!passwordRegex.test(password)) {
+        } 
+        else if(location === ""){
+            setParText("Please enter your company location");
+            return;
+        }
+        else if (!passwordRegex.test(password)) {
             setParText("Please enter a valid password");
             return;
         } else if (!emailRegex.test(email)) {

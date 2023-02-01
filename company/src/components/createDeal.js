@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { useState } from "react";
 import '../css/CreateDeal.css'
+import {useNavigate} from "react-router-dom"
 
 function CreateDeal() {
     const [description, setDescription] = useState("");
@@ -21,6 +22,7 @@ function CreateDeal() {
     const [hotels, setHotels] = useState([]);
     const [locationFlag, setLocationFlag] = useState(true);
     const [secondFlightsFlag, setSecondFlightsFlag] = useState(false);
+    const navigate = useNavigate()
 
     const getLocations = async (value) => {
         const response = await fetch(`http://localhost:8080/search/location?search=${value}`);
@@ -97,8 +99,9 @@ function CreateDeal() {
         })
         const data = await response.json();
         if (data) {
-            setParText('You have successfully registered');
+            setParText('You have successfully created a new deal');
             setTimeout(() => {
+                navigate('/')
             }, 2000);
 
         }
@@ -147,7 +150,7 @@ function CreateDeal() {
                                                 setHotelId(e.target.value);
                                             }}>
                                                 {['select hotel', ...hotels]?.map((item) => {
-                                                    return <option key={Math.random()} value={item.hotelId}>{item.hotelName ? `${item.hotelName}` : `${item}`}</option>;
+                                                    return <option key={Math.random()} value={item.hotelId}>{item.hotelName ? `${item.hotelName}, Rooms left: ${item.reservations}` : `${item}`}</option>;
                                                 })}
                                             </select>
                                         </div>

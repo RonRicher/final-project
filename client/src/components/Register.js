@@ -38,6 +38,7 @@ function Register(props) {
         }
         const response = await fetch(`http://localhost:8080/users/register`, {
             method: "POST",
+            credentials: 'include',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 username: username,

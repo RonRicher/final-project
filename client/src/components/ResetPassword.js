@@ -7,6 +7,7 @@ function ResetPassword() {
         e.preventDefault();
         const response = await fetch(`http://localhost:8080/users/password`, {
             method: "POST",
+            credentials: "include",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 email: email

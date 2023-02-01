@@ -33,8 +33,6 @@ router.post('/', permission, async function (req, res) {
     }
     const start_date = convertToSQLDate(flights[0].flight_date);
     const end_date = convertToSQLDate(flights[1].flight_date);
-    console.log(start_date, end_date);
-    console.log(flights);
     const { hotelId, location, outbound, inbound,
         price, car, description, reservations } = req.body;
     const values = [companyId[0].company_id, hotelId, location, start_date,
@@ -49,8 +47,21 @@ router.post('/', permission, async function (req, res) {
         'deal_package', fields, values
     );
     if (data.affectedRows > 0) {
-        console.log(typeof Number(reservations));
-        const updateRooms = await createSQLQuery.updateTable('hotel', `deal_package`, `hotel.hotel_id = deal_package.hotel_id`, ['rooms_left'], [`rooms_left - ${Number(reservations)}`], [`hotel.hotel_id = '${hotelId}'`]);
+        const roomsLeft = await createSQLQuery.sqlSelect({
+            distinct: false,
+            columns: ['rooms_left'],
+            tableName: "hotel",
+            where: `hotel_id = '${hotelId}'`,
+            orderBy: [],
+            join: []
+        })
+        if(roomsLeft[0].rooms_left < Number(reservations) ){
+            res.send(JSON.stringify('we are sorry but there is no rooms left'))
+        }else{
+            const updateRooms = await createSQLQuery.updateTable('hotel', `deal_package`, `hotel.hotel_id = deal_package.hotel_id`, ['rooms_left'], [`rooms_left - ${Number(reservations)}`], [`hotel.hotel_id = '${hotelId}'`]);
+            res.send(true);
+        }
+        
     }
     console.log(data);
 
