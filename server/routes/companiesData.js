@@ -132,10 +132,8 @@ router.put('/requests/accept', permission, async function (req, res) {
         return;
     }
     const data = await createSQLQuery.updateTable('user_access', `company_details`, `user_access.user_id = company_details.user_id`, ['permission'], ['company'], [`company_details.company_name='${req.body.companyName}'`]);
-    console.log('data:' + data);
     if (data.affectedRows > 0) {
         const data = await createSQLQuery.updateTable('company_request', `company_details`, `company_request.company_name = company_details.company_name`, ['deleted'], ['1'], [`company_details.company_name='${req.body.companyName}'`]);
-        console.log('data:' + data);
         if (data.affectedRows > 0) {
             res.send(true);
             let mailOptions = {

@@ -94,10 +94,12 @@ function PersonalTrip() {
                 quantity
             })
         });
+       if(response.status !== 200){
         const data = await response.json();
-        if (data) {
+        setParText(data);
+        return;
+       }
             navigate('/personal/trip/payment', { state: { price: totalPrice * quantity, location, quantity, outbound, inbound, hotelId } });
-        }
     };
     return (
         <div id="create-deal-div">

@@ -12,7 +12,7 @@ function CreateDeal() {
     const [inbound, setInbound] = useState("");
     const [outbound, setOutbound] = useState("");
     const [hotelId, setHotelId] = useState("");
-    const [quantity, setQuantity] = useState(20);
+    const [quantity, setQuantity] = useState(1);
     const [locationSelect, setLocationSelect] = useState([]);
     const [secondFlights, setSecondFlights] = useState([]);
     const [flag, setFlag] = useState(false);
@@ -98,14 +98,15 @@ function CreateDeal() {
                 reservations: quantity
             })
         });
+     if(response.status !== 200){
         const data = await response.json();
-        if (data) {
+        setParText(data);
+        return;
+     }
             setParText('You have successfully created a new deal');
             setTimeout(() => {
                 navigate('/home');
             }, 1500);
-
-        }
     };
     return (
 
@@ -206,7 +207,7 @@ function CreateDeal() {
                                             <div className="field padding-bottom--24">
                                                 <label htmlFor="quantity">Reservations</label>
                                                 <input type="number" name="quantity" value={quantity}
-                                                    min='20' max='50'
+                                                    min='1' max='50'
                                                     onChange={(e) => {
                                                         setQuantity(e.target.value);
                                                     }} />

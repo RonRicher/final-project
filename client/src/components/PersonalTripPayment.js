@@ -76,10 +76,13 @@ function PersonalTripPayment() {
                 outbound: stateData.outbound
             })
         });
-        const data = await response.json();
-        if (data) {
-            navigate(`/deals/${id}/payment/confirmation`, { state: { mathRandom, quantity, price, firstName, lastName, email, phone, resLocation: stateData.location } });
+        if(response.status !== 200) {
+            const data = await response.json();
+            setParText(data);
+            return;
         }
+     navigate(`/deals/${id}/payment/confirmation`, { state: { mathRandom, quantity, price, firstName, lastName, email, phone, resLocation: stateData.location } });
+        
     };
     return (
         <div id="payment-div">
