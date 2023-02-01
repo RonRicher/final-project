@@ -311,3 +311,14 @@ option {
     display: flex;
     justify-content: space-around;
 }
+
+.not-found {
+    font-size: 7rem;
+    width: 60%;
+    margin: 5rem auto;
+    text-align: center;
+    padding: 5rem;
+    background-color: rgb(213, 235, 255);
+    color: navy;
+
+}

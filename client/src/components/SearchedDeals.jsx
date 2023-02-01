@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Deal from './Deal';
+import NavBar from './NavBar';
 
 function SearchedDeals() {
     const siteLocation = useLocation();
@@ -23,6 +24,14 @@ function SearchedDeals() {
 
     return (
         <>
+            <NavBar />
+
+            <>
+                {deals.length === 0 ?
+
+                    <><h1 class='not-found'>No results founds.</h1></> : <></>
+
+                }</>
             {deals?.map((deal) => {
                 return <Deal key={Math.random()} location={deal.location} startDate={deal.startDate}
                     endDate={deal.endDate} price={deal.price} car={deal.car}
