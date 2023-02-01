@@ -19,17 +19,14 @@ html {
 }
 
 .right-links {
-  display: flex;
-  justify-content: space-between;
-  width: 35%;
-  font-size: 1.25rem;
+  width: 30%;
+  font-size: 1.7rem;
   font-weight: bold;
   padding: 0.5rem;
 }
-
 .companyRefFromClient {
   color: #fff;
-
+  margin: auto;
 }
 
 .NavLink {
@@ -45,4 +42,13 @@ html {
   margin: 2rem auto;
   font-size: 3rem;
   background-color: aliceblue;
+}
+
+#logOutButton{
+  margin: 5rem;
+
+}
+
+#admin-btn{
+  margin: 5rem;
 }

@@ -1,9 +1,11 @@
 .admin-div{
-    border: 1px solid black;
-    width: 22rem;
+    border: 1px solid rgb(157, 133, 133);
+    width: 90rem;
     margin: 1.5rem auto;
     padding: 1rem;
-    border-radius: 3px;
+    border-radius: 0.5rem;
+    font-size: 2rem;
+    text-align: center;
 }
 
 .admin-btn{
@@ -21,7 +23,9 @@
     background-color: rgb(202, 196, 196);
 }
 
-.accept{
+#accept{
     font-size: 1.3rem;
 }
+
+
 

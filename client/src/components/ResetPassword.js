@@ -13,12 +13,11 @@ function ResetPassword() {
                 email: email
             })
         });
-        const data = await response.json();
-        if (data) {
-            setParText('We sent you an email with a link to reset your password');
-        } else {
+        if(response.status !== 200){
             setParText('We do not have this email in our system');
+            return;
         }
+            setParText('We sent you an email with a link to reset your password');
     }
 
     return (

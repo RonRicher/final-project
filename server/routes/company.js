@@ -48,7 +48,7 @@ router.post('/register', async function (req, res) {
             join: []
         });
         if (data.length > 0) {
-            console.log("Username or email or phone-number already exists");
+            res.status(400).send(JSON.stringify('username or email or phone already exists'));
             return;
         } else {
             const access = await createSQLQuery.insertIntoTable('user_access', ['user_id', 'password', 'permission'], [userId, hash, 'pending']);
@@ -58,20 +58,17 @@ router.post('/register', async function (req, res) {
                 if (access.affectedRows > 0) {
                     const requestTable = await createSQLQuery.insertIntoTable('company_request', ['company_name, company_email, company_phone, deleted'], [req.body.companyName, req.body.email, req.body.phone, '0']);
                     if (requestTable.affectedRows > 0) {
-                        res.send(true);
+                        res.status(200).send();
                     }
                     else {
-                        res.send(false);
-                        console.log(`company_request for ${companyName} injected`);
+                        res.status(400).send();
                     }
                 } else {
-                    res.send(false);
-                    console.log(`company_details for ${companyName} injected`);
+                    res.status(400).send();
                 }
             }
             else {
-                res.send(false);
-                console.log(`user_access for ${companyName} injected`);
+                res.status(400).send();
             }
         }
     });
@@ -89,7 +86,6 @@ router.post('/logIn', async function (req, res) {
     });
     console.log('data: ', data);
     if (data.length > 0) {
-        console.log('data');
         bcrypt.compare(req.body.password, data[0].password, function (err, result) {
             if (result) {
                 if (data[0].permission === 'pending' || data[0].permission === 'declined') {
@@ -99,18 +95,17 @@ router.post('/logIn', async function (req, res) {
                         httpOnly: false,
                         expires: new Date(Date.now() + 60 * 60 * 24 * 7 * 1000)
                     });
-                    console.log("Login successful");
-                    res.send(true);
+                    res.send(JSON.stringify(data[0].permission));
                 }
             }
             else {
-                console.log('data false');
-                res.send(false);
+                res.status(400).send();
+                return;
             }
         });
     } else {
-        console.log("Login unsuccessful");
-        res.send(false);
+        res.status(400).send();
+        return;
     }
 });
 
@@ -118,9 +113,9 @@ router.post('/changePassword', async function (req, res) {
     bcrypt.hash(req.body.password, saltRounds, async function (err, hash) {
         const data = await createSQLQuery.updateTable('user_access', `company_details`, `user_access.user_id = company_details.user_id`, ['password'], [`'${hash}'`], [`email='${req.body.email}'`]);
         if (data.affectedRows > 0) {
-            res.send(true);
+            res.status(200).send();
         } else {
-            res.send(false);
+            res.status(400).send();
         }
     });
 });
@@ -149,12 +144,11 @@ router.post('/password', async function (req, res) {
             if (error) {
                 console.log(error);
             } else {
-                res.send(true);
+                res.status(200).send();
             }
         });
     } else {
-        console.log(3);
-        res.send(false);
+        res.status(400).send();
     }
 });
 

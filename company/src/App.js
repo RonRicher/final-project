@@ -11,10 +11,12 @@ import Hotels from './components/Hotels';
 import Flights from './components/Flights';
 import CreateDeal from './components/createDeal';
 import Admin from './components/Admin';
+import PermissionProvider from './context/permissionContext';
 
 
 function App() {
   return (
+<PermissionProvider>
     <Routes>
       <Route path="/" element={<LogIn />}></Route>
       <Route path="/Home" element={<Home />}></Route>
@@ -25,6 +27,7 @@ function App() {
       <Route path="/deal" element={<CreateDeal />}></Route>
       <Route path="/admin" element={<Admin />}></Route>
     </Routes>
+    </PermissionProvider>
   );
 }
 

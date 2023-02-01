@@ -72,11 +72,11 @@ function Admin() {
             <h1>{parText}</h1>
             {requests?.map(request => {
                 return <div className="admin-div" key={Math.random()}>
-                    <p>companyName:  {request.companyName}</p>
-                      <p>companyEmail:  {request.companyEmail}</p>
-                      <p>companyPhone:  {request.companyPhone}</p>
-                    <button className="admin-btn accept" onClick={() => acceptRequest(request.companyName)}> &#10004;</button>
-                    <button  className="admin-btn decline" onClick={() => declineRequest(request.companyName)}>&#10060;</button>
+                    <p><strong>companyName:</strong> {request.companyName},&nbsp;
+                       <strong>companyEmail:</strong> {request.companyEmail},&nbsp;
+                       <strong>companyPhone:</strong> {request.companyPhone}</p>
+                    <button className="admin-btn" id="accept" onClick={() => acceptRequest(request.companyName)}> &#10004;</button>
+                    <button  className="admin-btn" id="decline" onClick={() => declineRequest(request.companyName)}>&#10060;</button>
                 </div>;
             })}
         </>

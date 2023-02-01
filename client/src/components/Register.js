@@ -49,8 +49,11 @@ function Register(props) {
                 lastName: lastName
             })
         });
-        const data = await response.json();
-        if (data) {
+        if (response.status !== 200) {
+            const data = await response.json();
+            setParText(data)
+            return;
+        }
             setParText('You have successfully registered');
             setTimeout(() => {
                 props.setFlag(false);
@@ -59,7 +62,6 @@ function Register(props) {
                 setUsername('');
                 setPhone('');
             }, 2000)
-        }
     };
     return (
         <div className="login-root">
@@ -86,7 +88,7 @@ function Register(props) {
                                     </div>
                                     <input type="text" name="first" value={firstName}
                                         onChange={(e) => {
-                                           setFirstName(e.target.value);
+                                            setFirstName(e.target.value);
                                         }} />
                                 </div>
                                 <div className="field padding-bottom--24">

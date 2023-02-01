@@ -7,7 +7,7 @@ function Register(props) {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
-    const [location,setLocation] = useState("");
+    const [location, setLocation] = useState("");
     const [parText, setParText] = useState("");
     const [exit, setExit] = useState(false);
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
@@ -25,8 +25,8 @@ function Register(props) {
         if (!companyNameRegex.test(companyName)) {
             setParText("Please enter a valid company name");
             return;
-        } 
-        else if(location === ""){
+        }
+        else if (location === "") {
             setParText("Please enter your company location");
             return;
         }
@@ -51,17 +51,19 @@ function Register(props) {
                 location: location
             })
         });
-        const data = await response.json();
-        if (data) {
-            setParText('You have successfully registered');
-            setTimeout(() => {
-                props.setFlag(false);
-                setEmail('');
-                setPassword('');
-                setCompanyName('');
-                setPhone('');
-            }, 2000)
+        if (response.status !== 200) {
+            const data = await response.json();
+            setParText(data)
+            return;
         }
+        setParText('You have successfully registered');
+        setTimeout(() => {
+            props.setFlag(false);
+            setEmail('');
+            setPassword('');
+            setCompanyName('');
+            setPhone('');
+        }, 2000)
     };
     return (
         <div className="login-root">
@@ -88,7 +90,7 @@ function Register(props) {
                                     </div>
                                     <input type="text" name="location" value={location}
                                         onChange={(e) => {
-                                          setLocation(e.target.value);
+                                            setLocation(e.target.value);
                                         }} />
                                 </div>
                                 <div className="field padding-bottom--24">

@@ -10,7 +10,10 @@ function ChangePassword() {
         e.preventDefault();
         setParText("Loading...");
         const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/;
-        if(passwordRegex.test(password)){
+        if(!passwordRegex.test(password)){
+            setParText('The password must contain at least 1 letter and 1 number');
+            return;
+        } 
             const response = await fetch(`http://localhost:8080/users/changePassword`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -19,18 +22,12 @@ function ChangePassword() {
                     email: email
                 })
             });
-            const data = await response.json();
-            console.log(data);
-            if (data) {
-                console.log(data);
-                setParText('Password changed successfully, now you can login');
-               setTimeout(() => navigate('/'), 5000)  ;
-            }else{
-                setParText('We do not have this email in our system'); 
-            }
-        }else{
-            setParText('The password must contain at least 1 letter and 1 number');
-        }
+          if(response.status !== 200){
+            setParText('We do not have this email in our system'); 
+            return;
+          }
+                setParText('Password changed successfully, now you can login')
+               setTimeout(() => navigate('/'), 2000)  
     }
 
     return ( 

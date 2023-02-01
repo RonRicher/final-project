@@ -18,7 +18,7 @@ a {
   cursor: pointer;
 }
 
-.login-root {
+.login-root { 
   background-color: rgba(255, 255, 255, 0.523);
   display: relative;
   width: 100%;
@@ -128,7 +128,7 @@ a {
 }
 
 .formbg {
-  margin: 0px auto;
+  margin: 5rem auto;
   width: 100%;
   max-width: 448px;
   background: white;

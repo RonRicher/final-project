@@ -52,7 +52,7 @@ router.post('/register', async function (req, res) {
       join: []
     });
     if (data.length > 0) {
-      console.log("Username or email or phone-number already exists");
+      res.status(400).send(JSON.stringify('username or email or phone already exists'));
       return;
     } else {
       const access = await createSQLQuery.insertIntoTable('user_access', ['user_id', 'password', 'permission'], [userId, hash, 'client']);
@@ -60,18 +60,14 @@ router.post('/register', async function (req, res) {
       if (access.affectedRows > 0) {
         const detailsInsert = await createSQLQuery.insertIntoTable('user_details', ['user_id', 'user_name', 'first_name', 'last_name', 'email', 'phone'], [userId, req.body.username, req.body.firstName, req.body.lastName, , req.body.email, req.body.phone]);
         if (access.affectedRows > 0) {
-          res.send(true);
-
+          res.send(JSON.stringify('your register was successful'));
         } else {
-          res.send(false);
-
-          console.log(`user_details for ${username} injected`);
+          res.status(400).send();
         }
 
       }
       else {
-        res.send(false);
-        console.log(`user_access for ${username} injected`);
+        res.status(400).send();
       }
     }
   });
@@ -98,19 +94,17 @@ router.post('/logIn', async function (req, res) {
           httpOnly: false,
           expires: new Date(Date.now() + 60 * 60 * 24 * 7 * 1000)
         });
-
         res.send(JSON.stringify(data[0].client_id));
-        console.log("Login successful");
-
       }
       else {
-        res.send(false);
+        res.status(400).send();
+        return;
       }
     });
 
   } else {
-    console.log("Login unsuccessful");
-    res.send(false);
+    res.status(400).send();
+    return;
   }
 });
 
@@ -119,9 +113,9 @@ router.post('/changePassword', async function (req, res) {
     const data = await createSQLQuery.updateTable('user_access', `user_details`, `user_access.user_id = user_details.user_id`, ['password'], [`'${hash}'`], [`email='${req.body.email}'`]);
     console.log('data:' + data);
     if (data.affectedRows > 0) {
-      res.send(true);
+      res.status(200).send();
     } else {
-      res.send(false);
+      res.status(400).send();
     }
   });
 });
@@ -148,11 +142,11 @@ router.post('/password', async function (req, res) {
       if (error) {
         console.log(error);
       } else {
-        res.send(true);
+        res.status(200).send();
       }
     });
   } else {
-    res.send(false);
+    res.status(400).send();
   }
 });
 

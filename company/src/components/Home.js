@@ -23,7 +23,7 @@ function Home() {
     };
     return (
         <div id="home-div">
-            <NavBar />
+            <NavBar/>
             <h1 id='companyDealsTitle'>Your deals</h1>
             {deals?.map((deal) => {
                 return <div className="comapnyDealDiv" key={Math.random()}>

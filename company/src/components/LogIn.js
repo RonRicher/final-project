@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Cookies from 'js-cookie';
 import Register from "./Register";
+import {usePermission} from '../context/permissionContext'
 
 import "../css/LogIn.css";
 
@@ -12,6 +13,7 @@ function LogIn() {
     const [checkbox, setCheckbox] = useState(false);
     const [wrong, setWrong] = useState(false);
     const navigate = useNavigate();
+    const {setPermission} = usePermission();
 
     useEffect(() => {
         if (Cookies.get('userName')) {
@@ -31,18 +33,14 @@ function LogIn() {
                 password: password
             })
         });
-        const data = await response.json();
-        console.log(data);
-        if (data) {
-            console.log('response: ', response);
-            console.log(data);
-            if (checkbox) {
-                Cookies.set("companyName", companyName, { expires: 7 });
-            }
-            navigate('/home');
-        } else {
+        if(response.status !== 200) {
             setWrong(true);
+            return;
         }
+        const data = await response.json();
+            setPermission(data);
+            localStorage.setItem('permission', JSON.stringify(data));
+            navigate('/home');
     };
     return (
         <div className="login-root">
