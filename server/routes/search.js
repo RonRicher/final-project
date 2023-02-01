@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-var nodemailer = require('nodemailer');
 const con = require('../connection.js');
 const createSQLQuery = require('../createSqlQuery.js');
 const permission = require('../permission');
@@ -24,7 +23,7 @@ router.get('/hotels', async function (req, res) {
     const { location } = req.query;
     const data = await createSQLQuery.sqlSelect({
         distinct: false,
-        columns: ['hotel_id', 'hotel_name', 'price','rooms_left'],
+        columns: ['hotel_id', 'hotel_name', 'price', 'rooms_left'],
         tableName: "hotel",
         where: `location = '${location}' and rooms_left > 0 and deleted = 0`,
         orderBy: [],
@@ -61,7 +60,7 @@ router.get('/flights/outbound', async function (req, res) {
     data.forEach((flight) => arr.push({
         flightId: flight.flight_id,
         airline: flight.airline,
-        date: convertToSQLDate(flight.flight_date) ,
+        date: convertToSQLDate(flight.flight_date),
         price: flight.price
     }));
     console.log('arr: ', arr);

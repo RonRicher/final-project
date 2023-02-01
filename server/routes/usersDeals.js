@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-var nodemailer = require('nodemailer');
 const con = require('../connection.js');
 const createSQLQuery = require('../createSqlQuery.js');
 const permission = require('../permission');
@@ -20,10 +19,9 @@ router.post('/', permission, async function (req, res) {
         where: `hotel_id = '${hotelId}'`,
         orderBy: [],
         join: []
-    })
+    });
     if (roomsLeft[0].rooms_left < Number(quantity)) {
-          res.status(400).send(JSON.stringify('we are sorry but there is no rooms left'));
-          return;
+        res.send(JSON.stringify('we are sorry but there is no rooms left'))
     } else {
         const flights = await createSQLQuery.sqlSelect({
             distinct: false,
@@ -50,9 +48,9 @@ router.post('/', permission, async function (req, res) {
             'personal_trip', fields, values
         );
         if (data.affectedRows > 0) {
-            res.status(200).send();
+         res.send(true);
         }else{
-            res.status(400).send(JSON.stringify('there was an error, try again...'));
+            res.send(false);
         }
     }
 });

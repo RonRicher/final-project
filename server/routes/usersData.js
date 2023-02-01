@@ -4,16 +4,8 @@ const con = require('../connection.js');
 const createSQLQuery = require('../createSqlQuery.js');
 var nodemailer = require('nodemailer');
 const permission = require('../permission.js');
+const transporter = require('../nodemailer');
 
-
-let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'tripifycompany@gmail.com',
-        pass: 'xjxpvpixjtbnzois'
-
-    }
-});
 
 router.get('/image', async function (req, res) {
     const { location } = req.query;

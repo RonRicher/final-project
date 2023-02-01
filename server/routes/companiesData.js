@@ -4,15 +4,7 @@ var nodemailer = require('nodemailer');
 const con = require('../connection.js');
 const createSQLQuery = require('../createSqlQuery.js');
 const permission = require('../permission');
-var nodemailer = require('nodemailer');
-
-let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'tripifycompany@gmail.com',
-        pass: 'xjxpvpixjtbnzois'
-    }
-});
+const transporter = require('../nodemailer');
 
 
 
@@ -131,14 +123,17 @@ router.put('/requests/accept', permission, async function (req, res) {
         res.send(false);
         return;
     }
-    const data = await createSQLQuery.updateTable('user_access', `company_details`, `user_access.user_id = company_details.user_id`, ['permission'], ['company'], [`company_details.company_name='${req.body.companyName}'`]);
+    const { companyEmail, companyName } = req.body;
+    const data = await createSQLQuery.updateTable('user_access', `company_details`, `user_access.user_id = company_details.user_id`, ['permission'], ["'company'"], [`company_details.company_name='${companyName}'`]);
+    console.log('data:' + data);
     if (data.affectedRows > 0) {
-        const data = await createSQLQuery.updateTable('company_request', `company_details`, `company_request.company_name = company_details.company_name`, ['deleted'], ['1'], [`company_details.company_name='${req.body.companyName}'`]);
+        const data = await createSQLQuery.updateTable('company_request', `company_details`, `company_request.company_name = company_details.company_name`, ['deleted'], ['1'], [`company_details.company_name='${companyName}'`]);
+        console.log('data:' + data);
         if (data.affectedRows > 0) {
             res.send(true);
             let mailOptions = {
                 from: 'tripifycompany@gmail.com',
-                to: `${email}`,
+                to: `${companyEmail}`,
                 subject: `Your request to sign up to Tripify is been confirmed`,
                 text: `Thanks for joining us to tripify, we're looking forward to giving you the best experience`
             };
@@ -158,14 +153,16 @@ router.put('/requests/accept', permission, async function (req, res) {
 });
 
 router.delete('/requests/decline', permission, async function (req, res) {
+    const { companyName } = req.body;
     if (res.locals.permission !== 'admin') {
         res.send(false);
         return;
     }
-    const data = await createSQLQuery.updateTable('company_request', `company_details`, `company_request.company_name = company_details.company_name`, ['deleted'], ['1'], [`company_details.company_name='${req.body.companyName}'`]);
+    const data = await createSQLQuery.updateTable('company_request', `company_details`, `company_request.company_name = company_details.company_name`, ['deleted'], ['1'], [`company_details.company_name='${companyName}'`]);
     console.log('data:' + data);
     if (data.affectedRows > 0) {
-        const data = await createSQLQuery.updateTable('user_access', `company_details`, `user_access.user_id = company_details.user_id`, ['permission'], ['declined'], [`company_details.company_name='${req.body.companyName}'`]);
+        console.log('not working');
+        const data = await createSQLQuery.updateTable('user_access', `company_details`, `user_access.user_id = company_details.user_id`, ['permission'], ["'declined'"], [`company_details.company_name='${companyName}'`]);
         if (data.affectedRows > 0) {
             res.send(true);
         } else {

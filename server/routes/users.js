@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-var nodemailer = require('nodemailer');
+const transporter = require('../nodemailer');
 const con = require('../connection.js');
 const createSQLQuery = require('../createSqlQuery.js');
 const { v4: uuidv4 } = require('uuid');
@@ -9,15 +9,6 @@ const saltRounds = 10;
 const cookie = require('cookie');
 
 
-
-
-let transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'tripifycompany@gmail.com',
-    pass: 'xjxpvpixjtbnzois'
-  }
-});
 
 router.post('/register', async function (req, res) {
 
