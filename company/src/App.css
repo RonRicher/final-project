@@ -23,7 +23,12 @@ html {
   font-size: 1.7rem;
   font-weight: bold;
   padding: 0.5rem;
+  display: flex;
+  justify-content: end;
+  gap: 5rem;
+  padding-right: 10rem;
 }
+
 .companyRefFromClient {
   color: #fff;
   margin: auto;

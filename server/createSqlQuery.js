@@ -82,7 +82,7 @@ const sqlActions = {
     updateTable: async (tableName, joinTable, joinCondition, fieldNames, values, conditions) => {
         let sqlQuery = `UPDATE ${tableName} `;
 
-        if(joinTable){
+        if (joinTable) {
             sqlQuery += ` JOIN ${joinTable} ON ${joinCondition}`;
         }
         for (let i = 0; i < fieldNames.length; i++) {

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "./NavBar";
-import '../css/Admin.css'
+import '../css/Admin.css';
 
 
 function Admin() {
@@ -38,14 +38,15 @@ function Admin() {
     }
 
 
-    const acceptRequest = async (companyName) => {
+    const acceptRequest = async (companyName, companyEmail) => {
         const response = await fetch(`http://localhost:8080/companies/data/requests/accept`,
             {
                 method: "PUT",
                 credentials: 'include',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    companyName: companyName
+                    companyName: companyName,
+                    companyEmail: companyEmail
                 })
 
             });
@@ -68,15 +69,15 @@ function Admin() {
     };
     return (
         <>
-        <NavBar />
+            <NavBar />
             <h1>{parText}</h1>
             {requests?.map(request => {
                 return <div className="admin-div" key={Math.random()}>
                     <p><strong>companyName:</strong> {request.companyName},&nbsp;
-                       <strong>companyEmail:</strong> {request.companyEmail},&nbsp;
-                       <strong>companyPhone:</strong> {request.companyPhone}</p>
-                    <button className="admin-btn" id="accept" onClick={() => acceptRequest(request.companyName)}> &#10004;</button>
-                    <button  className="admin-btn" id="decline" onClick={() => declineRequest(request.companyName)}>&#10060;</button>
+                        <strong>companyEmail:</strong> {request.companyEmail},&nbsp;
+                        <strong>companyPhone:</strong> {request.companyPhone}</p>
+                    <button className="admin-btn" id="accept" onClick={() => acceptRequest(request.companyName, request.companyEmail)}> &#10004;</button>
+                    <button className="admin-btn" id="decline" onClick={() => declineRequest(request.companyName)}>&#10060;</button>
                 </div>;
             })}
         </>

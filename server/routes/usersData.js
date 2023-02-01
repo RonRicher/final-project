@@ -4,16 +4,8 @@ const con = require('../connection.js');
 const createSQLQuery = require('../createSqlQuery.js');
 var nodemailer = require('nodemailer');
 const permission = require('../permission.js');
+const transporter = require('../nodemailer');
 
-
-let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'tripifycompany@gmail.com',
-        pass: 'xjxpvpixjtbnzois'
-
-    }
-});
 
 router.get('/image', async function (req, res) {
     const { location } = req.query;
@@ -168,6 +160,7 @@ router.post('/trip/payment', permission, async function (req, res) {
         });
     } else {
         res.send(false);
+        return;
     }
     const roomsLeft = await createSQLQuery.sqlSelect({
         distinct: false,
@@ -182,7 +175,9 @@ router.post('/trip/payment', permission, async function (req, res) {
         console.log("delete");
         const deleteHotel = await createSQLQuery.updateTable('hotel', ``, ``, ['deleted'], [1], [`hotel.hotel_id = ${hotelId}`]);
         res.send(true);
+        return;
     }
+    res.send(true);
 });
 
 router.get('/search', async function (req, res) {

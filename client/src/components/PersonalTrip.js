@@ -106,7 +106,6 @@ function PersonalTrip() {
                     <div className="formbg-outer">
                         <div className="formbg">
                             <div className="formbg-inner padding-horizontal--48">
-                                <span className="padding-bottom--15">Plan your trip</span>
                                 <form id="stripe-login">
                                     {!flag ? <div><p>Choose Location</p><div className="field padding-bottom--24">
                                         <input placeholder='location' type="search" value={locationSearch} onChange={(e) => {
@@ -128,10 +127,13 @@ function PersonalTrip() {
                                             </ul>
                                         </div></div> : null}
                                     {flag ? <div>
-                                        <button onClick={() => {
-                                            setFlag(false);
-                                            setSecondFlightsFlag(false);
-                                        }} id='change-location'>change location</button>
+                                        <div className="flexTitleButton">
+                                            <span className="">Plan your trip</span>
+                                            <p onClick={() => {
+                                                setFlag(false);
+                                                setSecondFlightsFlag(false);
+                                            }} id='change-location'>&larr;</p>
+                                        </div>
                                         <div>
                                             <select value={hotelId} onChange={(e) => {
                                                 console.log(e.target, e.target.value);

@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-var nodemailer = require('nodemailer');
 const con = require('../connection.js');
 const createSQLQuery = require('../createSqlQuery.js');
 const permission = require('../permission');
@@ -18,9 +17,9 @@ router.post('/', permission, async function (req, res) {
         where: `hotel_id = '${hotelId}'`,
         orderBy: [],
         join: []
-    })
+    });
     if (roomsLeft[0].rooms_left < Number(quantity)) {
-        res.send(JSON.stringify('we are sorry but there is no rooms left'))
+        res.send(JSON.stringify('we are sorry but there is no rooms left'));
     } else {
         console.log("insert");
         const flights = await createSQLQuery.sqlSelect({
@@ -48,8 +47,8 @@ router.post('/', permission, async function (req, res) {
             'personal_trip', fields, values
         );
         if (data.affectedRows > 0) {
-         res.send(true);
-        }else{
+            res.send(true);
+        } else {
             res.send(false);
         }
     }
