@@ -26,8 +26,6 @@ function Payment() {
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     const phoneRegex = /^(?:\+\d{1,3}|0\d{1,3}|\d{1,4})[\s.-]?\d{3}[\s.-]?\d{4}$/;
     const cardNumberRegex = /^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/;
-    // const cvvRegex = /^\d{3,4}$/;
-    // const cvvRegex;
     const expDateRegex = /^\d{4}-(0[1-9]|1[0-2])$/;
     const date = new Date();
     const year = date.getFullYear();
@@ -60,10 +58,6 @@ function Payment() {
             setParText('Please enter expiration date card number');
             return;
         }
-        // if (!cvvRegex.test(cvvRegex)) {
-        //     setParText('Please enter valid cvv number');
-        //     return;
-        // }
         const mathRandom = Math.floor(Math.random() * 100000000);
         const response = await fetch(`http://localhost:8080/users/data/payment`, {
             method: "POST",
@@ -83,12 +77,13 @@ function Payment() {
                 location: stateData.location
             })
         });
-        const data = await response.json();
-        console.log(data);
-        if (data) {
-            console.log('payment succeed');
-            navigate(`/deals/${id}/payment/confirmation`, { state: { mathRandom, quantity, price, firstName, lastName, email, phone, resLocation: stateData.location } });
+        if(response.status !== 200) {
+            const data = await response.json();
+            setParText(data);
+            return;
         }
+            navigate(`/deals/${id}/payment/confirmation`, { state: { mathRandom, quantity, price, firstName, lastName, email, phone, resLocation: stateData.location } });
+       
     };
     return (
 

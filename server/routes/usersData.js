@@ -9,9 +9,7 @@ const transporter = require('../nodemailer');
 
 router.get('/image', async function (req, res) {
     const { location } = req.query;
-
     res.sendFile(`/home/hilma/projects/final-project/server/public/images/${location}.jpeg`);
-
 });
 
 router.get('/deals', async function (req, res) {
@@ -26,8 +24,6 @@ router.get('/deals', async function (req, res) {
         join: ['hotel on deal_package.hotel_id = hotel.hotel_id']
 
     });
-
-
     console.log(data);
     let arr = [];
     data.forEach(deal => {
@@ -95,22 +91,14 @@ router.get('/dealInfo', async function (req, res) {
 });
 
 router.post('/payment', permission, async function (req, res) {
-    console.log('prmission');
-
     if (res.locals.permission !== 'admin' && res.locals.permission !== 'client') {
-        console.log('prmission');
-        res.send(false);
+        res.status(400).send(JSON.stringify('you must be an admin or a client'));
         return;
     }
     const { dealId, clientId, quantity, price, firstName, lastName,
         phone, email, prevReservations, random, location } = req.body;
-    console.log('In');
-
-
     const data = await createSQLQuery.insertIntoTable('client_deal', ['deal_id', 'client_id', 'quantity', 'price', 'res_number'], [dealId, clientId, quantity, price, random]);
-    console.log('data.affectedRows:', data.affectedRows);
     if (data.affectedRows > 0) {
-        console.log('prevReservation: ', prevReservations);
         const changeReservations = await createSQLQuery.updateTable('deal_package', `client_deal`, `deal_package.deal_id = client_deal.deal_id`, ['reservations'], [`reservations - ${Number(quantity)}`], [`deal_package.deal_id = '${dealId}'`]);
         let mailOptions = {
             from: 'tripifycompany@gmail.com',
@@ -119,30 +107,28 @@ router.post('/payment', permission, async function (req, res) {
             text: `Thanks for joining us to ${location}, for this trip you paid ${price}$ for ${quantity} people`
         };
         transporter.sendMail(mailOptions, function (error, info) {
-            console.log('prmission');
 
             if (error) {
-                console.log(error);
+                res.status(200).send();
+                return;
             } else {
-                res.send(true);
+                res.status(200).send();
             }
         });
     }
-
 });
 
 router.post('/trip/payment', permission, async function (req, res) {
     if (res.locals.permission !== 'admin' && res.locals.permission !== 'client') {
-        res.send(false);
+        res.status(400).send(JSON.stringify('you must be an admin or a client'));
         return;
     }
     const { clientId, price, firstName, lastName,
         phone, email, quantity, random, location,
         inbound, outbound, hotelId } = req.body;
     const updateRooms = await createSQLQuery.updateTable('hotel', '', '', ['rooms_left'], [`rooms_left - ${quantity}`], [`hotel.hotel_id = ${hotelId}`]);
-    console.log(updateRooms);
     if (updateRooms.affectedRows === 0) {
-        res.send(false);
+        res.status(400).send(JSON.stringify('there was a problem try again...'));
         return;
     }
     const data = await createSQLQuery.insertIntoTable('client_trip', ['client_id', 'quantity', 'price', 'res_number'], [clientId, quantity, price, random]);
@@ -155,11 +141,11 @@ router.post('/trip/payment', permission, async function (req, res) {
         };
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
-                console.log(error);
+               console.log(error);
             }
         });
     } else {
-        res.send(false);
+        res.status(400).send(JSON.stringify('there was a problem try again...'));
         return;
     }
     const roomsLeft = await createSQLQuery.sqlSelect({
@@ -170,14 +156,12 @@ router.post('/trip/payment', permission, async function (req, res) {
         orderBy: [],
         join: []
     });
-    console.log(roomsLeft);
     if (roomsLeft[0].rooms_left === 0) {
-        console.log("delete");
         const deleteHotel = await createSQLQuery.updateTable('hotel', ``, ``, ['deleted'], [1], [`hotel.hotel_id = ${hotelId}`]);
-        res.send(true);
+        res.status(200).send()
         return;
     }
-    res.send(true);
+    res.status(200).send();
 });
 
 router.get('/search', async function (req, res) {

@@ -1,15 +1,10 @@
-
 const createSQLQuery = require('./createSqlQuery');
 
 
-
 const permission = async (req, res, next) => {
-
-
     const { userId } = req.cookies;
-
     if (!req.cookies.userId) {
-        res.send(false);
+        res.status(400).send(JSON.stringify('permission denied, please login'));
         return;
     }
     console.log('cookie: ', req.cookies.userId);

@@ -4,9 +4,11 @@ const con = require('../connection.js');
 const createSQLQuery = require('../createSqlQuery.js');
 const permission = require('../permission');
 
+
+// Route POST handler with permission check, room availability, and trip reservation creation
 router.post('/', permission, async function (req, res) {
     if (res.locals.permission !== 'admin' && res.locals.permission !== 'client') {
-        res.send(false);
+        res.status(400).send(JSON.stringify('You dont have permission'));
         return;
     }
     const { hotelId, location, outbound, inbound, quantity } = req.body;
@@ -19,9 +21,8 @@ router.post('/', permission, async function (req, res) {
         join: []
     });
     if (roomsLeft[0].rooms_left < Number(quantity)) {
-        res.send(JSON.stringify('we are sorry but there is no rooms left'));
+        res.send(JSON.stringify('we are sorry but there is no rooms left'))
     } else {
-        console.log("insert");
         const flights = await createSQLQuery.sqlSelect({
             distinct: false,
             columns: ['flight_date'],
@@ -47,8 +48,8 @@ router.post('/', permission, async function (req, res) {
             'personal_trip', fields, values
         );
         if (data.affectedRows > 0) {
-            res.send(true);
-        } else {
+         res.send(true);
+        }else{
             res.send(false);
         }
     }
