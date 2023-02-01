@@ -34,14 +34,16 @@ router.get('/deals', async function (req, res) {
         join: ['hotel on deal_package.hotel_id = hotel.hotel_id']
 
     });
+
+
     console.log(data);
     let arr = [];
     data.forEach(deal => {
         arr.push({
             id: deal.deal_id,
             location: deal.location,
-            startDate: deal.start_date,
-            endDate: deal.end_date,
+            startDate: convertToSQLDate(deal.start_date),
+            endDate: convertToSQLDate(deal.end_date),
             price: deal.price,
             car: deal.car,
             description: deal.description,
@@ -74,8 +76,8 @@ router.get('/dealInfo', async function (req, res) {
     console.log(data);
     const dataInfo = [];
     const dealInfo = {
-        location: data[0].location, startDate: data[0].start_date,
-        endDate: data[0].end_date, price: data[0].price,
+        location: data[0].location, startDate: convertToSQLDate(data[0].start_date),
+        endDate: convertToSQLDate(data[0].end_date), price: data[0].price,
         car: data[0].car, description: data[0].description,
         hotelName: data[0].hotel_name,
         reservations: data[0].reservations
@@ -87,7 +89,7 @@ router.get('/dealInfo', async function (req, res) {
             airline: flight.airline,
             startLocation: flight.start_location,
             destination: flight.destination,
-            date: flight.flight_date,
+            date: convertToSQLDate(flight.flight_date),
             departure: flight.departure,
             arriving: flight.arriving,
 
@@ -227,6 +229,11 @@ router.get('/search/location', async function (req, res) {
     res.send(arr);
 });
 
+
+function convertToSQLDate(dateStr) {
+    const date = new Date(dateStr);
+    return date.toISOString().split("T")[0];
+}
 
 
 module.exports = router;

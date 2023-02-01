@@ -1,8 +1,6 @@
 
-import logo from './logo.svg';
 import './App.css';
 import LogIn from './components/LogIn';
-import Register from './components/Register';
 import { Route, Routes } from 'react-router-dom';
 import Home from './components/Home';
 import ResetPassword from './components/ResetPassword';

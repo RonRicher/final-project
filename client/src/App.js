@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import LogIn from './components/LogIn';
 import Register from './components/Register';
@@ -25,8 +24,8 @@ function App() {
         <Route path="/deals/info/:id" element={<DealInfo />}></Route>
         <Route path="/deals/:id/payment" element={<Payment />}></Route>
         <Route path="/search/deals" element={<SearchedDeals />}></Route>
-        <Route path="/personal/trip" element={< PersonalTrip/>}></Route>
-        <Route path="/personal/trip/payment" element={< PersonalTripPayment/>}></Route>
+        <Route path="/personal/trip" element={< PersonalTrip />}></Route>
+        <Route path="/personal/trip/payment" element={< PersonalTripPayment />}></Route>
         <Route path="/deals/:id/payment/confirmation" element={<Confirmation />}></Route>
         <Route path="/personal/trip/payment/confirmation" element={<Confirmation />}></Route>
         <Route path="/*" element={<Home />}></Route>

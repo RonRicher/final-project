@@ -15,7 +15,9 @@ function Confirmation() {
                         Your reservation for {resLocation} with reservation number {mathRandom} has been confirmed.
                         An email containing the details of your trip has been sent to {email}.
                         <br />The total cost of the reservation is {price}$ and it is for {quantity} {quantity > 1 ? 'people' : 'person'}.</p></p>
+
             </div>
+
         </>
     );
 }

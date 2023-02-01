@@ -22,7 +22,7 @@ function DealInfo() {
                 price: info[0]?.price,
                 description: info[0]?.description,
                 reservations: info[0]?.reservations,
-                location : info[0]?.location
+                location: info[0]?.location
             }
         });
     };
@@ -31,29 +31,32 @@ function DealInfo() {
             <NavBar />
             <div className="dealInfo">
                 <div>
-                    <img className="imageByLocation" src={`http://localhost:8080/users/data/image/?location=${info[0]?.location}`} alt={`${info[0]?.location}`} />
-                </div><div>
-                    <h2>Book Your next Trip to {info[0]?.location}!</h2>
-                    <p>{info[0]?.startDate} - {info[0]?.endDate} </p>
+                    <div className="header-deal">
+                        <h2 className="dealInfoTitle">Book Your next Trip to {info[0]?.location}!</h2>
+                        <p>{info[0]?.startDate} - {info[0]?.endDate} </p>
+                        <p>{info[0]?.price}$</p>
+                        {info[0]?.car ? <p style={{ fontWeight: "bold" }}>Car included!</p> : <p></p>}
+                        <p>Enjoy the beautiful {info[0]?.hotelName} hotel</p>
+                        <p>{info[0]?.description}</p>
+                    </div>
+                    <div className="imageDealInfo">
+                        <img className="imageByLocationDeal" src={`http://localhost:8080/users/data/image/?location=${info[0]?.location}`} alt={`${info[0]?.location}`} />
+                    </div>
+                    <div className="flightTickets">
+                        {info[1]?.map((info, index) => {
+                            return <div className="flightTicket" key={Math.random()}>
+                                {index === 1 ? <p>Inbound flight &#9992;&#65039;</p> : <p>Outbound flight &#9992;&#65039;</p>}
+                                <p>Airline: {info.airline}</p>
+                                <p>Origin: {info.startLocation}</p>
+                                <p>Destination: {info.destination}</p>
+                                <p>Date: {info.date}</p>
+                                <p>Departure: {info.departure}</p>
+                                <p>Arriving-Time: {info.arriving}</p>
+                            </div>;
 
-                    <p>{info[0]?.price}</p>
-                    {info[0]?.car ? <p style={{ fontWeight: "bold" }}>car included!</p> : <p></p>}
-
-                    <p>enjoy the beautiful {info[0]?.hotelName} hotel</p>
-                    <p>{info[0]?.description}</p>
-                    {info[1]?.map((info, index) => {
-                        return <div key={Math.random()}>
-                            {index === 1 ? <p>inbound flight</p> : <p>outbound flight</p>}
-                            <p>Airline:{info.airline}</p>
-                            <p>Origin:{info.startLocation}</p>
-                            <p>Destination:{info.destination}</p>
-                            <p>Date:{info.date}</p>
-                            <p>Departure:{info.departure}</p>
-                            <p>Arriving-Time{info.arriving}</p>
-                        </div>;
-
-                    })}
-                    <p onClick={goToPayment}>payment</p>
+                        })}
+                    </div>
+                    <p className="goToPayment" onClick={goToPayment}>payment</p>
                 </div>
             </div>
         </div>

@@ -46,3 +46,33 @@ html {
   font-size: 3rem;
   background-color: aliceblue;
 }
+
+.carCheck {
+  display: flex;
+  gap: 5rem;
+
+  /* font-size: 16px;
+  line-height: 28px;
+  padding: 8px 16px;
+  width: 100%;
+  min-height: 44px;
+
+  border-radius: 4px;
+  outline-color: rgb(84 105 212 / 0.5);
+  background-color: rgb(255, 255, 255); */
+
+}
+
+#paymentForm label {
+  margin: 2rem 0;
+  font-size: 2rem;
+
+}
+
+#paymentForm #carInput {
+  width: 2rem;
+}
+
+.parText {
+  font-size: 2rem;
+}
