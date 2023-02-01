@@ -2,6 +2,8 @@ import Cookies from "js-cookie";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import NavBar from "./NavBar";
+import '../css/Admin.css'
 
 
 function Admin() {
@@ -66,15 +68,15 @@ function Admin() {
     };
     return (
         <>
+        <NavBar />
             <h1>{parText}</h1>
             {requests?.map(request => {
-
-                return <div key={Math.random()}>
-                    <p>  companyName:{request.companyName}
-                        companyEmail:{request.companyEmail}
-                        companyPhone:{request.companyPhone} </p>
-                    <button onClick={() => acceptRequest(request.companyName)}>accept request</button>
-                    <button onClick={() => declineRequest(request.companyName)}>decline request</button>
+                return <div className="admin-div" key={Math.random()}>
+                    <p>companyName:  {request.companyName}</p>
+                      <p>companyEmail:  {request.companyEmail}</p>
+                      <p>companyPhone:  {request.companyPhone}</p>
+                    <button className="admin-btn accept" onClick={() => acceptRequest(request.companyName)}> &#10004;</button>
+                    <button  className="admin-btn decline" onClick={() => declineRequest(request.companyName)}>&#10060;</button>
                 </div>;
             })}
         </>
