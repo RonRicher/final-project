@@ -14,8 +14,8 @@ const cookie = require('cookie');
 let transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'elyasaf11@gmail.com',
-    pass: 'yfkpuiockfqgykvr'
+    user: 'tripifycompany@gmail.com',
+    pass: 'xjxpvpixjtbnzois'
   }
 });
 
@@ -138,7 +138,7 @@ router.post('/password', async function (req, res) {
   });
   if (data.length > 0) {
     let mailOptions = {
-      from: 'elyasaf11@gmail.com',
+      from: 'tripifycompany@gmail.com',
       to: `${req.body.email}`,
       subject: 'Change password',
       text: 'click on the link to reset your password http://localhost:3000/changePassword'

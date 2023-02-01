@@ -9,8 +9,9 @@ const permission = require('../permission.js');
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'elyasaf11@gmail.com',
-        pass: 'yfkpuiockfqgykvr'
+        user: 'tripifycompany@gmail.com',
+        pass: 'xjxpvpixjtbnzois'
+
     }
 });
 
@@ -100,24 +101,32 @@ router.get('/dealInfo', async function (req, res) {
 });
 
 router.post('/payment', permission, async function (req, res) {
+    console.log('prmission');
+
     if (res.locals.permission !== 'admin' && res.locals.permission !== 'client') {
+        console.log('prmission');
         res.send(false);
         return;
     }
     const { dealId, clientId, quantity, price, firstName, lastName,
         phone, email, prevReservations, random, location } = req.body;
+    console.log('In');
+
+
     const data = await createSQLQuery.insertIntoTable('client_deal', ['deal_id', 'client_id', 'quantity', 'price', 'res_number'], [dealId, clientId, quantity, price, random]);
     console.log('data.affectedRows:', data.affectedRows);
     if (data.affectedRows > 0) {
         console.log('prevReservation: ', prevReservations);
         const changeReservations = await createSQLQuery.updateTable('deal_package', `client_deal`, `deal_package.deal_id = client_deal.deal_id`, ['reservations'], [`reservations - ${Number(quantity)}`], [`deal_package.deal_id = '${dealId}'`]);
         let mailOptions = {
-            from: 'elyasaf11@gmail.com',
+            from: 'tripifycompany@gmail.com',
             to: `${email}`,
             subject: `Your reservation Number ${random} to ${location}`,
             text: `Thanks for joining us to ${location}, for this trip you paid ${price}$ for ${quantity} people`
         };
         transporter.sendMail(mailOptions, function (error, info) {
+            console.log('prmission');
+
             if (error) {
                 console.log(error);
             } else {
@@ -128,18 +137,18 @@ router.post('/payment', permission, async function (req, res) {
 
 });
 
-router.post('/trip/payment',permission, async function (req, res) {
+router.post('/trip/payment', permission, async function (req, res) {
     if (res.locals.permission !== 'admin' && res.locals.permission !== 'client') {
         res.send(false);
         return;
     }
     const { clientId, price, firstName, lastName,
-        phone, email, quantity, random,location } = req.body;
+        phone, email, quantity, random, location } = req.body;
     const data = await createSQLQuery.insertIntoTable('client_trip', ['client_id', 'quantity', 'price', 'res_number'], [clientId, quantity, price, random]);
     console.log('data.affectedRows:', data.affectedRows);
     if (data.affectedRows > 0) {
         let mailOptions = {
-            from: 'elyasaf11@gmail.com',
+            from: 'tripifycompany@gmail.com',
             to: `${email}`,
             subject: `Your reservation Number ${random} to ${location}`,
             text: `Thanks for joining us to ${location}, for this trip you paid ${price}$ for ${quantity} people`

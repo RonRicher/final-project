@@ -24,11 +24,11 @@ function Home() {
     return (
         <div id="home-div">
             <NavBar />
-            <h1>Your deals</h1>
+            <h1 id='companyDealsTitle'>Your deals</h1>
             {deals?.map((deal) => {
-                return <div key={Math.random()}>
-                    <p>deal id : {deal.dealId}</p>
-                    <p>quantity: {deal.quantity}</p>
+                return <div className="comapnyDealDiv" key={Math.random()}>
+                    <p>Deal Id : {deal.dealId}</p>
+                    <p>Reservations quantity: {deal.quantity}</p>
                 </div>;
             })}
         </div>

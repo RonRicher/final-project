@@ -4,9 +4,20 @@ var nodemailer = require('nodemailer');
 const con = require('../connection.js');
 const createSQLQuery = require('../createSqlQuery.js');
 const permission = require('../permission');
+var nodemailer = require('nodemailer');
+
+let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'tripifycompany@gmail.com',
+        pass: 'xjxpvpixjtbnzois'
+    }
+});
 
 
-router.get('/',permission, async function (req, res) {
+
+
+router.get('/', permission, async function (req, res) {
     if (res.locals.permission !== 'admin' && res.locals.permission !== 'company') {
         res.send(false);
         return;
@@ -18,12 +29,12 @@ router.get('/',permission, async function (req, res) {
         where: `user_id = '${req.cookies.userId}'`,
         orderBy: [],
         join: []
-    })
+    });
     const data = await createSQLQuery.sqlSelect({
         distinct: false,
-        columns: ['SUM(quantity) as quantity', 'client_deal.deal_id' ],
+        columns: ['SUM(quantity) as quantity', 'client_deal.deal_id'],
         tableName: "client_deal ",
-        where: `company_id = ${companyId[0].company_id}`,
+        where: `company_id = '${companyId[0].company_id}'`,
         orderBy: [],
         join: ['deal_package ON client_deal.deal_id = deal_package.deal_id'],
         groupBy: 'client_deal.deal_id'
@@ -31,8 +42,8 @@ router.get('/',permission, async function (req, res) {
     console.log(data);
     const arr = [];
     data.forEach((deal) => arr.push({
-       dealId: deal.deal_id,
-       quantity: deal.quantity
+        dealId: deal.deal_id,
+        quantity: deal.quantity
     }));
     res.send(arr);
 });
@@ -127,6 +138,19 @@ router.put('/requests/accept', permission, async function (req, res) {
         console.log('data:' + data);
         if (data.affectedRows > 0) {
             res.send(true);
+            let mailOptions = {
+                from: 'tripifycompany@gmail.com',
+                to: `${email}`,
+                subject: `Your request to sign up to Tripify is been confirmed`,
+                text: `Thanks for joining us to tripify, we're looking forward to giving you the best experience`
+            };
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    res.send(true);
+                }
+            });
         } else {
             res.send(false);
         }

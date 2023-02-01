@@ -205,3 +205,23 @@ option {
     background-color: #0035803d;
     padding: 5rem;
 }
+
+.confirmationDiv {
+    background-color: aliceblue;
+    width: 50%;
+    margin: 5rem auto;
+    height: 75vh;
+    padding: 5rem;
+
+}
+
+.confirmationMessage {
+    font-size: 3rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin: 1rem auto;
+}
+
+.confirmationMessageBody {
+    margin-top: 1rem;
+    line-height: 4.5rem;
+}

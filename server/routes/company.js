@@ -12,8 +12,9 @@ const permission = require('../permission.js');
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'elyasaf11@gmail.com',
-        pass: 'yfkpuiockfqgykvr'
+        user: 'tripifycompany@gmail.com',
+        pass: 'xjxpvpixjtbnzois'
+
     }
 });
 
@@ -139,7 +140,7 @@ router.post('/password', async function (req, res) {
     if (data.length > 0) {
         console.log(2222222);
         let mailOptions = {
-            from: 'elyasaf11@gmail.com',
+            from: 'tripifycompany@gmail.com',
             to: `${req.body.email}`,
             subject: 'Change password',
             text: 'click on the link to reset your password http://localhost:4000/changePassword'

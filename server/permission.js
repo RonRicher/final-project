@@ -4,8 +4,11 @@ const createSQLQuery = require('./createSqlQuery');
 
 
 const permission = async (req, res, next) => {
+
+
     const { userId } = req.cookies;
-    if (!userId) {
+
+    if (!req.cookies.userId) {
         res.send(false);
         return;
     }

@@ -1,15 +1,21 @@
 import { useLocation } from 'react-router-dom';
+import NavBar from './NavBar';
 
 function Confirmation() {
     const location = useLocation();
     console.log(location.state);
-    const { mathRandom, quantity, price, firstName, lastName, email, phone,resLocation } = location.state;
+    const { mathRandom, quantity, price, firstName, lastName, email, phone, resLocation } = location.state;
     return (
         <>
-            <p>Dear {firstName} {lastName}, <br /> Your reservation to {resLocation} number
-                {mathRandom} is been confirmed. an email with details about your trip sent to your
-                email address: {email}.
-                price: {price}<br />quantity: {quantity} </p>
+            <NavBar />
+            <div className='confirmationDiv'>
+                <p className='confirmationMessage'>
+                    <h3>Dear {firstName.charAt(0).toUpperCase() + firstName.slice(1)} {lastName.charAt(0).toUpperCase() + lastName.slice(1)},</h3>
+                    <p className='confirmationMessageBody'>
+                        Your reservation for {resLocation} with reservation number {mathRandom} has been confirmed.
+                        An email containing the details of your trip has been sent to {email}.
+                        <br />The total cost of the reservation is {price}$ and it is for {quantity} {quantity > 1 ? 'people' : 'person'}.</p></p>
+            </div>
         </>
     );
 }
