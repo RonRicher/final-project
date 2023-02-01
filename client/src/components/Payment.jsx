@@ -23,9 +23,46 @@ function Payment() {
     const { userId } = useUser();
     const { id } = useParams();
 
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    const phoneRegex = /^(?:\+\d{1,3}|0\d{1,3}|\d{1,4})[\s.-]?\d{3}[\s.-]?\d{4}$/;  
+    const cardNumberRegex = /^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/;
+    const cvvRegex = /^\d{3,4}$/;
+    const expDateRegex = /^\d{4}-(0[1-9]|1[0-2])$/;
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const currentDate = `${year}-${month < 10? "0" + month:month}`
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if(firstName === '' ){
+            setParText('Please enter first name');
+            return;
+        }
+        if(lastName === '' ){
+            setParText('Please enter last name');
+            return;
+        }
+        if(!emailRegex.test(email)){
+            setParText('Please enter valid email');
+            return;
+        }
+        if(!phoneRegex.test(phone)){
+            setParText('Please enter valid phone number');
+            return;
+        }
+        if(!cardNumberRegex.test(cardNumber)){
+            setParText('Please enter valid credit card number');
+            return;
+        }
+        if(!expDateRegex.test(expDate)){
+            setParText('Please enter expiration date card number');
+            return;
+        }
+        if(!cvvRegex.test(cvvRegex)){
+            setParText('Please enter valid cvv number');
+            return;
+        }
         const mathRandom = Math.floor(Math.random() * 100000000);
         const response = await fetch(`http://localhost:8080/users/data/payment`, {
             method: "POST",
@@ -115,7 +152,8 @@ function Payment() {
                                     <div>
                                         <label htmlFor="expDate">Expiration Date:</label>
                                         <input
-                                            type="text"
+                                        min={currentDate}
+                                            type="month"
                                             id="expDate"
                                             value={expDate}
                                             onChange={(event) => setExpDate(event.target.value)}

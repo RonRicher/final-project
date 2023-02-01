@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import '../css/PersonalTrip.css'
 
 function PersonalTrip() {
-    const [price, setPrice] = useState(0);
     const [location, setLocation] = useState("");
     const [inbound, setInbound] = useState("");
     const [outbound, setOutbound] = useState("");
@@ -13,7 +12,7 @@ function PersonalTrip() {
     const [secondFlights, setSecondFlights] = useState([]);
     const [flag, setFlag] = useState(false);
     const [locationSearch, setLocationSearch] = useState("");
-    const aa = useRef();
+    const textType = useRef();
     const [parText, setParText] = useState("");
     const [firstFlights, setFirstFlights] = useState([]);
     const [hotels, setHotels] = useState([]);
@@ -43,6 +42,12 @@ function PersonalTrip() {
     };
 
     const getInboundFlights = async (flightId) => {
+        console.log(typeof flightId);
+        if(!flightId || typeof Number(flightId) !== 'number'|| flightId === 'select outbound-flight'){
+            setParText('Please choose outbound flight')
+            return;
+        }
+        console.log("fetched outbound")
         const flightResponse = await fetch(`http://localhost:8080/search/flights/inbound?location=${location}&flightId=${flightId}`);
         const data = await flightResponse.json();
         console.log(data);
@@ -60,9 +65,23 @@ function PersonalTrip() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log({
-            hotelId, outbound, location, inbound, quantity
-        })
+        console.log(outbound,inbound)
+        if(location === '' ){
+            setParText('Please choose location')
+            return;
+        }
+        if(hotelId === '' || hotelId === 'select hotel'){
+            setParText('Please choose hotel')
+            return;
+        }
+        if(!outbound || typeof Number(outbound) !== 'number'){
+            setParText('Please choose outbound flight')
+            return;
+        }
+        if(!inbound || typeof Number(inbound) !== 'number'){
+            setParText('Please choose inbound flight')
+            return;
+        }
         const response = await fetch(`http://localhost:8080/users/deals`, {
             method: "POST",
             credentials: 'include',
@@ -87,13 +106,13 @@ function PersonalTrip() {
                     <div className="formbg-outer">
                         <div className="formbg">
                             <div className="formbg-inner padding-horizontal--48">
-                                <span className="padding-bottom--15">Create New Deal</span>
+                                <span className="padding-bottom--15">Plan your trip</span>
                                 <form id="stripe-login">
                                     {!flag ? <div><p>Choose Location</p><div className="field padding-bottom--24">
                                         <input placeholder='location' type="search" value={locationSearch} onChange={(e) => {
                                             setLocationSearch(e.target.value);
-                                            clearTimeout(aa.current);
-                                            aa.current = setTimeout(() => getLocations(e.target.value), 200);
+                                            clearTimeout(textType.current);
+                                            textType.current = setTimeout(() => getLocations(e.target.value), 200);
                                         }
                                         } />
                                     </div>
@@ -109,21 +128,23 @@ function PersonalTrip() {
                                             </ul>
                                         </div></div> : null}
                                     {flag ? <div>
-                                        <button onClick={() => setFlag(false)} id='change-location'>change location</button>
+                                        <button onClick={() => {
+                                            setFlag(false);
+                                            setSecondFlightsFlag(false);
+                                            }} id='change-location'>change location</button>
                                         <div>
                                             <select value={hotelId} onChange={(e) => {
                                                 console.log(e.target, e.target.value);
                                                 setHotelId(e.target.value);
                                             }}>
                                                 {['select hotel', ...hotels]?.map((item) => {
-                                                    return <option key={Math.random()} data-price={`${item.price}`} value={item.hotelId}>{item.hotelName ? `${item.hotelName} , ${item.price}` : `${item}`}</option>;
+                                                    return <option key={Math.random()}  value={item.hotelId}>{item.hotelName ? `${item.hotelName} , ${item.price}` : `${item}`}</option>;
                                                 })}
                                             </select>
                                         </div>
                                         <div>
                                             <select value={outbound} onChange={(e) => {
-                                                console.log(e.target.value);
-                                                setOutbound(e.target.value);
+                                                {e.target.value !== 'select outbound-flight'? setOutbound(e.target.value): setOutbound('')};
                                                 getInboundFlights(e.target.value);
                                                 setSecondFlightsFlag(true);
                                             }}>

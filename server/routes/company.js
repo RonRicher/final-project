@@ -114,11 +114,7 @@ router.post('/logIn', async function (req, res) {
     }
 });
 
-router.post('/changePassword',permission, async function (req, res) {
-    if (res.locals.permission !== 'admin' && res.locals.permission !== 'company') {
-        res.send(false);
-        return;
-    }
+router.post('/changePassword', async function (req, res) {
     bcrypt.hash(req.body.password, saltRounds, async function (err, hash) {
         const data = await createSQLQuery.updateTable('user_access', `company_details`, `user_access.user_id = company_details.user_id`, ['password'], [`'${hash}'`], [`email='${req.body.email}'`]);
         if (data.affectedRows > 0) {
@@ -130,11 +126,7 @@ router.post('/changePassword',permission, async function (req, res) {
 });
 
 
-router.post('/password',permission, async function (req, res) {
-    if (res.locals.permission !== 'admin' && res.locals.permission !== 'company') {
-        res.send(false);
-        return;
-    }
+router.post('/password', async function (req, res) {
     const data = await createSQLQuery.sqlSelect({
         distinct: false,
         columns: ['company_details.company_name'],

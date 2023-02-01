@@ -7,8 +7,6 @@ function CreateDeal() {
     const [car, setCar] = useState(false);
     const [price, setPrice] = useState("");
     const [location, setLocation] = useState("");
-    const [endDate, setEndDate] = useState("");
-    const [startDate, setStartDate] = useState("");
     const [inbound, setInbound] = useState("");
     const [outbound, setOutbound] = useState("");
     const [hotelId, setHotelId] = useState("");
@@ -45,6 +43,10 @@ function CreateDeal() {
     };
 
     const getInboundFlights = async (flightId) => {
+        if(!flightId || typeof Number(flightId) !== 'number'|| flightId === 'select outbound-flight'){
+            setParText('choose outbound-flight');
+            return;
+        }
         const flightResponse = await fetch(`http://localhost:8080/search/flights/inbound?location=${location}&flightId=${flightId}`);
         const data = await flightResponse.json();
         console.log(data);
@@ -54,9 +56,30 @@ function CreateDeal() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log({
-            hotelId, outbound, location, inbound, description, quantity, car, price
-        })
+        const pattern = /^.{30,100}$/;
+        if(location === '' ){
+            setParText('Please choose location')
+            return;
+        }
+        if(hotelId === '' || hotelId === 'select hotel'){
+            setParText('Please choose hotel')
+            return;
+        }
+        if(!outbound || typeof Number(outbound) !== 'number'){
+            setParText('Please choose outbound flight')
+            return;
+        }
+        if(!inbound || typeof Number(inbound) !== 'number'){
+            setParText('Please choose inbound flight')
+            return;
+        }
+        if(price <= 0){
+            setParText('Please enter price');
+            return;
+        }
+        if(!pattern.test(description)){
+            setParText('The description must be between 30 characters to 100 characters');
+        }
         const response = await fetch(`http://localhost:8080/companies/deals`, {
             method: "POST",
             credentials: 'include',
@@ -109,7 +132,16 @@ function CreateDeal() {
                                             </ul>
                                         </div></div> : null}
                                     {flag ? <div>
-                                        <button onClick={() => setFlag(false)} id='change-location'>change location</button>
+                                        <button onClick={()=> {
+                                            setFlag(false);
+                                            setSecondFlightsFlag(false);
+                                            setInbound("");
+                                            setOutbound("");
+                                            setHotelId("");
+                                            setPrice("");
+                                            setDescription("");
+                                            setCar(false);
+                                            }} id='change-location'>change location</button>
                                         <div>
                                             <select value={hotelId} onChange={(e) => {
                                                 setHotelId(e.target.value);
@@ -155,7 +187,7 @@ function CreateDeal() {
                                         </div>
                                         <div className="field padding-bottom--24">
                                             <label htmlFor="description">description</label>
-                                            <input type="text" name="description" value={description}
+                                            <input type="text" name="description" id="text-area" value={description}
                                                 onChange={(e) => {
                                                     setDescription(e.target.value);
                                                 }} />
