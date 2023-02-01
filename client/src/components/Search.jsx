@@ -68,7 +68,8 @@ function Search() {
                     <select id="type" value={type} onChange={(e) => {
                         setType(e.target.value);
                     }}>
-                        <option id="wow" className="typeList" value='romantic'>romantic</option>
+                        <option className="typeList" value=''>What Are you looking for in your next trip</option>
+                        <option className="typeList" value='romantic'>romantic</option>
                         <option className="typeList" value='nature'>nature</option>
                         <option className="typeList" value='urban'>urban</option>
                         <option className="typeList" value='families'>families</option>
