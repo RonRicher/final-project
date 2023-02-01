@@ -55,10 +55,6 @@ function PersonalTripPayment() {
                 setParText('Please enter expiration date card number');
                 return;
             }
-            if(!cvvRegex.test(cvvRegex)){
-                setParText('Please enter valid cvv number');
-                return;
-            }
             const userId1 = Number(userId);
             const mathRandom = Math.floor(Math.random() * 100000000);
             const response = await fetch(`http://localhost:8080/users/data/trip/payment`, {
@@ -74,7 +70,10 @@ function PersonalTripPayment() {
                     price: price,
                     quantity: stateData.quantity,
                     random: mathRandom,
-                    location: stateData.location
+                    location: stateData.location,
+                    hotelId: stateData.hotelId,
+                    inbound: stateData.inbound,
+                    outbound: stateData.outbound
                 })
             });
             const data = await response.json();

@@ -96,7 +96,7 @@ function PersonalTrip() {
         })
         const data = await response.json();
         if (data) {
-            navigate('/personal/trip/payment', { state: { price: totalPrice * quantity, location, quantity, price: totalPrice } })
+            navigate('/personal/trip/payment', { state: { price: totalPrice * quantity, location, quantity,outbound,inbound,hotelId}})
         }
     }
     return (
@@ -138,7 +138,7 @@ function PersonalTrip() {
                                                 setHotelId(e.target.value);
                                             }}>
                                                 {['select hotel', ...hotels]?.map((item) => {
-                                                    return <option key={Math.random()}  value={item.hotelId}>{item.hotelName ? `${item.hotelName} , ${item.price}` : `${item}`}</option>;
+                                                    return <option key={Math.random()}  value={item.hotelId}>{item.hotelName ? `${item.hotelName} , Rooms left: ${item.reservations}, ${item.price}$` : `${item}`}</option>;
                                                 })}
                                             </select>
                                         </div>
@@ -149,7 +149,7 @@ function PersonalTrip() {
                                                 setSecondFlightsFlag(true);
                                             }}>
                                                 {['select outbound-flight', ...firstFlights]?.map((item) => {
-                                                    return <option key={Math.random()} value={item.flightId}>{item.airline ? `${item.airline} , ${item.date}` : `${item}`}</option>;
+                                                    return <option key={Math.random()} value={item.flightId}>{item.airline ? `${item.airline} , ${item.date}, ${item.price}$` : `${item}`}</option>;
                                                 })}
                                             </select>
                                         </div>
@@ -159,7 +159,7 @@ function PersonalTrip() {
                                                 setInbound(e.target.value);
                                             }}>
                                                 {['select inbound-flight', ...secondFlights]?.map((item) => {
-                                                    return <option key={Math.random()} value={item.flightId}>{item.airline ? `${item.airline} , ${item.date}` : `${item}`}</option>;
+                                                    return <option key={Math.random()} value={item.flightId}>{item.airline ? `${item.airline} , ${item.date} , ${item.price}$` : `${item}`}</option>;
                                                 })}
                                             </select>
                                         </div> : null}
@@ -174,7 +174,7 @@ function PersonalTrip() {
                                         <div className="field padding-bottom--24">
                                             <p style={{ margin: '5%', color: 'red' }}>{parText}</p>
                                             <p id="price">{totalPrice * quantity}$</p>
-                                            <button onClick={handleSubmit}>Payment</button>
+                                            <button onClick={handleSubmit}> move to payment</button>
                                         </div>
                                     </div> : null}
                                 </form>

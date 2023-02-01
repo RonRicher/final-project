@@ -24,9 +24,9 @@ router.get('/hotels', async function (req, res) {
     const { location } = req.query;
     const data = await createSQLQuery.sqlSelect({
         distinct: false,
-        columns: ['hotel_id', 'hotel_name', 'price'],
+        columns: ['hotel_id', 'hotel_name', 'price','rooms_left'],
         tableName: "hotel",
-        where: `location = '${location}'`,
+        where: `location = '${location}' and rooms_left > 0 and deleted = 0`,
         orderBy: [],
         join: []
     });
@@ -34,8 +34,10 @@ router.get('/hotels', async function (req, res) {
     data.forEach((hotel) => arr.push({
         hotelId: hotel.hotel_id,
         hotelName: hotel.hotel_name,
-        price: hotel.price
+        price: hotel.price,
+        reservations: hotel.rooms_left
     }));
+    console.log(arr);
     res.send(arr);
 });
 
@@ -50,12 +52,16 @@ router.get('/flights/outbound', async function (req, res) {
         orderBy: [],
         join: []
     });
+    function convertToSQLDate(dateStr) {
+        const date = new Date(dateStr);
+        return date.toISOString().split("T")[0];
+    }
     console.log('data: ', data);
     const arr = [];
     data.forEach((flight) => arr.push({
         flightId: flight.flight_id,
         airline: flight.airline,
-        date: flight.flight_date,
+        date: convertToSQLDate(flight.flight_date) ,
         price: flight.price
     }));
     console.log('arr: ', arr);
@@ -72,11 +78,15 @@ router.get('/flights/inbound', async function (req, res) {
         orderBy: [],
         join: []
     });
+    function convertToSQLDate(dateStr) {
+        const date = new Date(dateStr);
+        return date.toISOString().split("T")[0];
+    }
     const arr = [];
     data.forEach((flight) => arr.push({
         flightId: flight.flight_id,
         airline: flight.airline,
-        date: flight.flight_date,
+        date: convertToSQLDate(flight.flight_date),
         price: flight.price
     }));
     res.send(arr);

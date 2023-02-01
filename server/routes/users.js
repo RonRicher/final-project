@@ -130,8 +130,8 @@ router.post('/changePassword', async function (req, res) {
 router.post('/password', async function (req, res) {
   const data = await createSQLQuery.sqlSelect({
     distinct: false,
-    columns: ['company_details.company_name'],
-    tableName: "company_details",
+    columns: ['user_details.user_name'],
+    tableName: "user_details",
     where: `email = '${req.body.email}'`,
     orderBy: [],
     join: []
