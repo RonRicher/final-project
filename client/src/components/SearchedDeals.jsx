@@ -29,7 +29,7 @@ function SearchedDeals() {
             <>
                 {deals.length === 0 ?
 
-                    <><h1 class='not-found'>No results founds.</h1></> : <></>
+                    <><h1 class='not-found'>No results founds.</h1></> : <h1 class='found'>Results:</h1>
 
                 }</>
             {deals?.map((deal) => {

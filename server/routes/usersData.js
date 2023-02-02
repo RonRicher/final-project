@@ -141,7 +141,7 @@ router.post('/trip/payment', permission, async function (req, res) {
         };
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
-               console.log(error);
+                console.log(error);
             }
         });
     } else {
@@ -158,7 +158,7 @@ router.post('/trip/payment', permission, async function (req, res) {
     });
     if (roomsLeft[0].rooms_left === 0) {
         const deleteHotel = await createSQLQuery.updateTable('hotel', ``, ``, ['deleted'], [1], [`hotel.hotel_id = ${hotelId}`]);
-        res.status(200).send()
+        res.status(200).send();
         return;
     }
     res.status(200).send();
@@ -183,8 +183,8 @@ router.get('/search', async function (req, res) {
     data.forEach((deal) => arr.push({
         id: deal.deal_id,
         location: deal.location,
-        startDate: deal.start_date,
-        endDate: deal.end_date,
+        startDate: convertToSQLDate(deal.start_date),
+        endDate: convertToSQLDate(deal.end_date),
         price: deal.price,
         car: deal.car,
         description: deal.description,

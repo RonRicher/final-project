@@ -94,12 +94,12 @@ function PersonalTrip() {
                 quantity
             })
         });
-       if(response.status !== 200){
-        const data = await response.json();
-        setParText(data);
-        return;
-       }
-            navigate('/personal/trip/payment', { state: { price: totalPrice * quantity, location, quantity, outbound, inbound, hotelId } });
+        if (response.status !== 200) {
+            const data = await response.json();
+            setParText(data);
+            return;
+        }
+        navigate('/personal/trip/payment', { state: { price: totalPrice * quantity, location, quantity, outbound, inbound, hotelId } });
     };
     return (
         <div id="create-deal-div">
@@ -137,7 +137,7 @@ function PersonalTrip() {
                                             }} id='change-location'>&larr;</p>
                                         </div>
                                         <div>
-                                            <select value={hotelId} onChange={(e) => {
+                                            <select className="personalSelect" value={hotelId} onChange={(e) => {
                                                 console.log(e.target, e.target.value);
                                                 setHotelId(e.target.value);
                                             }}>
@@ -147,7 +147,7 @@ function PersonalTrip() {
                                             </select>
                                         </div>
                                         <div>
-                                            <select value={outbound} onChange={(e) => {
+                                            <select className="personalSelect" value={outbound} onChange={(e) => {
                                                 { e.target.value !== 'select outbound-flight' ? setOutbound(e.target.value) : setOutbound(''); };
                                                 getInboundFlights(e.target.value);
                                                 setSecondFlightsFlag(true);
@@ -158,7 +158,7 @@ function PersonalTrip() {
                                             </select>
                                         </div>
                                         {secondFlightsFlag ? <div>
-                                            <select value={inbound} onChange={(e) => {
+                                            <select className="personalSelect" value={inbound} onChange={(e) => {
                                                 console.log(e.target.value);
                                                 setInbound(e.target.value);
                                             }}>
@@ -178,7 +178,7 @@ function PersonalTrip() {
                                         <div className="field padding-bottom--24">
                                             <p className='parText' style={{ margin: '5%', color: 'red' }}>{parText}</p>
                                             <p id="price">{totalPrice * quantity}$</p>
-                                            <button onClick={handleSubmit}> move to payment</button>
+                                            <button onClick={handleSubmit}> Proceed to Payment</button>
                                         </div>
                                     </div> : null}
                                 </form>

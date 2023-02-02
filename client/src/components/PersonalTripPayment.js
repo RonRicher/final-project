@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import { useUser } from '../context/userContext';
 import '../css/Payment.css';
+import NavBar from "./NavBar";
 
 function PersonalTripPayment() {
     const navigate = useNavigate();
@@ -76,16 +77,17 @@ function PersonalTripPayment() {
                 outbound: stateData.outbound
             })
         });
-        if(response.status !== 200) {
+        if (response.status !== 200) {
             const data = await response.json();
             setParText(data);
             return;
         }
-     navigate(`/deals/${id}/payment/confirmation`, { state: { mathRandom, quantity, price, firstName, lastName, email, phone, resLocation: stateData.location } });
-        
+        navigate(`/deals/${id}/payment/confirmation`, { state: { mathRandom, quantity, price, firstName, lastName, email, phone, resLocation: stateData.location } });
+
     };
     return (
         <div id="payment-div">
+            <NavBar />
             <div className="login-root">
                 <div className="box-root padding-top--24 flex-flex flex-direction--column" style={{ flexGrow: 1, zIndex: 9 }}>
                     <div className="formbg-outer">

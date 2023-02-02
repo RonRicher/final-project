@@ -70,9 +70,14 @@ function Admin() {
     return (
         <>
             <NavBar />
-            <h1>{parText}</h1>
+            {requests.length === 0 ?
+
+                <><h1 className='not-found'>No requests founds.</h1></> : <><h1 className='not-found'>Requests:</h1></>
+
+            }
             {requests?.map(request => {
                 return <div className="admin-div" key={Math.random()}>
+
                     <p><strong>companyName:</strong> {request.companyName},&nbsp;
                         <strong>companyEmail:</strong> {request.companyEmail},&nbsp;
                         <strong>companyPhone:</strong> {request.companyPhone}</p>

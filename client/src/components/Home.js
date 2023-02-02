@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import NavBar from "./NavBar";
 import Deal from "./Deal";
 import Search from "./Search";
-import {useUser} from "../context/userContext"
+import { useUser } from "../context/userContext";
 
 function Home() {
     const [deals, setDeals] = useState();
-    const {userId}= useUser();
+    const { userId } = useUser();
     console.log(userId);
     useEffect(() => {
         getDeals();
@@ -23,6 +23,7 @@ function Home() {
             <NavBar />
 
             <Search />
+            <h1 className="found">Popular Deals</h1>
             {deals?.map((deal) => {
                 return <Deal key={Math.random()} location={deal.location} startDate={deal.startDate}
                     endDate={deal.endDate} price={deal.price} car={deal.car}

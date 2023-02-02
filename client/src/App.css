@@ -97,6 +97,7 @@ html {
     width: 70%;
     margin: 0 auto;
     display: flex;
+    margin-top: 5rem;
     /* height: 30%; */
 }
 
@@ -215,6 +216,7 @@ option {
     border: navy;
     box-shadow: 0px 0px 0px 0px navy;
     font-size: 2rem;
+    margin-bottom: 5rem;
 }
 
 .clickDealsDiv {
@@ -288,6 +290,7 @@ option {
     border-radius: 2px;
     cursor: pointer;
     padding: 1rem;
+    border-radius: 0.7rem;
 
 }
 
@@ -321,4 +324,23 @@ option {
     background-color: rgb(213, 235, 255);
     color: navy;
 
+}
+
+
+.found {
+    font-size: 5rem;
+    width: 60%;
+    margin: 3rem auto;
+    text-align: center;
+    padding: 5rem;
+    background-color: rgb(213, 235, 255);
+    color: navy;
+
+}
+
+.personalSelect {
+    font-size: 1.6rem;
+    width: 90%;
+    height: 4rem;
+    margin: 1rem auto;
 }
