@@ -29,13 +29,13 @@ function Home() {
             {permission === "admin" ? <h1 id='companyDealsTitle'>Companies Info</h1> :
                 <h1 id='companyDealsTitle'>Your deals</h1>}
             {permission === "admin" ? deals?.map((company) => {
-                return <div className="comapnyDealDiv" key={Math.random()}>
+                return <div className="comapnyDealDiv" key={company.companyName}>
                     <p>Company Name: {company.companyName}</p>
                     <p>Total deals quantity: {company.totalQuantity}</p>
                     <p> Total deals sales: {company.totalPrice}$</p>
                 </div>;
             }) : deals?.map((deal) => {
-                return <div className="comapnyDealDiv" key={Math.random()}>
+                return <div className="comapnyDealDiv" key={deal.dealId}>
                     <p>Deal Id: {deal.dealId}</p>
                     <p> Quantity: {deal.quantity}</p>
                     <p> Total sales: {deal.price}$</p>

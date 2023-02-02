@@ -144,7 +144,7 @@ function CreateDeal() {
                                             <div className="field padding-bottom--24 select-location">
                                                 <ul className="select">
                                                     {locationSelect?.map((item) => {
-                                                        return <li key={Math.random()} className='option' onClick={() => {
+                                                        return <li key={item} className='option' onClick={() => {
                                                             setLocation(item);
                                                             setLocationFlag(false);
                                                             browse(item);
@@ -171,7 +171,7 @@ function CreateDeal() {
                                                     setHotelId(e.target.value);
                                                 }}>
                                                     {['select hotel', ...hotels]?.map((item) => {
-                                                        return <option key={Math.random()} value={item.hotelId}>{item.hotelName ? `${item.hotelName}, Rooms left: ${item.reservations}` : `${item}`}</option>;
+                                                        return <option key={item.hotelId} value={item.hotelId}>{item.hotelName ? `${item.hotelName}, Rooms left: ${item.reservations}` : `${item}`}</option>;
                                                     })}
                                                 </select>
                                             </div>
@@ -182,7 +182,7 @@ function CreateDeal() {
                                                     setSecondFlightsFlag(true);
                                                 }}>
                                                     {['select outbound-flight', ...firstFlights]?.map((item) => {
-                                                        return <option key={Math.random()} value={item.flightId}>{item.airline ? `${item.airline} , ${item.date}` : `${item}`}</option>;
+                                                        return <option key={item.flightId} value={item.flightId}>{item.airline ? `${item.airline} , ${item.date}` : `${item}`}</option>;
                                                     })}
                                                 </select>
                                             </div>

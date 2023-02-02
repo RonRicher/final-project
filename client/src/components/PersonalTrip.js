@@ -154,7 +154,7 @@ function PersonalTrip() {
                                                 setHotelId(e.target.value);
                                             }}>
                                                 {['select hotel', ...hotels]?.map((item) => {
-                                                    return <option key={Math.random()} value={item.hotelId}>{item.hotelName ? `${item.hotelName} , Rooms left: ${item.reservations}, ${item.price}$` : `${item}`}</option>;
+                                                    return <option key={item.hotelId} value={item.hotelId}>{item.hotelName ? `${item.hotelName} , Rooms left: ${item.reservations}, ${item.price}$` : `${item}`}</option>;
                                                 })}
                                             </select>
                                         </div>
@@ -165,7 +165,7 @@ function PersonalTrip() {
                                                 setSecondFlightsFlag(true);
                                             }}>
                                                 {['select outbound-flight', ...firstFlights]?.map((item) => {
-                                                    return <option key={Math.random()} value={item.flightId}>{item.airline ? `${item.airline} , ${item.date}, ${item.price}$` : `${item}`}</option>;
+                                                    return <option key={item.flightId} value={item.flightId}>{item.airline ? `${item.airline} , ${item.date}, ${item.price}$` : `${item}`}</option>;
                                                 })}
                                             </select>
                                         </div>
@@ -175,7 +175,7 @@ function PersonalTrip() {
                                                 setInbound(e.target.value);
                                             }}>
                                                 {['select inbound-flight', ...secondFlights]?.map((item) => {
-                                                    return <option key={Math.random()} value={item.flightId}>{item.airline ? `${item.airline} , ${item.date} , ${item.price}$` : `${item}`}</option>;
+                                                    return <option key={item.flightId} value={item.flightId}>{item.airline ? `${item.airline} , ${item.date} , ${item.price}$` : `${item}`}</option>;
                                                 })}
                                             </select>
                                         </div> : null}

@@ -25,7 +25,7 @@ function Home() {
             <Search />
             <h1 className="found">Popular Deals</h1>
             {deals?.map((deal) => {
-                return <Deal key={Math.random()} location={deal.location} startDate={deal.startDate}
+                return <Deal key={deal.id} location={deal.location} startDate={deal.startDate}
                     endDate={deal.endDate} price={deal.price} car={deal.car}
                     description={deal.description} hotelName={deal.hotelName} id={deal.id} />;
             })}
