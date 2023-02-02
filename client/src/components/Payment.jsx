@@ -77,13 +77,13 @@ function Payment() {
                 location: stateData.location
             })
         });
-        if(response.status !== 200) {
+        if (response.status !== 200) {
             const data = await response.json();
             setParText(data);
             return;
         }
-            navigate(`/deals/${id}/payment/confirmation`, { state: { mathRandom, quantity, price, firstName, lastName, email, phone, resLocation: stateData.location } });
-       
+        navigate(`/deals/${id}/payment/confirmation`, { state: { mathRandom, quantity, price, firstName, lastName, email, phone, resLocation: stateData.location } });
+
     };
     return (
 
@@ -171,7 +171,7 @@ function Payment() {
                                     <div className="field padding-bottom--24">
                                         <p id="payment-price">Total Price: {price}$</p>
                                         <p className='parText' style={{ margin: '5%', color: 'red' }}>{parText}</p>
-                                        <button onClick={handleSubmit}>pay</button>
+                                        <button className="proceedBtn" onClick={handleSubmit}>pay</button>
                                     </div>
                                 </form>
                             </div>

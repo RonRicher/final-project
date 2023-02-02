@@ -344,3 +344,8 @@ option {
     height: 4rem;
     margin: 1rem auto;
 }
+
+.proceedBtn {
+    background-color: #003580;
+    font-size: 1.75rem;
+}

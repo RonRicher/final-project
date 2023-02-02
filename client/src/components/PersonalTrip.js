@@ -36,7 +36,7 @@ function PersonalTrip() {
         const data = await response.json();
         if (data.length === 0) {
             setPar1Text("we d'ont have hotels for this location");
-            setTimeout(() => setPar1Text(''), 1500)
+            setTimeout(() => setPar1Text(''), 1500);
             return;
         }
         setHotels(data);
@@ -45,7 +45,7 @@ function PersonalTrip() {
         const data1 = await flightResponse.json();
         if (data1.length === 0) {
             setPar1Text("we d'ont have outbound flight for this location");
-            setTimeout(() => setPar1Text(''), 1500)
+            setTimeout(() => setPar1Text(''), 1500);
             return;
         }
         setFirstFlights(data1);
@@ -190,7 +190,7 @@ function PersonalTrip() {
                                         <div className="field padding-bottom--24">
                                             <p className='parText' style={{ margin: '5%', color: 'red' }}>{parText}</p>
                                             <p id="price">{totalPrice * quantity}$</p>
-                                            <button onClick={handleSubmit}> Proceed to Payment</button>
+                                            <button className="proceedBtn" onClick={handleSubmit}> Proceed to Payment</button>
                                         </div>
                                     </div> : null}
                                 </form>
