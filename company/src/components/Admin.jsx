@@ -77,8 +77,7 @@ function Admin() {
                 <><h1 className='not-found'>No requests founds.</h1></> : <><h1 className='not-found'>Requests:</h1></>} */}
 
             {requests?.map(request => {
-                return <div className="admin-div" key={Math.random()}>
-
+                return <div className="admin-div" key={request.companyName}>
                     <p><strong>companyName:</strong> {request.companyName},&nbsp;
                         <strong>companyEmail:</strong> {request.companyEmail},&nbsp;
                         <strong>companyPhone:</strong> {request.companyPhone}</p>
