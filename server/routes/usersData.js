@@ -24,7 +24,6 @@ router.get('/deals', async function (req, res) {
         join: ['hotel on deal_package.hotel_id = hotel.hotel_id']
 
     });
-    console.log(data);
     let arr = [];
     data.forEach(deal => {
         arr.push({
