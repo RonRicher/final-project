@@ -8,7 +8,7 @@ const transporter = require('../nodemailer');
 
 
 
-
+// Router sends different data based on user permission
 router.get('/', permission, async function (req, res) {
     if (res.locals.permission !== 'admin' && res.locals.permission !== 'company') {
         res.send(false);

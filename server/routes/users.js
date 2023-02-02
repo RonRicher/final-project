@@ -111,7 +111,7 @@ router.post('/changePassword', async function (req, res) {
   });
 });
 
-
+// Router posts to change password, email verify, send link via transporter
 router.post('/password', async function (req, res) {
   const data = await createSQLQuery.sqlSelect({
     distinct: false,
