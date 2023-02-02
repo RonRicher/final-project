@@ -349,3 +349,9 @@ option {
     background-color: #003580;
     font-size: 1.75rem;
 }
+
+@media only screen and (max-width: 600px) {
+    html {
+        font-size: 5px;
+    }
+}

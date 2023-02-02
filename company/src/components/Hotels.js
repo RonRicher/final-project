@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 function Hotels() {
     const [hotels, setHotels] = useState([]);
+
     useEffect(() => {
         getHotels();
     }, []);

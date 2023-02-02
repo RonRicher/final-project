@@ -13,18 +13,20 @@ import PermissionProvider from './context/permissionContext';
 
 
 function App() {
+
+
   return (
-<PermissionProvider>
-    <Routes>
-      <Route path="/" element={<LogIn />}></Route>
-      <Route path="/Home" element={<Home />}></Route>
-      <Route path="/password" element={<ResetPassword />}></Route>
-      <Route path="/changePassword" element={<ChangePassword />}></Route>
-      <Route path="/api/hotels" element={<Hotels />}></Route>
-      <Route path="/api/flights" element={<Flights />}></Route>
-      <Route path="/deal" element={<CreateDeal />}></Route>
-      <Route path="/admin" element={<Admin />}></Route>
-    </Routes>
+    <PermissionProvider>
+      <Routes>
+        <Route path="/" element={<LogIn />}></Route>
+        <Route path="/Home" element={<Home />}></Route>
+        <Route path="/password" element={<ResetPassword />}></Route>
+        <Route path="/changePassword" element={<ChangePassword />}></Route>
+        <Route path="/deal" element={<CreateDeal />}></Route>
+        <Route path="/api/hotels" element={<Hotels />}></Route>
+        <Route path="/api/flights" element={<Flights />}></Route>
+        <Route path="/admin" element={<Admin />}></Route>
+      </Routes>
     </PermissionProvider>
   );
 }
