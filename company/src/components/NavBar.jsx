@@ -1,11 +1,11 @@
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import {usePermission} from "../context/permissionContext"
+import { usePermission } from "../context/permissionContext";
 
 
 function NavBar() {
-    const{permission} = usePermission();
+    const { permission } = usePermission();
     function logOut() {
         Cookies.remove("userId");
         console.log(Cookies.get());
@@ -20,9 +20,9 @@ function NavBar() {
                     </h2>
                 </div>
                 <div className="right-links">
-                {permission==='admin'?<NavLink className='NavLink' id="admin-btn" to="/admin">
-                        admin
-                    </NavLink>:null}
+                    {permission === 'admin' ? <NavLink className='NavLink' id="admin-btn" to="/admin">
+                        Admin
+                    </NavLink> : null}
                     <NavLink className='NavLink' to="/deal">
                         Create Deal
                     </NavLink>

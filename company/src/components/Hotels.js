@@ -14,11 +14,9 @@ function Hotels() {
     }
 
     return (
-        <div>
-            {hotels?.map(hotel => {
-                return <p> Id:{hotel.id} Name:{hotel.name} Location:{hotel.location} Rooms-left:{hotel.roomsLeft} Price:{hotel.price}</p>;
-            })}
-        </div>
+
+
+        <>{hotels ? JSON.stringify(hotels) : null}</>
     );
 }
 

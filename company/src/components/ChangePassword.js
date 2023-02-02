@@ -27,8 +27,8 @@ function ChangePassword() {
             setParText('We do not have this email in our system');
             return;
         }
-            setParText('Password changed successfully, now you can login');
-            setTimeout(() => navigate('/'), 2000); 
+        setParText('Password changed successfully, now you can login');
+        setTimeout(() => navigate('/'), 2000);
     };
 
     return (
@@ -56,7 +56,7 @@ function ChangePassword() {
                                 </div>
                                 <div className="field padding-bottom--24">
                                     <p style={{ margin: '5%', color: 'red' }}>{parText}</p>
-                                    <button onClick={handleSubmit}>Change Password</button>
+                                    <button className="proceedBtn" onClick={handleSubmit}>Change Password</button>
                                 </div>
                             </form>
                         </div>

@@ -17,7 +17,7 @@ function CreateDeal() {
     const [secondFlights, setSecondFlights] = useState([]);
     const [flag, setFlag] = useState(false);
     const [locationSearch, setLocationSearch] = useState("");
-    const [par1Text,setPar1Text]= useState('');
+    const [par1Text, setPar1Text] = useState('');
     const aa = useRef();
     const [parText, setParText] = useState("");
     const [firstFlights, setFirstFlights] = useState([]);
@@ -38,18 +38,18 @@ function CreateDeal() {
         console.log(location);
         const response = await fetch(`http://localhost:8080/search/hotels?location=${item}`);
         const data = await response.json();
-        if(data.length === 0){
+        if (data.length === 0) {
             setPar1Text("we d'ont have hotels for this location");
-            setTimeout(()=>setPar1Text(''),1500)
+            setTimeout(() => setPar1Text(''), 1500);
             return;
         }
         setHotels(data);
         console.log(data);
         const flightResponse = await fetch(`http://localhost:8080/search/flights/outbound?location=${item}`);
         const data1 = await flightResponse.json();
-        if(data1.length === 0){
+        if (data1.length === 0) {
             setPar1Text("we d'ont have outbound flight for this location");
-            setTimeout(()=>setPar1Text(''),1500)
+            setTimeout(() => setPar1Text(''), 1500);
             return;
         }
         setFirstFlights(data1);
@@ -109,15 +109,15 @@ function CreateDeal() {
                 reservations: quantity
             })
         });
-     if(response.status !== 200){
-        const data = await response.json();
-        setParText(data);
-        return;
-     }
-            setParText('You have successfully created a new deal');
-            setTimeout(() => {
-                navigate('/home');
-            }, 1500);
+        if (response.status !== 200) {
+            const data = await response.json();
+            setParText(data);
+            return;
+        }
+        setParText('You have successfully created a new deal');
+        setTimeout(() => {
+            navigate('/home');
+        }, 1500);
     };
     return (
 
@@ -139,7 +139,7 @@ function CreateDeal() {
                                                 aa.current = setTimeout(() => getLocations(e.target.value), 200);
                                             }
                                             } />
-                                            <p className="parText" style={{color:'red'}}>{par1Text}</p>
+                                            <p className="parText" style={{ color: 'red' }}>{par1Text}</p>
                                         </div>
                                             <div className="field padding-bottom--24 select-location">
                                                 <ul className="select">
@@ -227,7 +227,7 @@ function CreateDeal() {
                                             </div>
                                             <div className="field padding-bottom--24">
                                                 <p className="parText" style={{ margin: '5%', color: 'red' }}>{parText}</p>
-                                                <button onClick={handleSubmit}>Create Deal</button>
+                                                <button className="proceedBtn" onClick={handleSubmit}>Create Deal</button>
                                             </div>
                                         </div> : null}
                                     </form>
