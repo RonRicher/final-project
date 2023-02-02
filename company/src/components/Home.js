@@ -3,8 +3,10 @@ import NavBar from "./NavBar";
 import '../css/Home.css';
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import {usePermission} from "../context/permissionContext"
 
 function Home() {
+    const{permission} = usePermission();
     const navigate = useNavigate();
     const [deals, setDeals] = useState([]);
     useEffect(() => {
@@ -25,10 +27,17 @@ function Home() {
         <div id="home-div">
             <NavBar/>
             <h1 id='companyDealsTitle'>Your deals</h1>
-            {deals?.map((deal) => {
+            {permission === "admin"? deals?.map((company) => {
                 return <div className="comapnyDealDiv" key={Math.random()}>
-                    <p>Deal Id : {deal.dealId}</p>
-                    <p>Reservations quantity: {deal.quantity}</p>
+                    <p>Company Name: {company.companyName}</p>
+                    <p>Total deals quantity: {company.totalQuantity}</p>
+                    <p> Total deals sales: {company.totalPrice}$</p>
+                </div>;
+            }):deals?.map((deal) => {
+                return <div className="comapnyDealDiv" key={Math.random()}>
+                    <p>Deal Id: {deal.dealId}</p>
+                    <p> Quantity: {deal.quantity}</p>
+                    <p> Total sales: {deal.price}$</p>
                 </div>;
             })}
         </div>

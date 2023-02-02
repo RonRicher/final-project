@@ -13,31 +13,53 @@ router.get('/', permission, async function (req, res) {
     if (res.locals.permission !== 'admin' && res.locals.permission !== 'company') {
         res.send(false);
         return;
+    } 
+    if(res.locals.permission === 'admin'){
+        const data = await createSQLQuery.sqlSelect({
+            distinct: false,
+            columns: ['SUM(quantity) as quantity','SUM(client_deal.price) as totalPrice', 'company_details.company_name'],
+            tableName: "deal_package",
+            where: ``,
+            orderBy: [],
+            join: ['client_deal ON deal_package.deal_id = client_deal.deal_id join company_details on deal_package.company_id = company_details.company_id'],
+            groupBy: 'deal_package.company_id',
+        });
+        const arr = [];
+        data.forEach((company) => arr.push({
+            companyName: company.company_name,
+            totalQuantity: company.quantity,
+            totalPrice: company.totalPrice
+        }));
+        res.send(arr);
+        return;
     }
-    const companyId = await createSQLQuery.sqlSelect({
-        distinct: false,
-        columns: ['company_id'],
-        tableName: "company_details",
-        where: `user_id = '${req.cookies.userId}'`,
-        orderBy: [],
-        join: []
-    });
-    const data = await createSQLQuery.sqlSelect({
-        distinct: false,
-        columns: ['SUM(quantity) as quantity', 'client_deal.deal_id'],
-        tableName: "client_deal ",
-        where: `company_id = '${companyId[0].company_id}'`,
-        orderBy: [],
-        join: ['deal_package ON client_deal.deal_id = deal_package.deal_id'],
-        groupBy: 'client_deal.deal_id'
-    });
-    console.log(data);
-    const arr = [];
-    data.forEach((deal) => arr.push({
-        dealId: deal.deal_id,
-        quantity: deal.quantity
-    }));
-    res.send(arr);
+    else{
+        const companyId = await createSQLQuery.sqlSelect({
+            distinct: false,
+            columns: ['company_id'],
+            tableName: "company_details",
+            where: `user_id = '${req.cookies.userId}'`,
+            orderBy: [],
+            join: []
+        });
+        const data = await createSQLQuery.sqlSelect({
+            distinct: false,
+            columns: ['SUM(quantity) as quantity', 'client_deal.deal_id','deal_package.price'],
+            tableName: "client_deal ",
+            where: `company_id = '${companyId[0].company_id}'`,
+            orderBy: [],
+            join: ['deal_package ON client_deal.deal_id = deal_package.deal_id'],
+            groupBy: 'client_deal.deal_id'
+        });
+        const arr = [];
+        data.forEach((deal) => arr.push({
+            dealId: deal.deal_id,
+            quantity: deal.quantity,
+            price: deal.price
+        }));
+        res.send(arr);
+    }
+ 
 });
 
 router.get('/hotels', async function (req, res) {
