@@ -17,6 +17,7 @@ function PersonalTrip() {
     const [firstFlights, setFirstFlights] = useState([]);
     const [hotels, setHotels] = useState([]);
     const [locationFlag, setLocationFlag] = useState(true);
+    const [par1Text, setPar1Text] = useState('');
     const navigate = useNavigate();
     const [secondFlightsFlag, setSecondFlightsFlag] = useState(false);
     const getLocations = async (value) => {
@@ -33,10 +34,20 @@ function PersonalTrip() {
         console.log(location);
         const response = await fetch(`http://localhost:8080/search/hotels?location=${item}`);
         const data = await response.json();
+        if (data.length === 0) {
+            setPar1Text("we d'ont have hotels for this location");
+            setTimeout(() => setPar1Text(''), 1500)
+            return;
+        }
         setHotels(data);
         console.log(data);
         const flightResponse = await fetch(`http://localhost:8080/search/flights/outbound?location=${item}`);
         const data1 = await flightResponse.json();
+        if (data1.length === 0) {
+            setPar1Text("we d'ont have outbound flight for this location");
+            setTimeout(() => setPar1Text(''), 1500)
+            return;
+        }
         setFirstFlights(data1);
         setFlag(true);
     };
@@ -94,12 +105,12 @@ function PersonalTrip() {
                 quantity
             })
         });
-       if(response.status !== 200){
-        const data = await response.json();
-        setParText(data);
-        return;
-       }
-            navigate('/personal/trip/payment', { state: { price: totalPrice * quantity, location, quantity, outbound, inbound, hotelId } });
+        if (response.status !== 200) {
+            const data = await response.json();
+            setParText(data);
+            return;
+        }
+        navigate('/personal/trip/payment', { state: { price: totalPrice * quantity, location, quantity, outbound, inbound, hotelId } });
     };
     return (
         <div id="create-deal-div">
@@ -116,6 +127,7 @@ function PersonalTrip() {
                                             textType.current = setTimeout(() => getLocations(e.target.value), 200);
                                         }
                                         } />
+                                        <p className="parText" style={{ color: 'red' }}>{par1Text}</p>
                                     </div>
                                         <div className="field padding-bottom--24 select-location">
                                             <ul className="select">
