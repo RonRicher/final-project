@@ -5,6 +5,8 @@ const con = require('../connection.js');
 const createSQLQuery = require('../createSqlQuery.js');
 const permission = require('../permission');
 
+
+// Router handling POST request with permission, creating deal package with flight and hotel information, updating hotel room count
 router.post('/', permission, async function (req, res) {
     if (res.locals.permission !== 'admin' && res.locals.permission !== 'company') {
         res.status(400).send(JSON.stringify('permission denied, please log in'))

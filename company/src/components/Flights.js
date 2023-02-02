@@ -12,7 +12,6 @@ function Flights() {
     }
 
     return (
-
         <>{flights ? JSON.stringify(flights) : null}</>
     );
 }

@@ -12,6 +12,7 @@ router.get('/image', async function (req, res) {
     res.sendFile(`/home/hilma/projects/final-project/server/public/images/${location}.jpeg`);
 });
 
+// Get 4 latest deals with location, dates, price, car, description and hotel name from "deal_package" table. Result sent as JSON
 router.get('/deals', async function (req, res) {
     const data = await createSQLQuery.sqlSelect({
         distinct: true,
@@ -42,7 +43,7 @@ router.get('/deals', async function (req, res) {
 
 });
 
-
+// Route returns travel deal information from database via SQL query
 router.get('/dealInfo', async function (req, res) {
     const { dealId } = req.query;
     const data = await createSQLQuery.sqlSelect({
@@ -89,6 +90,7 @@ router.get('/dealInfo', async function (req, res) {
 
 });
 
+// client's trip package payment, email notification with reservation number
 router.post('/payment', permission, async function (req, res) {
     if (res.locals.permission !== 'admin' && res.locals.permission !== 'client') {
         res.status(400).send(JSON.stringify('you must be an admin or a client'));
@@ -117,6 +119,7 @@ router.post('/payment', permission, async function (req, res) {
     }
 });
 
+// Route to handle trip payment and email reservation details
 router.post('/trip/payment', permission, async function (req, res) {
     if (res.locals.permission !== 'admin' && res.locals.permission !== 'client') {
         res.status(400).send(JSON.stringify('you must be an admin or a client'));
@@ -163,6 +166,7 @@ router.post('/trip/payment', permission, async function (req, res) {
     res.status(200).send();
 });
 
+// Express route handles GET requests for search deals and location, queries database and sends response as JSON array
 router.get('/search', async function (req, res) {
     const { location, type, startDate, endDate } = req.query;
     console.log(req.query);

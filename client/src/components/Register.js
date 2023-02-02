@@ -15,6 +15,7 @@ function Register(props) {
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/;
     const usernameRegex = /^[a-zA-Z0-9._-]{3,15}$/;
     const phoneRegex = /^(?:\+\d{1,3}|0\d{1,3}|\d{1,4})[\s.-]?\d{3}[\s.-]?\d{4}$/;
+    const quoteRegex = /^[^'"]*$/;
 
 
     useEffect(() => {
@@ -23,7 +24,7 @@ function Register(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!usernameRegex.test(username)) {
+        if (!usernameRegex.test(username)){
             setParText("Please enter a valid username");
             return;
         } else if (!passwordRegex.test(password)) {
