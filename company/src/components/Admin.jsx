@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "./NavBar";
 import '../css/Admin.css';
+import { usePermission } from "../context/permissionContext";
 
 
 function Admin() {
@@ -11,6 +12,7 @@ function Admin() {
     const [flag, setFlag] = useState('');
     const [parText, setParText] = useState('');
     const navigate = useNavigate();
+    const { permission } = usePermission;
 
     useEffect(() => {
         getRequest();
@@ -70,11 +72,10 @@ function Admin() {
     return (
         <>
             <NavBar />
-            {requests.length === 0 ?
+            {permission !== 'admin' ? <h1>{parText}</h1> : null}
+            {/* {requests.length === 0 ?
+                <><h1 className='not-found'>No requests founds.</h1></> : <><h1 className='not-found'>Requests:</h1></>} */}
 
-                <><h1 className='not-found'>No requests founds.</h1></> : <><h1 className='not-found'>Requests:</h1></>
-
-            }
             {requests?.map(request => {
                 return <div className="admin-div" key={Math.random()}>
 

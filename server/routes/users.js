@@ -80,7 +80,6 @@ router.post('/logIn', async function (req, res) {
   if (data.length > 0) {
     bcrypt.compare(req.body.password, data[0].password, function (err, result) {
       if (result) {
-        console.log('userId:', data[0].user_id);
         res.cookie('userId', data[0].user_id, {
           httpOnly: false,
           expires: new Date(Date.now() + 60 * 60 * 24 * 7 * 1000)

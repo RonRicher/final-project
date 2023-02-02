@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Cookies from 'js-cookie';
 import Register from "./Register";
-import {usePermission} from '../context/permissionContext'
+import { usePermission } from '../context/permissionContext';
 
 import "../css/LogIn.css";
 
@@ -11,9 +11,9 @@ function LogIn() {
     const [password, setPassword] = useState("");
     const [flag, setFlag] = useState(false);
     const [checkbox, setCheckbox] = useState(false);
-    const [wrong, setWrong] = useState(false);
+    const [parText, setParText] = useState("");
     const navigate = useNavigate();
-    const {setPermission} = usePermission();
+    const { setPermission } = usePermission();
 
     useEffect(() => {
         if (Cookies.get('userName')) {
@@ -33,14 +33,15 @@ function LogIn() {
                 password: password
             })
         });
-        if(response.status !== 200) {
-            setWrong(true);
+        const data = await response.json();
+        if (response.status !== 200) {
+
+            setParText(data);
             return;
         }
-        const data = await response.json();
-            setPermission(data);
-            localStorage.setItem('permission', JSON.stringify(data));
-            navigate('/home');
+        setPermission(data);
+        localStorage.setItem('permission', JSON.stringify(data));
+        navigate('/home');
     };
     return (
         <div className="login-root">
@@ -110,8 +111,8 @@ function LogIn() {
                                             }} />
                                     </div>
                                     <div className="field padding-bottom--24">
-                                        <p style={{ margin: '5%', color: 'red' }}>{wrong ? 'One or more of the details you entered are incorrect' : null}</p>
-                                        <button onClick={handleSubmit}>Continue</button>
+                                        <p className="parText" style={{ margin: '5%', color: 'red' }}>{parText}</p>
+                                        <button onClick={handleSubmit}>LogIn</button>
                                     </div>
                                 </form>
                             </div>

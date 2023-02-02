@@ -80,8 +80,13 @@ router.post('/logIn', async function (req, res) {
     if (data.length > 0) {
         bcrypt.compare(req.body.password, data[0].password, function (err, result) {
             if (result) {
-                if (data[0].permission === 'pending' || data[0].permission === 'declined') {
-                    console.log('you dont have permission yet');
+                if (data[0].permission === 'declined') {
+                    res.status(400).send(JSON.stringify('You declined by the Admin'));
+                    return;
+                }
+                if (data[0].permission === 'pending') {
+                    res.status(400).send(JSON.stringify('Youre still pending...'));
+                    return;
                 } else {
                     res.cookie('userId', data[0].user_id, {
                         httpOnly: false,

@@ -121,6 +121,7 @@ router.post('/payment', permission, async function (req, res) {
 
 // Route to handle trip payment and email reservation details
 router.post('/trip/payment', permission, async function (req, res) {
+    console.log(res.locals.permission);
     if (res.locals.permission !== 'admin' && res.locals.permission !== 'client') {
         res.status(400).send(JSON.stringify('you must be an admin or a client'));
         return;

@@ -20,6 +20,12 @@ function NavBar() {
                     </h2>
                 </div>
                 <div className="right-links">
+                    <NavLink className='NavLink' id="admin-btn" to="/api/flights">
+                        Flights
+                    </NavLink>
+                    <NavLink className='NavLink' id="admin-btn" to="/api/hotels">
+                        Hotels
+                    </NavLink>
                     {permission === 'admin' ? <NavLink className='NavLink' id="admin-btn" to="/admin">
                         Admin
                     </NavLink> : null}

@@ -35,7 +35,7 @@ function PersonalTrip() {
         const response = await fetch(`http://localhost:8080/search/hotels?location=${item}`);
         const data = await response.json();
         if (data.length === 0) {
-            setPar1Text("we d'ont have hotels for this location");
+            setPar1Text("We don't have hotels for this location");
             setTimeout(() => setPar1Text(''), 1500);
             return;
         }
@@ -44,7 +44,7 @@ function PersonalTrip() {
         const flightResponse = await fetch(`http://localhost:8080/search/flights/outbound?location=${item}`);
         const data1 = await flightResponse.json();
         if (data1.length === 0) {
-            setPar1Text("we d'ont have outbound flight for this location");
+            setPar1Text("We don't have outbound flight for this location");
             setTimeout(() => setPar1Text(''), 1500);
             return;
         }
@@ -66,10 +66,10 @@ function PersonalTrip() {
     };
 
     const totalPrice = useMemo(() => {
-        console.log(firstFlights, outbound, firstFlights.find(flight => flight.flightId === outbound * 1));
-        const hotelPrice = hotels.find(hotel => hotel.hotelId === hotelId * 1)?.price * 1 || 0;
-        const outboundPrice = firstFlights.find(flight => flight.flightId === outbound * 1)?.price || 0;
-        const inboundPrice = secondFlights.find(flight => flight.flightId === inbound * 1)?.price || 0;
+        console.log(firstFlights, outbound, firstFlights.find(flight => flight.flightId === Number(outbound)));
+        const hotelPrice = Number(hotels.find(hotel => hotel.hotelId === Number(hotelId))?.price) || 0;
+        const outboundPrice = firstFlights.find(flight => flight.flightId === Number(outbound))?.price || 0;
+        const inboundPrice = secondFlights.find(flight => flight.flightId === Number(inbound))?.price || 0;
         return hotelPrice + inboundPrice + outboundPrice;
     }, [hotelId, inbound, outbound]);
 
