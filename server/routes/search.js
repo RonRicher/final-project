@@ -10,7 +10,7 @@ router.get('/location', async function (req, res) {
         distinct: true,
         columns: ['location'],
         tableName: "hotel",
-        where: `location LIKE '${search}%'`,
+        where: `location LIKE '${search}%' limit 8`,
         orderBy: [],
         join: []
     });
